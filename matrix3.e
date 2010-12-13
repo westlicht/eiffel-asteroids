@@ -13,7 +13,7 @@ inherit
 			out
 		end
 
-	DOUBLE_MATH_UTILS
+	SINGLE_MATH_UTILS
 		undefine
 			out
 		end
@@ -31,7 +31,7 @@ feature -- Constants
 
 feature {NONE} -- Local attributes
 
-	elements: ARRAY2[REAL_64]
+	elements: ARRAY2[REAL]
 			-- Elements of the matrix indexed by (row, column).
 
 
@@ -62,7 +62,7 @@ feature {NONE} -- Initialization
 			set_element(2, 3, a_position.y)
 		end
 
-	make_rotation (a_angle: REAL_64)
+	make_rotation (a_angle: REAL)
 			-- Creates a rotation matrix.
 		do
 			make
@@ -73,7 +73,7 @@ feature {NONE} -- Initialization
 			set_element(3, 3, 1.0)
 		end
 
-	make_scaling (a_scale: REAL_64)
+	make_scaling (a_scale: REAL)
 			-- Creates a scaling matrix.
 		do
 			make
@@ -91,7 +91,7 @@ feature -- Operations
 			other_exists: other /= Void
 		local
 			row, col, i: INTEGER
-			t: REAL_64
+			t: REAL
 		do
 			create Result.make
 			from row := 1 until row > Size loop
@@ -134,7 +134,7 @@ feature -- Operations
 
 feature -- Element access
 
-	element (row, col: INTEGER): REAL_64
+	element (row, col: INTEGER): REAL
 			-- Gets an element of the matrix.
 		require
 			valid_row: 1 <= row and row <= Size
@@ -143,7 +143,7 @@ feature -- Element access
 			Result := elements.item (row, col)
 		end
 
-	set_element (row, col: INTEGER; value: REAL_64)
+	set_element (row, col: INTEGER; value: REAL)
 			-- Sets an element of the matrix.
 		require
 			valid_row: 1 <= row and row <= Size

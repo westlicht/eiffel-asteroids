@@ -19,7 +19,7 @@ create
 
 feature -- Access
 
-	r, g, b: REAL_32
+	r, g, b: REAL
 			-- Color components (red, green, blue).
 
 feature -- Initialization
@@ -44,7 +44,7 @@ feature -- Initialization
 			b := a_b
 		end
 
-	make_gray (a_gray: REAL_32)
+	make_gray (a_gray: REAL)
 			-- Create gray color.
 		require
 			valid_gray: is_valid_component (a_gray)
@@ -61,7 +61,7 @@ feature -- Initialization
 
 feature -- Calculations
 
-	blend (a_other: like Current; a_blend: REAL_32): like Current
+	blend (a_other: like Current; a_blend: REAL): like Current
 			-- Blends a color with another color.
 		local
 			one_minus_blend: like a_blend

@@ -87,7 +87,7 @@ feature -- Drawing operations
 			canvas.draw_point (position.x.rounded, position.y.rounded)
 		end
 
-	draw_circle (center: VECTOR2; radius: REAL_64)
+	draw_circle (center: VECTOR2; radius: REAL)
 			-- Draws a circle.
 		require
 			center_exists: center /= Void

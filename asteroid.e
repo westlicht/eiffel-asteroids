@@ -23,7 +23,7 @@ feature -- Constants
 	Num_points: INTEGER = 16
 			-- Number of points.
 
-	Max_velocity: REAL_64 = 100.0
+	Max_velocity: REAL = 100.0
 			-- Maximum velocity.
 
 
@@ -34,7 +34,7 @@ feature -- Access
 
 feature -- Creation
 
-	make_with_size (a_engine: ENGINE; a_size: REAL_64)
+	make_with_size (a_engine: ENGINE; a_size: REAL)
 		do
 			make_with_shape (a_engine, random_shape (a_size))
 
@@ -84,7 +84,7 @@ feature {NONE} -- Implementation
 
 			from i := 1 until i > count loop
 				create child.make_with_category (engine, category - 1)
-				create direction.make_unit ((6.283 / count.to_real) * i.to_real)
+				create direction.make_unit (({REAL} 6.283 / count.to_real) * i.to_real)
 				child.position := position + direction * radius
 				child.velocity := velocity + direction * 50.0
 				child.angular_velocity:= angular_velocity + random.real_item * 10 - 5
@@ -100,7 +100,7 @@ feature {NONE} -- Implementation
 			Result.start
 		end
 
-	random_shape (size: REAL_64): POLYGON
+	random_shape (size: REAL): POLYGON
 		require
 			size_positive: size > 0.0
 		local

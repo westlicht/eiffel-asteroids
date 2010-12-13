@@ -19,16 +19,16 @@ create
 
 feature -- Constants
 
-	Rotation_velocity: REAL_64 = 3.0
+	Rotation_velocity: REAL = 3.0
 			-- Angular velocity used for rotating the ship.
 
-	Thrust_acceleration: REAL_64 = 100.0
+	Thrust_acceleration: REAL = 100.0
 			-- Thrust acceleration.
 
-	Fire_interval: REAL_64 = 0.1
+	Fire_interval: REAL = 0.1
 			-- Minimum interval for fireing.
 
-	Bullet_speed: REAL_64 = 300.0
+	Bullet_speed: REAL = 300.0
 			-- Speed of bullets.
 
 	Gun_position: VECTOR2
@@ -70,7 +70,7 @@ feature {NONE} -- Local attributes
 	key_fire: INPUT_KEY
 			-- Fire key.
 
-	last_fire_time: REAL_64
+	last_fire_time: REAL
 			-- Last time of fireing.
 
 	anchor_gun: RIGID_BODY_ANCHOR
@@ -111,7 +111,7 @@ feature -- Initialization
 
 feature -- Updateing
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the rigid body by t seconds.
 		do
 			-- Handle steering

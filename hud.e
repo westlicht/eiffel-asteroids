@@ -61,7 +61,7 @@ feature -- Drawing
 
 feature {NONE} -- Implementation
 
-	draw_bar (position: VECTOR2; size: VECTOR2; value, max: REAL_64; border, bar: COLOR)
+	draw_bar (position: VECTOR2; size: VECTOR2; value, max: REAL; border, bar: COLOR)
 		do
 
 		end

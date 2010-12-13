@@ -13,7 +13,7 @@ inherit
 			out
 		end
 
-	DOUBLE_MATH_UTILS
+	SINGLE_MATH_UTILS
 		undefine
 			out
 		end
@@ -24,16 +24,16 @@ create
 
 feature -- Access
 
-	x: REAL_64
+	x: REAL
 			-- X coordinate.
 
-	y: REAL_64
+	y: REAL
 			-- Y coordinate.
 
 
 feature -- Creation
 
-	make (a_x: REAL_64; a_y: REAL_64)
+	make (a_x: like x; a_y: like y)
 			-- Creates a vector with (a_x,a_y) coordinates.
 		do
 			x := a_x
@@ -52,7 +52,7 @@ feature -- Creation
 			y_zero: y = 0.0
 		end
 
-	make_unit(a_angle: REAL_64)
+	make_unit(a_angle: REAL)
 			-- Creates a unit length vector with given angle.
 		do
 			make (-cos(a_angle), sin(a_angle))
@@ -99,7 +99,7 @@ feature -- Coordinate access
 
 feature -- Calculations
 
-	length: REAL_64
+	length: REAL
 			-- Length of vector.
 		do
 			Result := sqrt (length_squared)
@@ -107,12 +107,12 @@ feature -- Calculations
 			check_result: Result = sqrt (length_squared)
 		end
 
-	length_squared: REAL_64
+	length_squared: REAL
 			-- Squared length of vector.
 		do
-			Result := x^2 + y^2
+			Result := x * x + y * y
 		ensure
-			check_result: Result = (x^2 + y^2)
+			check_result: Result = (x * x + y * y)
 		end
 
 	normalized: VECTOR2
@@ -141,13 +141,13 @@ feature -- Vector operations
 			create Result.make (x - other.x, y - other.y)
 		end
 
-	infix "*" (a_factor: REAL_64): like Current
+	infix "*" (a_factor: REAL): like Current
 			-- Scalar multiplication.
 		do
 			create Result.make (x * a_factor, y * a_factor)
 		end
 
-	infix "/" (a_divisor: REAL_64): like Current
+	infix "/" (a_divisor: REAL): like Current
 			-- Scalar division.
 		require
 			divisor_not_zero: a_divisor /= 0.0
@@ -171,7 +171,7 @@ feature -- Vector operations
 			result_is_negation: Result.x = -x and Result.y = -y
 		end
 
-	dot_product (other: like Current): REAL_64
+	dot_product (other: like Current): REAL
 			-- Dot product.
 		require
 			other_exists: other /= Void
@@ -181,7 +181,7 @@ feature -- Vector operations
 			result_calculated: Result = x * other.x + y * other.y
 		end
 
-	distance (other: like Current): REAL_64
+	distance (other: like Current): REAL
 			-- Distance to another vector.
 		require
 			other_exists: other /= Void
@@ -189,7 +189,7 @@ feature -- Vector operations
 			Result := (other - Current).length
 		end
 
-	distance_squared (other: like Current): REAL_64
+	distance_squared (other: like Current): REAL
 			-- Squared distance to another vector.
 		require
 			other_exists: other /= Void

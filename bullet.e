@@ -50,7 +50,7 @@ feature -- Drawing
 
 feature -- Updateing
 
-	update (engine: ENGINE; t: REAL_64)
+	update (engine: ENGINE; t: REAL)
 			-- Updates the bullet by t seconds.
 		do
 			-- Primitive integration for basic dynamic motion

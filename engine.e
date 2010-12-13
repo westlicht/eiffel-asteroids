@@ -27,7 +27,7 @@ feature -- Access
 	particle_manager: PARTICLE_MANAGER
 			-- Particle manager.
 
-	time: REAL_64
+	time: REAL
 			-- Relative time in seconds.
 
 
@@ -105,7 +105,7 @@ feature -- Updateing
 		local
 			current_time: TIME
 			duration: TIME_DURATION
-			t: REAL_64
+			t: REAL
 			cur: LINKED_LIST_ITERATION_CURSOR [ENGINE_OBJECT]
 			prev : ENGINE_OBJECT
 		do
@@ -113,7 +113,7 @@ feature -- Updateing
 			create current_time.make_now
 			duration := current_time.relative_duration (last_time)
 			last_time := current_time
-			t := duration.fine_second
+			t := duration.fine_second.truncated_to_real
 
 			time := time + t
 			objects.do_all (agent update_object (?, t) )
@@ -174,7 +174,7 @@ feature {NONE} -- Implementation
 			object.draw
 		end
 
-	update_object (object: ENGINE_OBJECT; t: REAL_64)
+	update_object (object: ENGINE_OBJECT; t: REAL)
 		do
 			object.update (t)
 		end

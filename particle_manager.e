@@ -95,7 +95,7 @@ feature -- Particle emitters
 
 feature -- Fireing
 
-	emit_particle (a_settings: PARTICLE_SETTINGS; a_position, a_velocity: VECTOR2; t: REAL_64)
+	emit_particle (a_settings: PARTICLE_SETTINGS; a_position, a_velocity: VECTOR2; t: REAL)
 			-- Emits a new particle.
 		local
 			particle: PARTICLE
@@ -124,7 +124,7 @@ feature -- Drawing
 
 feature -- Updateing
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the particles by t seconds.
 		do
 			emitters.do_all (agent update_emitter (?, t))
@@ -134,7 +134,7 @@ feature -- Updateing
 
 feature -- Random numbers
 
-	random_range (min, max: REAL_64): REAL_64
+	random_range (min, max: REAL): REAL
 		do
 			Result := min + random.real_item * (max - min)
 		end
@@ -153,13 +153,13 @@ feature -- Implementation
 			particle.draw (engine)
 		end
 
-	update_emitter (emitter: PARTICLE_EMITTER; t: REAL_64)
+	update_emitter (emitter: PARTICLE_EMITTER; t: REAL)
 			-- Updates a single emitter.
 		do
 			emitter.update (engine, t)
 		end
 
-	update_particle (particle: PARTICLE; t: REAL_64)
+	update_particle (particle: PARTICLE; t: REAL)
 			-- Updates a single particle.
 		do
 			particle.update (engine, t)

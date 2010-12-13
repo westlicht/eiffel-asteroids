@@ -13,22 +13,22 @@ create
 
 feature -- Access
 
-	spread: REAL_64 assign set_spread
+	spread: REAL assign set_spread
 			-- Spreading angle.
 
-	velocity: REAL_64 assign set_velocity
+	velocity: REAL assign set_velocity
 			-- Initial velocity.
 
-	velocity_random: REAL_64 assign set_velocity_random
+	velocity_random: REAL assign set_velocity_random
 			-- Initial velocity random deviation.
 
-	rate: REAL_64 assign set_rate
+	rate: REAL assign set_rate
 			-- Emitting rate in hz.
 
-	life_time: REAL_64 assign set_life_time
+	life_time: REAL assign set_life_time
 			-- Particle life time in seconds.
 
-	drag: REAL_64 assign set_drag
+	drag: REAL assign set_drag
 			-- Particle drag factor (slow down based on current velocity).
 
 

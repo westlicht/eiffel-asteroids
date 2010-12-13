@@ -45,7 +45,7 @@ feature -- Objects
 
 feature -- Updating
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the object by t seconds.
 		do
 			check_rigid_bodies

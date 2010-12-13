@@ -16,7 +16,7 @@ feature -- Access
 	settings: PARTICLE_SETTINGS
 			-- Particle settings.
 
-	age: REAL_64
+	age: REAL
 			-- Age of particle in seconds.
 
 	position: VECTOR2
@@ -57,7 +57,7 @@ feature -- Drawing
 
 feature -- Updateing
 
-	update (engine: ENGINE; t: REAL_64)
+	update (engine: ENGINE; t: REAL)
 			-- Updates the particle by t seconds.
 		do
 			-- Primitive integration for basic dynamic motion

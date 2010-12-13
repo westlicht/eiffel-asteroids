@@ -15,10 +15,10 @@ create
 
 feature -- Constants
 
-	size_x: INTEGER = 600
+	size_x: INTEGER = 800
 			-- Main window width.
 
-	size_y: INTEGER = 600
+	size_y: INTEGER = 800
 			-- Main window height.
 
 
@@ -111,7 +111,7 @@ feature -- Initialization
 			create background.make (engine)
 			engine.put_object (background)
 
-			from i := 1 until i > 3 loop
+			from i := 1 until i > 5 loop
 				create asteroid.make_with_category (engine, 3)
 				engine.put_object (asteroid)
 				i := i + 1

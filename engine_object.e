@@ -51,7 +51,7 @@ feature -- Drawing
 
 feature -- Updating
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the object by t seconds.
 		require
 			t_positive: t >= 0.0

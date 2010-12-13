@@ -49,7 +49,7 @@ feature -- Initialization
 
 feature -- Fireing
 
-	fire_bullet (position, velocity, direction: VECTOR2; speed: REAL_64)
+	fire_bullet (position, velocity, direction: VECTOR2; speed: REAL)
 		local
 			bullet: BULLET
 		do
@@ -75,7 +75,7 @@ feature -- Drawing
 
 feature -- Updateing
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the bullets by t seconds.
 		do
 			bullets.do_all (agent update_bullet (?, t))
@@ -95,7 +95,7 @@ feature -- Implementation
 			bullet.draw (engine)
 		end
 
-	update_bullet (bullet: BULLET; t: REAL_64)
+	update_bullet (bullet: BULLET; t: REAL)
 			-- Updates a single bullet.
 		do
 			bullet.update (engine, t)

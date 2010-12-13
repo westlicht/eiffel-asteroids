@@ -8,7 +8,7 @@ class
 	POLYGON
 
 inherit
-	DOUBLE_MATH
+	SINGLE_MATH
 
 create
 	make_from_points, make_box
@@ -32,12 +32,12 @@ feature -- Creation
 			points_copied: points.count = a_points.count
 		end
 
-	make_box (size: REAL_64)
+	make_box (size: REAL)
 			-- Creates a polygon in the shape of a box with given side length.
 		require
 			size_positive: size > 0.0
 		local
-			half: REAL_64
+			half: REAL
 		do
 			half := size / 2.0
 			create points.make (1, 4)
@@ -52,12 +52,12 @@ feature -- Creation
 
 feature -- Calculations
 
-	radius: REAL_64
+	radius: REAL
 			-- Computes the radius of the bounding sphere of the polygon.
 			-- Origin of the bounding sphere is assumed to be (0,0).
 		local
 			i: INTEGER
-			t: REAL_64
+			t: REAL
 		do
 			Result := 0.0
 			from i := 1 until i > points.count loop

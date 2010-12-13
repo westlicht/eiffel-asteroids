@@ -36,7 +36,7 @@ feature -- Initialization
 
 feature -- Updateing
 
-	update (engine: ENGINE; t: REAL_64)
+	update (engine: ENGINE; t: REAL)
 			-- Updates the emitter by t seconds.
 		do
 			position.make_from_other (anchor.global_position)

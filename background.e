@@ -54,7 +54,7 @@ feature {NONE} -- Implementation
 	stars: LINKED_LIST[VECTOR2]
 			-- List of star positions.
 
-	oscillate (time: REAL_64; scale: REAL_64; offset: REAL_64): REAL_32
+	oscillate (time: REAL; scale: REAL; offset: REAL): REAL
 			-- Creates a simple triangle oscillation.
 		local
 			i: INTEGER
@@ -72,14 +72,14 @@ feature -- Drawing
 	draw
 			-- Draws the background.
 		local
-			t: REAL_64
-			gray: REAL_32
+			t: REAL
+			gray: REAL
 			color: COLOR
 		do
 			engine.renderer.set_background_color (Background)
 			engine.renderer.clear
 
-			t := 1.0 / (engine.renderer.screen_width * engine.renderer.screen_height)
+			t := {REAL} 1.0 / (engine.renderer.screen_width * engine.renderer.screen_height)
 			from stars.start until stars.after loop
 				-- Create pseudo random oscillating color
 				gray := oscillate (engine.time, stars.item.x * stars.item.y * t, stars.item.x * stars.item.y * t)

@@ -9,7 +9,7 @@ class
 
 create
 	make_with_settings
-	
+
 
 feature -- Access
 
@@ -34,7 +34,7 @@ feature -- Access
 
 feature -- Local attributes
 
-	time_left: REAL_64
+	time_left: REAL
 			-- Time not yet 'processed'.
 
 
@@ -78,13 +78,13 @@ feature -- Access
 
 feature -- Updateing
 
-	update (engine: ENGINE; t: REAL_64)
+	update (engine: ENGINE; t: REAL)
 			-- Updates the emitter by t seconds.
 		local
-			inv_rate: REAL_64
+			inv_rate: REAL
 		do
 			if enabled then
-				inv_rate := 1.0 / settings.rate
+				inv_rate := {REAL} 1.0 / settings.rate
 				from
 					time_left := time_left + t
 				until
@@ -100,7 +100,7 @@ feature -- Updateing
 
 feature -- Emitting
 
-	burst (count: INTEGER; t: REAL_64)
+	burst (count: INTEGER; t: REAL)
 		local
 			i: INTEGER
 		do
@@ -110,14 +110,14 @@ feature -- Emitting
 			end
 		end
 
-	emit_particle (t: REAL_64)
+	emit_particle (t: REAL)
 		local
 			rotation: MATRIX3
 			particle_velocity: VECTOR2
 		do
 			manager.random.forth
 			create rotation.make_rotation (manager.random_range (-settings.spread, settings.spread))
-			particle_velocity := rotation.transform_no_translation (direction) * (settings.velocity * manager.random_range (1.0 - settings.velocity_random, 1.0 + settings.velocity_random)) + velocity
+			particle_velocity := rotation.transform_no_translation (direction) * (settings.velocity * manager.random_range ({REAL} 1.0 - settings.velocity_random, {REAL} 1.0 + settings.velocity_random)) + velocity
 			manager.emit_particle (settings, position, particle_velocity, t)
 		end
 

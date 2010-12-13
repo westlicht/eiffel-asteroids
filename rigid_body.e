@@ -18,7 +18,7 @@ create
 
 feature -- Constants
 
-	Restitution: REAL_64 = 1.0
+	Restitution: REAL = 1.0
 
 feature -- Access
 
@@ -34,19 +34,19 @@ feature -- Access
 	acceleration: VECTOR2
 			-- Current acceleration.
 
-	angle: REAL_64 assign set_angle
+	angle: REAL assign set_angle
 			-- Current angle.
 
-	angular_velocity: REAL_64 assign set_angular_velocity
+	angular_velocity: REAL assign set_angular_velocity
 			-- Current angular velocity.
 
-	mass: REAL_64
+	mass: REAL
 			-- Mass of the body in kg.
 
-	radius: REAL_64
+	radius: REAL
 			-- Radius of the bounding sphere.
 
-	radius_squared: REAL_64
+	radius_squared: REAL
 			-- Squared radius of the bounding sphere.
 
 	anchors: LINKED_LIST [RIGID_BODY_ANCHOR]
@@ -89,26 +89,26 @@ feature -- Initialization
 
 feature -- Access
 
-	set_position (a_position: VECTOR2)
+	set_position (a_position: like position)
 		require
 			position_exists: a_position /= Void
 		do
 			position.make_from_other (a_position)
 		end
 
-	set_velocity (a_velocity: VECTOR2)
+	set_velocity (a_velocity: like velocity)
 		require
 			velocity_exists: a_velocity /= Void
 		do
 			velocity.make_from_other (a_velocity)
 		end
 
-	set_angle (a_angle: REAL_64)
+	set_angle (a_angle: like angle)
 		do
 			angle := a_angle
 		end
 
-	set_angular_velocity (a_angular_velocity: REAL_64)
+	set_angular_velocity (a_angular_velocity: like angular_velocity)
 		do
 			angular_velocity := a_angular_velocity
 		end
@@ -156,7 +156,7 @@ feature -- Drawing
 
 feature -- Updateing
 
-	update (t: REAL_64)
+	update (t: REAL)
 			-- Updates the rigid body by t seconds.
 		do
 			-- Primitive integration for basic dynamic motion
@@ -201,12 +201,12 @@ feature -- Collision handling
 			other_valid: other /= Void and other /= Current
 		local
 			delta: VECTOR2
-			d: REAL_64
+			d: REAL
 			mtd: VECTOR2
-			im1, im2: REAL_64
+			im1, im2: REAL
 			v: VECTOR2
-			vn: REAL_64
-			i: REAL_64
+			vn: REAL
+			i: REAL
 			impulse: VECTOR2
 		do
 			delta := position - other.position
@@ -222,8 +222,8 @@ feature -- Collision handling
 
 			-- Resolve intersection
 			-- Compute inverse masses
-			im1 := 1.0 / mass
-			im2 := 1.0 / other.mass
+			im1 := {REAL} 1.0 / mass
+			im2 := {REAL} 1.0 / other.mass
 
 			-- Push-pull rigid bodies based on their mass
 			set_position(position + mtd * (im1 / (im1 + im2)))
@@ -237,7 +237,7 @@ feature -- Collision handling
 			-- Check if bodies are moving towards another
 			if vn <= 0.0 then
 				-- Compute impulse
-				i := (-(1.0 + Restitution) * vn) / (im1 + im2)
+				i := (-({REAL} 1.0 + Restitution) * vn) / (im1 + im2)
 				impulse := mtd * i
 
 				-- Change momentum
