@@ -113,8 +113,11 @@ feature -- Drawing
 
 	draw
 			-- Draws the particles.
+		local
+			color: COLOR
 		do
-			engine.renderer.set_foreground_color (create {EV_COLOR}.make_with_rgb (1.0, 1.0, 1.0))
+			color.make_with_rgb (1.0, 0.0, 0.0)
+			engine.renderer.set_foreground_color (color)
 			particles.do_all (agent draw_particle)
 		end
 

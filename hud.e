@@ -25,6 +25,11 @@ feature -- Constants
 			create Result.make (10.0, 10.0)
 		end
 
+	Health_bar_border_color: COLOR
+		once
+			Result.make_with_rgb (1.0, 1.0, 1.0)
+		end
+
 feature -- Access
 
 	player: PLAYER
@@ -45,9 +50,20 @@ feature -- Drawing
 
 	draw
 			-- Draws the object.
+		local
+			color: COLOR
 		do
-			engine.renderer.set_foreground_color (create {EV_COLOR}.make_with_rgb (1.0, 1.0, 1.0))
+			color.make_with_rgb (1.0, 1.0, 1.0)
+			engine.renderer.set_foreground_color (color)
 			engine.renderer.draw_text (Health_position, "Health: 123")
+		end
+
+
+feature {NONE} -- Implementation
+
+	draw_bar (position: VECTOR2; size: VECTOR2; value, max: REAL_64; border, bar: COLOR)
+		do
+
 		end
 
 end

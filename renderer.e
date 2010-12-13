@@ -26,7 +26,14 @@ feature {NONE} -- Local attributes
 			-- Drawing canvas.
 
 	drawing_area: EV_PIXMAP
-			-- Drawing area
+			-- Drawing area.
+
+	background_color: EV_COLOR
+			-- Background color.
+
+	foreground_color: EV_COLOR
+			-- Foreground color.
+
 
 feature -- Initialization
 
@@ -38,6 +45,9 @@ feature -- Initialization
 			create canvas.make_with_size (drawing_area.width, drawing_area.height)
 			screen_width := drawing_area.width
 			screen_height := drawing_area.height
+
+			create background_color.default_create
+			create foreground_color.default_create
 		end
 
 
@@ -55,20 +65,18 @@ feature -- Drawing operations
 			drawing_area.draw_pixmap (0, 0, canvas)
 		end
 
-	set_foreground_color (color: EV_COLOR)
+	set_foreground_color (color: COLOR)
 			-- Sets the foreground color.
-		require
-			color_exists: color /= Void
 		do
-			canvas.set_foreground_color (color)
+			foreground_color.set_rgb (color.r, color.g, color.b)
+			canvas.set_foreground_color (foreground_color)
 		end
 
-	set_background_color (color: EV_COLOR)
+	set_background_color (color: COLOR)
 			-- Sets the background color.
-		require
-			color_exists: color /= Void
 		do
-			canvas.set_background_color (color)
+			background_color.set_rgb (color.r, color.g, color.b)
+			canvas.set_background_color (background_color)
 		end
 
 	draw_point (position: VECTOR2)

@@ -140,13 +140,16 @@ feature -- Drawing
 
 	draw
 			-- Draws the rigid body.
+		local
+			color: COLOR
 		do
 			-- Draw bounding sphere
 			--engine.renderer.set_foreground_color (create {EV_COLOR}.make_with_rgb (0.0, 0.0, 1.0))
 			--engine.renderer.draw_circle (position, radius)
 
 			-- Draw shape
-			engine.renderer.set_foreground_color (create {EV_COLOR}.make_with_rgb (1.0, 1.0, 1.0))
+			color.make_with_rgb (1.0, 1.0, 1.0)
+			engine.renderer.set_foreground_color (color)
 			engine.renderer.draw_transformed_polygon (shape, transform)
 		end
 

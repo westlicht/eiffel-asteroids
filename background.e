@@ -19,10 +19,10 @@ create
 
 feature -- Constants
 
-	Background: EV_COLOR
+	Background: COLOR
 			-- Background color.
 		once
-			create Result.make_with_rgb(0.0, 0.0, 0.0)
+			Result.make_with_rgb(0.0, 0.0, 0.0)
 		end
 
 	Num_stars: INTEGER = 100
@@ -74,10 +74,8 @@ feature -- Drawing
 		local
 			t: REAL_64
 			gray: REAL_32
-			color: EV_COLOR
+			color: COLOR
 		do
-			create color.default_create
-
 			engine.renderer.set_background_color (Background)
 			engine.renderer.clear
 
@@ -85,7 +83,7 @@ feature -- Drawing
 			from stars.start until stars.after loop
 				-- Create pseudo random oscillating color
 				gray := oscillate (engine.time, stars.item.x * stars.item.y * t, stars.item.x * stars.item.y * t)
-				color.set_rgb (gray, gray, gray)
+				color.make_gray (gray)
 				engine.renderer.set_foreground_color (color)
 
 				-- Draw star
