@@ -117,6 +117,7 @@ feature -- Emitting
 		do
 			manager.random.forth
 			create rotation.make_rotation (manager.random_range (-settings.spread, settings.spread))
+			manager.random.forth
 			particle_velocity := rotation.transform_no_translation (direction) * (settings.velocity * manager.random_range ({REAL} 1.0 - settings.velocity_random, {REAL} 1.0 + settings.velocity_random)) + velocity
 			manager.emit_particle (settings, position, particle_velocity, t)
 		end

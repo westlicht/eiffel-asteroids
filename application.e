@@ -79,23 +79,32 @@ feature -- Initialization
 	load_particle_settings
 		local
 			settings: PARTICLE_SETTINGS
+			color: COLOR
 		do
 			create settings.make
 			settings.spread := 0.2
 			settings.velocity := 100.0
 			settings.velocity_random := 0.5
-			settings.rate := 100.0
-			settings.life_time := 1.5
+			settings.rate := 50.0
+			settings.life_time := 1.0
 			settings.drag := 0.5
+			color.make_with_rgb (1.0, 1.0, 1.0)
+			settings.color_gradient.put_marker (color, 0.0)
+			color.make_with_rgb (0.0, 0.0, 0.0)
+			settings.color_gradient.put_marker (color, 1.0)
 			engine.particle_manager.put_settings (settings, "engine")
 
 			create settings.make
 			settings.spread := 6.283
-			settings.velocity := 150.0
-			settings.velocity_random := 0.5
+			settings.velocity := 100.0
+			settings.velocity_random := 0.7
 			settings.rate := 100.0
 			settings.life_time := 1.5
-			settings.drag := 0.3
+			settings.drag := 0.6
+			color.make_with_rgb (1.0, 1.0, 1.0)
+			settings.color_gradient.put_marker (color, 0.0)
+			color.make_with_rgb (0.0, 0.0, 0.0)
+			settings.color_gradient.put_marker (color, 1.0)
 			engine.particle_manager.put_settings (settings, "explosion")
 		end
 
@@ -111,7 +120,7 @@ feature -- Initialization
 			create background.make (engine)
 			engine.put_object (background)
 
-			from i := 1 until i > 5 loop
+			from i := 1 until i > 3 loop
 				create asteroid.make_with_category (engine, 3)
 				engine.put_object (asteroid)
 				i := i + 1

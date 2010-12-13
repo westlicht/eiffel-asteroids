@@ -63,7 +63,7 @@ feature {NONE} -- Implementation
 			create emitter.make_with_settings (engine.particle_manager, engine.particle_manager.get_settings ("explosion"))
 			emitter.position := position
 			emitter.velocity := velocity
-			emitter.burst (10, 0.1)
+			emitter.burst (50, 0.1)
 
 			if category > 1 then
 				explode
