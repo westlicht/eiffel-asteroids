@@ -43,22 +43,39 @@ feature -- Initialization
 
 feature -- Level generation
 
-	prepare_level (level: INTEGER)
+	clear
+		do
+			engine.prune_objects_by_type ("ASTEROID")
+		end
+
+	prepare_idle
 		local
 			asteroid: ASTEROID
 			i: INTEGER
 		do
-			from i := 1 until i > 2 loop
-				create asteroid.make_with_category (engine, 5)
+			clear
+			from i := 1 until i > 20 loop
+				random.forth
+				create asteroid.make_with_category (engine, random.item \\ 3 + 1)
+				engine.put_object (asteroid)
+				i := i + 1
+			end
+
+		end
+
+	prepare_level (a_level: INTEGER)
+		local
+			asteroid: ASTEROID
+			i: INTEGER
+		do
+			clear
+			from i := 1 until i > 3 loop
+				create asteroid.make_with_category (engine, a_level)
 				engine.put_object (asteroid)
 				i := i + 1
 			end
 		end
 
-	cleanup_level
-		do
-
-		end
 
 feature {NONE} -- Particle settings
 
@@ -92,6 +109,15 @@ feature {NONE} -- Particle settings
 			color.make_with_rgb (0.0, 0.0, 0.0)
 			settings.color_gradient.put_marker (color, 1.0)
 			engine.particle_manager.put_settings (settings, "explosion")
+		end
+
+
+feature {NONE} -- Random
+
+	random: RANDOM
+		once
+			create Result.make
+			Result.start
 		end
 
 

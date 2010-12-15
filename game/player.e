@@ -96,6 +96,9 @@ feature -- Access
 	score: NUMERIC_VALUE
 			-- Player's score.
 
+	active: BOOLEAN assign set_active
+			-- Player is active.
+
 
 feature {NONE} -- Local attributes
 
@@ -143,6 +146,7 @@ feature -- Initialization
 			create health.make (0.0, 100.0, 100.0)
 			create energy.make (0.0, 100.0, 100.0)
 			create score.make (0.0, 100000.0, 0.0)
+			active := True
 
 			key_left := engine.input_manager.keys_by_name.item ("left")
 			key_right := engine.input_manager.keys_by_name.item ("right")
@@ -162,10 +166,42 @@ feature -- Initialization
 		end
 
 
+feature -- Resetting
+
+	reset
+		do
+			position.x := engine.renderer.screen_width.to_real / 2.0
+			position.y := engine.renderer.screen_height.to_real / 2.0
+			velocity.make_zero
+			angular_velocity := 0.0
+			angle := 0.0
+			health.value := health.max
+			energy.value := energy.max
+		end
+
+
+feature -- Access
+
+	set_active (a_active: BOOLEAN)
+			-- Makes the player active/inactive.
+			-- If active, player reacts to user input etc.
+		do
+			active := a_active
+		end
+
 feature -- Updateing
 
 	update (t: REAL)
 			-- Updates the rigid body by t seconds.
+		do
+			if active then
+				handle_user_input (t)
+			end
+
+			Precursor (t)
+		end
+
+	handle_user_input (t: REAL)
 		local
 			thrust: VECTOR2
 		do
@@ -207,8 +243,6 @@ feature -- Updateing
 
 			-- Handle particle emitters
 			emitter_engine.enabled := key_thrust.is_pressed
-
-			Precursor (t)
 		end
 
 
@@ -244,7 +278,6 @@ feature {NONE} -- Collision
 
 			if health.value <= 0.0 then
 				explode
-				kill
 			end
 		end
 
@@ -273,6 +306,7 @@ feature {NONE} -- Implementation
 			points[4] := create {VECTOR2}.make (-10.0, 10.0)
 			create Result.make_from_points (points)
 		end
+
 
 invariant
 	key_left_exists: key_left /= Void

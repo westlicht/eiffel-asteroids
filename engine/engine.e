@@ -167,6 +167,35 @@ feature -- Objects
 			end
 		end
 
+	prune_objects_by_type (a_generator: STRING)
+		require
+			valid_generator: a_generator /= Void and then not a_generator.is_empty
+		local
+			objects_to_prune: LINKED_LIST [ENGINE_OBJECT]
+		do
+			create objects_to_prune.make
+			from objects.start until objects.after loop
+				if objects.item.generator.is_equal (a_generator) then
+					objects_to_prune.extend (objects.item)
+				end
+				objects.forth
+			end
+
+			objects_to_prune.do_all (agent prune_object (?))
+		end
+
+	object_count_by_type (a_generator: STRING): INTEGER
+		require
+			valid_generator: a_generator /= Void and then not a_generator.is_empty
+		do
+			from objects.start until objects.after loop
+				if objects.item.generator.is_equal (a_generator) then
+					Result := Result + 1
+				end
+				objects.forth
+			end
+		end
+
 
 feature {NONE} -- Implementation
 

@@ -11,6 +11,14 @@ class
 create
 	make
 
+
+feature -- Constants
+
+	Font_id_small: INTEGER = 0
+
+	Font_id_large: INTEGER = 1
+
+
 feature -- Access
 
 	screen_width: INTEGER
@@ -34,8 +42,11 @@ feature {NONE} -- Local attributes
 	foreground_color: EV_COLOR
 			-- Foreground color.
 
-	font: EV_FONT
-			-- Font.
+	font_small: EV_FONT
+			-- Small font.
+
+	font_large: EV_FONT
+			-- Large font.
 
 
 feature -- Initialization
@@ -44,7 +55,7 @@ feature -- Initialization
 		require
 			valid_drawing_area: a_drawing_area /= Void and then a_drawing_area.width > 0 and a_drawing_area.height > 0
 		local
-			constants: EV_FONT_CONSTANTS
+			font_constants: EV_FONT_CONSTANTS
 		do
 			drawing_area := a_drawing_area
 			create canvas.make_with_size (drawing_area.width, drawing_area.height)
@@ -54,9 +65,12 @@ feature -- Initialization
 			create background_color.default_create
 			create foreground_color.default_create
 
-			create constants
-			create font.make_with_values (constants.family_screen, constants.weight_regular, constants.shape_regular, 10)
-			canvas.set_font (font)
+			create font_constants
+			create font_small.make_with_values (font_constants.family_screen, font_constants.weight_regular, font_constants.shape_regular, 10)
+			create font_large.make_with_values (font_constants.family_screen, font_constants.weight_regular, font_constants.shape_regular, 30)
+
+
+			canvas.set_font (font_small)
 		end
 
 
@@ -145,6 +159,18 @@ feature -- Drawing operations
 			text_valid: text /= Void and then not text.is_empty
 		do
 			canvas.draw_text_top_left (position.x.rounded, position.y.rounded, text)
+		end
+
+	set_font (a_font_id: INTEGER)
+		do
+			inspect a_font_id
+			when Font_id_small  then
+				canvas.set_font (font_small)
+			when Font_id_large then
+				canvas.set_font (font_large)
+			else
+				canvas.set_font (font_small)
+			end
 		end
 
 

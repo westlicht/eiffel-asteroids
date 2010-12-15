@@ -7,14 +7,20 @@ note
 class
 	GAME
 
-create
-	make_with_engine
+inherit
+	ENGINE_OBJECT
 
+create
+	make
+
+
+feature -- Constants
+
+	Level_min: INTEGER = 1
+
+	Level_max: INTEGER = 10
 
 feature -- Access
-
-	engine: ENGINE
-			-- Game engine.
 
 	world: WORLD
 			-- World.	
@@ -25,15 +31,29 @@ feature -- Access
 	hud: HUD
 			-- HUD.
 
+	state_manager: GAME_STATE_MANAGER
+			-- Game state manager.
+
+	level: INTEGER assign set_level
+			-- Current level.
+
+
+feature -- Game states
+
+	state_start: GAME_STATE_START
+	state_get_ready: GAME_STATE_GET_READY
+	state_run: GAME_STATE_RUN
+	state_game_over: GAME_STATE_GAME_OVER
+
 
 feature -- Initialization
 
-	make_with_engine (a_engine: ENGINE)
+	make (a_engine: ENGINE)
 			-- Creates the game.
-		require
-			engine_exists: a_engine /= Void
 		do
-			engine := a_engine
+			make_with_engine (a_engine)
+
+			level := Level_min
 
 			-- Create the world
 			create world.make (Current)
@@ -45,8 +65,29 @@ feature -- Initialization
 			-- Create HUD
 			create hud.make (Current)
 
-			-- Load the world
-			world.prepare_level (1)
+			-- Create game state manager and game states
+			create state_manager.make (Current)
+			engine.put_object (state_manager)
+			create state_start.make (Current)
+			state_manager.put_state (state_start)
+			create state_get_ready.make (Current)
+			state_manager.put_state (state_get_ready)
+			create state_run.make (Current)
+			state_manager.put_state (state_run)
+			create state_game_over.make (Current)
+			state_manager.put_state (state_game_over)
+
+			state_manager.switch_state (state_start)
+		end
+
+
+feature -- Access
+
+	set_level (a_level: like level)
+		require
+			valid_level: Level_min <= a_level and a_level <= Level_max
+		do
+			level := a_level
 		end
 
 end

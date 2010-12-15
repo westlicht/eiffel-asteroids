@@ -22,6 +22,9 @@ feature -- Access
 	text: STRING assign set_text
 			-- Text to display.
 
+	font_id: INTEGER assign set_font_id
+			-- Font id.
+
 
 feature -- Initialization
 
@@ -43,6 +46,12 @@ feature -- Access
 			text.make_from_string (a_text)
 		end
 
+	set_font_id (a_font_id: like font_id)
+			-- Sets the font id.
+		do
+			font_id := a_font_id
+		end
+
 
 feature -- Drawing
 
@@ -50,7 +59,10 @@ feature -- Drawing
 			-- Draw the widget.
 		do
 			engine.renderer.set_foreground_color (color)
-			engine.renderer.draw_text (position, text)
+			engine.renderer.set_font (font_id)
+			if not text.is_empty then
+				engine.renderer.draw_text (position, text)
+			end
 		end
 
 

@@ -49,6 +49,12 @@ feature -- Constants
 			create Result.make (10.0, 20.0)
 		end
 
+	Message_text_position: VECTOR2
+			-- Position of message text.
+		once
+			create Result.make (10.0, 100.0)
+		end
+
 
 feature -- Access
 
@@ -58,11 +64,15 @@ feature -- Access
 	hud_manager: HUD_MANAGER
 		-- Alias to the HUD manager.
 
+
+feature -- Widgets
+
 	health_bar: HUD_BAR
 	health_text: HUD_TEXT
 	energy_bar: HUD_BAR
 	energy_text: HUD_TEXT
 	score_text: HUD_TEXT
+	message_text: HUD_TEXT
 
 
 feature -- Initialization
@@ -105,6 +115,12 @@ feature -- Initialization
 			score_text.position := Score_text_position
 			score_text.position.y := game.engine.renderer.screen_height - score_text.position.y
 			hud_manager.put_widget (score_text)
+
+			-- Create message text
+			create message_text.make (hud_manager)
+			message_text.position := Message_text_position
+			message_text.font_id := game.engine.renderer.Font_id_large
+			hud_manager.put_widget (message_text)
 
 			-- Add observers for health and energy
 			game.player.health.register_observer (agent health_changed)

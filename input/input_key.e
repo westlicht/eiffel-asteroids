@@ -25,7 +25,7 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
-	handlers: LINKED_LIST[PROCEDURE[ANY, TUPLE[INPUT_KEY]]]
+	handlers: LINKED_LIST[PROCEDURE[ANY, TUPLE[key: INPUT_KEY]]]
 			-- Linked list of key handlers
 
 
@@ -44,14 +44,13 @@ feature -- Initialization
 
 feature -- Key handlers
 
-	add_handler (a_handler: PROCEDURE[ANY, TUPLE[INPUT_KEY]])
+	put_handler (a_handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY]])
 			-- Adds a new key handler.
 		require
 			handler_exists: a_handler /= Void
 		do
 			handlers.extend (a_handler)
 		end
-
 
 feature {INPUT_MANAGER} -- Input manager functions
 
@@ -66,7 +65,7 @@ feature {INPUT_MANAGER} -- Input manager functions
 
 feature {NONE} -- Implementation
 
-	call_handler (handler: PROCEDURE[ANY, TUPLE[INPUT_KEY]]; key: like Current)
+	call_handler (handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY]]; key: like Current)
 		do
 			handler.call ([key])
 		end

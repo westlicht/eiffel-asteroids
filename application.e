@@ -40,7 +40,6 @@ feature {NONE} -- Local attributes
 			-- Game.
 
 
-
 feature -- Initialization
 
 	make
@@ -67,7 +66,8 @@ feature -- Initialization
 			create engine.make (main_window, drawing_area)
 
 			-- Create game
-			create game.make_with_engine (engine)
+			create game.make (engine)
+			engine.put_object (game)
 
 			-- Add idle action to be called regularly
 			add_idle_action (agent update)
