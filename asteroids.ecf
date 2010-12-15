@@ -9,12 +9,18 @@
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="time" location="$ISE_LIBRARY\library\time\time.ecf"/>
 		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2.ecf"/>
-		<cluster name="root_cluster" location=".\" recursive="true">
+		<cluster name="root_cluster" location=".\">
 			<file_rule>
 				<exclude>/EIFGENs$</exclude>
 				<exclude>/CVS$</exclude>
 				<exclude>/.svn$</exclude>
 			</file_rule>
+			<cluster name="engine" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\engine\"/>
+			<cluster name="particles" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\particles\"/>
+			<cluster name="hud" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\hud\"/>
+			<cluster name="game" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\game\"/>
+			<cluster name="input" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\input\"/>
+			<cluster name="math" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\math\"/>
 		</cluster>
 	</target>
 	<target name="asteroids_dotnet" extends="asteroids">
