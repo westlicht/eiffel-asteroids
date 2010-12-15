@@ -10,6 +10,7 @@ class
 inherit
 	RIGID_BODY
 		redefine
+			draw,
 			hit_by_bullet
 		end
 
@@ -20,11 +21,23 @@ create
 
 feature -- Constants
 
-	Num_points: INTEGER = 16
+	Num_points: INTEGER = 10
 			-- Number of points.
 
 	Max_velocity: REAL = 100.0
 			-- Maximum velocity.
+
+	Fill_color: COLOR
+			-- Asteroid fill color.
+		once
+			Result.make_with_rgb (0.2, 0.2, 0.2)
+		end
+
+	Border_color: COLOR
+			-- Asteroid border color.
+		once
+			Result.make_with_rgb (0.8, 0.8, 0.8)
+		end
 
 
 feature -- Access
@@ -52,6 +65,21 @@ feature -- Creation
 			make_with_size (a_engine, a_category * 20 + random.real_item * 10 - 5)
 			random.forth
 		end
+
+
+feature -- Drawing
+
+	draw
+			-- Draws the asteroid.
+		local
+			color: COLOR
+		do
+			engine.renderer.set_foreground_color (Fill_color)
+			engine.renderer.draw_transformed_polygon (shape, transform, True)
+			engine.renderer.set_foreground_color (Border_color)
+			engine.renderer.draw_transformed_polygon (shape, transform, False)
+		end
+
 
 
 feature {NONE} -- Implementation
