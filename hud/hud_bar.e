@@ -1,6 +1,6 @@
 note
-	description: "Summary description for {HUD_BAR}."
-	author: ""
+	description: "Implements simple status bars, showing infos like health."
+	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
 

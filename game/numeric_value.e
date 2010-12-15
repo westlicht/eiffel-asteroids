@@ -1,11 +1,11 @@
 note
-	description: "Represents a single player attribute value like health, energy etc."
+	description: "Represents a numeric values (attributes) like health, energy etc."
 	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	PLAYER_VALUE
+	NUMERIC_VALUE
 
 create
 	make
@@ -124,13 +124,14 @@ feature -- Consistency
 
 feature -- Observers
 
-	register_observer (a_handler: PROCEDURE [ANY, TUPLE [value: like Current]])
+	register_observer (a_observer: PROCEDURE [ANY, TUPLE [value: like Current]])
 			-- Registers an observer to be called when the value, min or max change.
 		require
-			handler_exists: a_handler /= Void
-			handler_not_added: not observers.has (a_handler)
+			observer_exists: a_observer /= Void
+			observer_not_added: not observers.has (a_observer)
 		do
-			observers.extend (a_handler)
+			observers.extend (a_observer)
+			notify_observer (a_observer)
 		end
 
 

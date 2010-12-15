@@ -68,10 +68,10 @@ feature -- Constants
 
 feature -- Access
 
-	health: PLAYER_VALUE
+	health: NUMERIC_VALUE
 			-- Health.
 
-	energy: PLAYER_VALUE
+	energy: NUMERIC_VALUE
 			-- Energy.
 
 

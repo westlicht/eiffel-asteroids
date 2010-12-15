@@ -36,6 +36,14 @@ feature {NONE} -- Local attributes
 	engine: ENGINE
 			-- Game engine.
 
+	player: PLAYER
+			-- Player.
+
+	health_bar: HUD_BAR
+	health_text: HUD_TEXT
+	energy_bar: HUD_BAR
+	energy_text: HUD_TEXT
+
 
 feature -- Initialization
 
@@ -115,8 +123,6 @@ feature -- Initialization
 			background: BACKGROUND
 			asteroid: ASTEROID
 			i: INTEGER
-			player: PLAYER
-			hud: HUD_MANAGER
 		do
 			create background.make (engine)
 			engine.put_object (background)
@@ -172,22 +178,53 @@ feature -- HUD
 
 
 	load_hud
-		local
-			bar: HUD_BAR
 		do
 			-- Create health bar
-			create bar.make (engine.hud_manager)
-			bar.position := Health_bar_position
-			bar.size := Bar_size
-			bar.bar_color := Health_bar_color
-			engine.hud_manager.put_widget (bar)
+			create health_bar.make (engine.hud_manager)
+			health_bar.position := Health_bar_position
+			health_bar.size := Bar_size
+			health_bar.bar_color := Health_bar_color
+			engine.hud_manager.put_widget (health_bar)
+
+			-- Create health text
+			create health_text.make (engine.hud_manager)
+			health_text.position := health_bar.position
+			health_text.position.x := health_bar.position.x + health_bar.size.x + 10.0
+			engine.hud_manager.put_widget (health_text)
 
 			-- Create energy
-			create bar.make (engine.hud_manager)
-			bar.position := Energy_bar_position
-			bar.size := Bar_size
-			bar.bar_color := Energy_bar_color
-			engine.hud_manager.put_widget (bar)
+			create energy_bar.make (engine.hud_manager)
+			energy_bar.position := Energy_bar_position
+			energy_bar.size := Bar_size
+			energy_bar.bar_color := Energy_bar_color
+			engine.hud_manager.put_widget (energy_bar)
+
+			-- Create energy text
+			create energy_text.make (engine.hud_manager)
+			energy_text.position := energy_bar.position
+			energy_text.position.x := energy_bar.position.x + energy_bar.size.x + 10.0
+			engine.hud_manager.put_widget (energy_text)
+
+
+			-- Add observers for health and energy
+			player.health.register_observer (agent health_changed)
+			player.energy.register_observer (agent energy_changed)
+		end
+
+	health_changed (a_sender: NUMERIC_VALUE)
+		do
+			health_bar.min := a_sender.min
+			health_bar.max := a_sender.max
+			health_bar.value := a_sender.value
+			health_text.text := "Health: " + a_sender.value.out + "/" + a_sender.max.out
+		end
+
+	energy_changed (a_sender: NUMERIC_VALUE)
+		do
+			energy_bar.min := a_sender.min
+			energy_bar.max := a_sender.max
+			energy_bar.value := a_sender.value
+			energy_text.text := "Energy: " + a_sender.value.out + "/" + a_sender.max.out
 		end
 
 
