@@ -61,7 +61,7 @@ feature -- Creation
 	make_with_category (a_engine: ENGINE; a_category: INTEGER)
 		do
 			category := a_category
-			mass := a_category
+			mass := a_category * a_category
 			make_with_size (a_engine, a_category * 20 + random.real_item * 10 - 5)
 			random.forth
 		end

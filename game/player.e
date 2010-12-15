@@ -27,8 +27,14 @@ feature -- Constants
 	Default_energy_capacity: REAL = 100.0
 			-- Default energy capacity.
 
-	Energy_loading: REAL = 20.0
-			-- Energy loading speed in 1/s.
+	Energy_charge_rate: REAL = 30.0
+			-- Charge rate in Hz.
+
+	Shield_discharge_rate: REAL = 80.0
+			-- Shield discharge rate in Hz.
+
+	Shield_min_energy: REAL = 25.0
+			-- Minimum energy necessary for shield.
 
 	Rotation_velocity: REAL = 3.0
 			-- Angular velocity used for rotating the ship.
@@ -41,6 +47,9 @@ feature -- Constants
 
 	Bullet_speed: REAL = 300.0
 			-- Speed of bullets.
+
+	Bullet_energy: REAL = 10.0
+			-- Energy hit for a single bullet.
 
 	Gun_position: VECTOR2
 			-- Local position of the gun.
@@ -75,6 +84,7 @@ feature -- Constants
 			Result.make_with_rgb (0.2, 0.2, 1.0)
 		end
 
+
 feature -- Access
 
 	health: NUMERIC_VALUE
@@ -82,6 +92,9 @@ feature -- Access
 
 	energy: NUMERIC_VALUE
 			-- Energy.
+
+	score: NUMERIC_VALUE
+			-- Player's score.
 
 
 feature {NONE} -- Local attributes
@@ -129,6 +142,7 @@ feature -- Initialization
 
 			create health.make (0.0, 100.0, 100.0)
 			create energy.make (0.0, 100.0, 100.0)
+			create score.make (0.0, 100000.0, 0.0)
 
 			key_left := engine.input_manager.keys_by_name.item ("left")
 			key_right := engine.input_manager.keys_by_name.item ("right")
@@ -169,25 +183,27 @@ feature -- Updateing
 				create thrust.make (0, -Thrust_force)
 				thrust := transform.transform_no_translation (thrust)
 				add_force (thrust)
-
-				--acceleration.make (0, -Thrust_acceleration)
-				--acceleration := transform.transform_no_translation (acceleration)
 			else
 				acceleration.make_zero
 			end
 
 			-- Handle fireing
-			if key_fire.is_pressed and engine.time >= last_fire_time + Fire_interval then
+			if key_fire.is_pressed and engine.time >= last_fire_time + Fire_interval and energy.value >= Bullet_energy then
 				engine.bullet_manager.fire_bullet (anchor_gun.global_position, velocity, anchor_gun.global_direction, Bullet_speed)
+				energy.decrement (Bullet_energy)
 				last_fire_time := engine.time
 			end
 
 			-- Handle shield
-			if key_shield.is_pressed then
+			if key_shield.is_pressed and energy.value > Shield_min_energy then
+				energy.decrement (Shield_discharge_rate * t)
 				shield_active := True
 			else
 				shield_active := False
 			end
+
+			-- Handle energy
+			energy.increment (Energy_charge_rate * t)
 
 			-- Handle particle emitters
 			emitter_engine.enabled := key_thrust.is_pressed
@@ -211,8 +227,35 @@ feature {NONE} -- Collision
 
 	hit_by_rigid_body (a_other: RIGID_BODY)
 			-- Called when this rigid body was hit by another rigid body.
+		local
+			damage: REAL
 		do
-			health.decrement (20.0)
+			damage := 20.0
+			if shield_active then
+				if energy.value < damage then
+					health.decrement (damage - energy.value)
+					energy.decrement (energy.value)
+				else
+					energy.decrement (damage)
+				end
+			else
+				health.decrement (damage)
+			end
+
+			if health.value <= 0.0 then
+				explode
+				kill
+			end
+		end
+
+	explode
+		local
+			emitter: PARTICLE_EMITTER
+		do
+			create emitter.make_with_settings (engine.particle_manager, engine.particle_manager.get_settings ("explosion"))
+			emitter.position := position
+			emitter.velocity := velocity
+			emitter.burst (100, 0.1)
 		end
 
 

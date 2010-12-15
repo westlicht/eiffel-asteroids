@@ -93,6 +93,15 @@ feature -- Particle emitters
 			emitters.extend (a_emitter)
 		end
 
+	prune_emitter (a_emitter: PARTICLE_EMITTER)
+			-- Removes an emitter from the particle manager.
+		require
+			emitter_exists: a_emitter /= Void
+			emitter_registered: emitters.has (a_emitter)
+		do
+			emitters.prune (a_emitter)
+		end
+
 feature -- Fireing
 
 	emit_particle (a_settings: PARTICLE_SETTINGS; a_position, a_velocity: VECTOR2; t: REAL)

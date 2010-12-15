@@ -27,6 +27,7 @@ feature -- Access
 feature -- Initialization
 
 	make (a_engine: ENGINE)
+			-- Creates the widget manager.
 		do
 			make_with_engine (a_engine)
 			create widgets.make
@@ -36,6 +37,7 @@ feature -- Initialization
 feature -- Widgets
 
 	put_widget (a_widget: HUD_WIDGET)
+			-- Adds a widget to the manager.
 		require
 			widget_exists: a_widget /= Void
 			widget_not_added: not widgets.has (a_widget)
@@ -65,11 +67,13 @@ feature -- Updating
 feature {NONE} -- Implementation
 
 	draw_widget (a_widget: HUD_WIDGET)
+			-- Draws a single widget.
 		do
 			a_widget.draw (engine)
 		end
 
 	update_widget (a_widget: HUD_WIDGET; t: REAL)
+			-- Updates a single widget.
 		do
 			a_widget.update (engine, t)
 		end
