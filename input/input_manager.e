@@ -45,6 +45,7 @@ feature
 			register_key ("down", key_constants.key_down)
 			register_key ("space", key_constants.key_space)
 			register_key ("ctrl", key_constants.key_ctrl)
+			register_key ("shift", key_constants.key_shift)
 		end
 
 

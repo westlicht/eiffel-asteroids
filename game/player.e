@@ -11,6 +11,7 @@ inherit
 	RIGID_BODY
 		redefine
 			update,
+			draw,
 			hit_by_rigid_body
 		end
 
@@ -65,6 +66,14 @@ feature -- Constants
 			create Result.make (0.0, 1.0)
 		end
 
+	Shield_radius: REAL = 20.0
+			-- Radius of the shield.
+
+	Shield_color: COLOR
+			-- Color of the shield.
+		once
+			Result.make_with_rgb (0.2, 0.2, 1.0)
+		end
 
 feature -- Access
 
@@ -89,6 +98,9 @@ feature {NONE} -- Local attributes
 	key_fire: INPUT_KEY
 			-- Fire key.
 
+	key_shield: INPUT_KEY
+			-- Shield key.
+
 	last_fire_time: REAL
 			-- Last time of fireing.
 
@@ -100,6 +112,9 @@ feature {NONE} -- Local attributes
 
 	emitter_engine: ANCHORED_PARTICLE_EMITTER
 			-- Particle emitter of engine.
+
+	shield_active: BOOLEAN
+			-- True if shield is active.
 
 
 feature -- Initialization
@@ -119,6 +134,7 @@ feature -- Initialization
 			key_right := engine.input_manager.keys_by_name.item ("right")
 			key_thrust := engine.input_manager.keys_by_name.item ("up")
 			key_fire := engine.input_manager.keys_by_name.item ("space")
+			key_shield := engine.input_manager.keys_by_name.item ("shift")
 
 			-- Create anchor points
 			create anchor_gun.make (Current, Gun_position, Gun_direction)
@@ -131,25 +147,6 @@ feature -- Initialization
 			engine.particle_manager.put_emitter (emitter_engine)
 		end
 
-
-feature -- Health
-
-	damage (a_amount: REAL)
-		require
-			amount_positive: a_amount >= 0.0
-		do
-			health.decrement (a_amount)
-			if health.low then
-				kill
-			end
-		end
-
-	heal (a_amount: REAL)
-		require
-			amount_positive: a_amount >= 0.0
-		do
-			health.increment (a_amount)
-		end
 
 feature -- Updateing
 
@@ -185,6 +182,13 @@ feature -- Updateing
 				last_fire_time := engine.time
 			end
 
+			-- Handle shield
+			if key_shield.is_pressed then
+				shield_active := True
+			else
+				shield_active := False
+			end
+
 			-- Handle particle emitters
 			emitter_engine.enabled := key_thrust.is_pressed
 
@@ -192,12 +196,23 @@ feature -- Updateing
 		end
 
 
+feature -- Drawing
+
+	draw
+		do
+			Precursor
+			if shield_active then
+				engine.renderer.set_foreground_color (Shield_color)
+				engine.renderer.draw_circle (position, Shield_radius, False)
+			end
+		end
+
 feature {NONE} -- Collision
 
 	hit_by_rigid_body (a_other: RIGID_BODY)
 			-- Called when this rigid body was hit by another rigid body.
 		do
-			damage (10.0)
+			health.decrement (20.0)
 		end
 
 
@@ -221,5 +236,6 @@ invariant
 	key_right_exists: key_right /= Void
 	key_thrust_exists: key_thrust /= Void
 	key_fire_exists: key_fire /= Void
+	key_shield_exists: key_shield /= Void
 
 end
