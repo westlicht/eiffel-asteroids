@@ -18,7 +18,7 @@ create
 
 feature -- Constants
 
-	Restitution: REAL = 1.0
+	Restitution: REAL = 0.9
 
 feature -- Access
 
@@ -33,6 +33,9 @@ feature -- Access
 
 	acceleration: VECTOR2
 			-- Current acceleration.
+
+	force: VECTOR2
+			-- Force vector (reset every frame).
 
 	angle: REAL assign set_angle
 			-- Current angle.
@@ -77,6 +80,7 @@ feature -- Initialization
 			create position.make_zero
 			create velocity.make_zero
 			create acceleration.make_zero
+			create force.make_zero
 			angle := 0.0
 			angular_velocity := 2.0
 			mass := 10.0
@@ -136,6 +140,16 @@ feature {NONE} -- Anchors implementation
 		end
 
 
+feature -- Forces
+
+	add_force (a_force: VECTOR2)
+		require
+			force_exists: a_force /= Void
+		do
+			force := force + a_force
+		end
+
+
 feature -- Drawing
 
 	draw
@@ -150,7 +164,7 @@ feature -- Drawing
 			-- Draw shape
 			color.make_with_rgb (1.0, 1.0, 1.0)
 			engine.renderer.set_foreground_color (color)
-			engine.renderer.draw_transformed_polygon (shape, transform)
+			engine.renderer.draw_transformed_polygon (shape, transform, True)
 		end
 
 
@@ -159,6 +173,9 @@ feature -- Updateing
 	update (t: REAL)
 			-- Updates the rigid body by t seconds.
 		do
+			-- Compute acceleration based on force
+			acceleration := force / mass
+
 			-- Primitive integration for basic dynamic motion
 			velocity := velocity + acceleration * t
 			position := position + velocity * t
@@ -183,6 +200,9 @@ feature -- Updateing
 
 			-- Update anchors
 			anchors.do_all (agent update_anchor)
+
+			-- Reset force
+			force.make_zero
 		end
 
 
@@ -225,9 +245,16 @@ feature -- Collision handling
 			im1 := {REAL} 1.0 / mass
 			im2 := {REAL} 1.0 / other.mass
 
+			-- Apply seperation force
+			if d < radius + other.radius then
+				add_force (mtd * (im1 / (im1 + im2)) * 10)
+				other.add_force (-mtd * (im2 / (im1 + im2)) * 10)
+				--set_acceleration
+			end
+
 			-- Push-pull rigid bodies based on their mass
-			set_position(position + mtd * (im1 / (im1 + im2)))
-			other.set_position (other.position - mtd * (im2 / (im1 + im2)))
+			--set_position(position + mtd * (im1 / (im1 + im2)))
+			--other.set_position (other.position - mtd * (im2 / (im1 + im2)))
 
 			-- Impact speed
 			v := velocity - other.velocity
@@ -243,11 +270,20 @@ feature -- Collision handling
 				-- Change momentum
 				set_velocity(velocity + impulse * im1)
 				other.set_velocity (other.velocity - impulse * im2)
+
+				-- Hit rigid bodies
+				hit_by_rigid_body (other)
+				other.hit_by_rigid_body (Current)
 			end
 		end
 
-	hit (bullet: BULLET)
-			-- Called when rigid body is hit by a bullet.
+	hit_by_rigid_body (a_other: RIGID_BODY)
+			-- Called when this rigid body was hit by another rigid body.
+		do
+		end
+
+	hit_by_bullet (a_bullet: BULLET)
+			-- Called when this rigid body was hit by a bullet.
 		do
 		end
 

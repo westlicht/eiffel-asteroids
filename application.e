@@ -120,7 +120,7 @@ feature -- Initialization
 			create background.make (engine)
 			engine.put_object (background)
 
-			from i := 1 until i > 3 loop
+			from i := 1 until i > 4 loop
 				create asteroid.make_with_category (engine, 3)
 				engine.put_object (asteroid)
 				i := i + 1

@@ -26,6 +26,7 @@ feature -- Access
 feature -- Initialization
 
 	make (a_manager: PARTICLE_MANAGER; a_settings: PARTICLE_SETTINGS; a_anchor: RIGID_BODY_ANCHOR)
+			-- Creates a new anchored particle emitter.
 		require
 			anchor_exists: a_anchor /= Void
 		do

@@ -34,12 +34,17 @@ feature {NONE} -- Local attributes
 	foreground_color: EV_COLOR
 			-- Foreground color.
 
+	font: EV_FONT
+			-- Font.
+
 
 feature -- Initialization
 
 	make (a_drawing_area: EV_PIXMAP)
 		require
 			valid_drawing_area: a_drawing_area /= Void and then a_drawing_area.width > 0 and a_drawing_area.height > 0
+		local
+			constants: EV_FONT_CONSTANTS
 		do
 			drawing_area := a_drawing_area
 			create canvas.make_with_size (drawing_area.width, drawing_area.height)
@@ -48,6 +53,10 @@ feature -- Initialization
 
 			create background_color.default_create
 			create foreground_color.default_create
+
+			create constants
+			create font.make_with_values (constants.family_screen, constants.weight_regular, constants.shape_regular, 10)
+			canvas.set_font (font)
 		end
 
 
@@ -87,7 +96,7 @@ feature -- Drawing operations
 			canvas.draw_point (position.x.rounded, position.y.rounded)
 		end
 
-	draw_circle (center: VECTOR2; radius: REAL)
+	draw_circle (center: VECTOR2; radius: REAL; filled: BOOLEAN)
 			-- Draws a circle.
 		require
 			center_exists: center /= Void
@@ -96,10 +105,23 @@ feature -- Drawing operations
 			r: INTEGER
 		do
 			r := radius.rounded
-			canvas.draw_ellipse (center.x.rounded - r, center.y.rounded - r, r * 2, r * 2)
+			if filled then
+				canvas.fill_ellipse (center.x.rounded - r, center.y.rounded - r, r * 2, r * 2)
+			else
+				canvas.draw_ellipse (center.x.rounded - r, center.y.rounded - r, r * 2, r * 2)
+			end
 		end
 
-	draw_transformed_polygon (polygon: POLYGON; transform: MATRIX3)
+	draw_rectangle (a_position: VECTOR2; a_size: VECTOR2; filled: BOOLEAN)
+		do
+			if filled then
+				canvas.fill_rectangle (a_position.x.rounded, a_position.y.rounded, a_size.x.rounded, a_size.y.rounded)
+			else
+				canvas.draw_rectangle (a_position.x.rounded, a_position.y.rounded, a_size.x.rounded, a_size.y.rounded)
+			end
+		end
+
+	draw_transformed_polygon (polygon: POLYGON; transform: MATRIX3; filled: BOOLEAN)
 			-- Draws a polygon first transformed by a matrix.
 		require
 			polygon_exists: polygon /= Void
@@ -111,7 +133,11 @@ feature -- Drawing operations
 --			x1, y1, x2, y2: INTEGER
 		do
 			points := polygon.transform_to_screen (transform)
-			canvas.draw_polyline (points, True)
+			if filled then
+				canvas.fill_polygon (points)
+			else
+				canvas.draw_polyline (points, True)
+			end
 --			p1 := transform.transform (polygon.points [polygon.points.count])
 --			from i := 1 until i > polygon.points.count loop
 --				p2 := transform.transform (polygon.points [i])
@@ -129,12 +155,8 @@ feature -- Drawing operations
 		require
 			position_exists: position /= Void
 			text_valid: text /= Void and then not text.is_empty
-		local
-			font: EV_FONT
 		do
---			create font.default_create
---			canvas.set_font (font)
---			canvas.draw_text_top_left (position.x.rounded, position.y.rounded, text)
+			canvas.draw_text_top_left (position.x.rounded, position.y.rounded, text)
 		end
 
 

@@ -44,7 +44,7 @@ feature -- Drawing
 			-- Draws the bullet.
 		do
 			engine.renderer.draw_point (position)
-			engine.renderer.draw_circle (position, 2)
+			engine.renderer.draw_circle (position, 2, False)
 		end
 
 

@@ -60,7 +60,6 @@ feature {INPUT_MANAGER} -- Input manager functions
 		do
 			if a_is_pressed /= is_pressed then
 				is_pressed := a_is_pressed
-				io.put_string ("Key " + name + " switched to " + is_pressed.out + "%N")
 			 	handlers.do_all (agent call_handler (?, Current))
 			end
 		end

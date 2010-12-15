@@ -137,15 +137,12 @@ feature -- Objects
 			-- Adds an object to the engine.
 		require
 			object_exists: object /= Void
-		local
-			rigid_body: RIGID_BODY
 		do
 			objects.extend (object)
 			objects_by_z.extend (object)
 			sort_layers
 
-			rigid_body ?= object
-			if rigid_body /= Void then
+			if attached {RIGID_BODY} object as rigid_body then
 				collision_manager.put_rigid_body (rigid_body)
 			end
 		end
@@ -154,14 +151,11 @@ feature -- Objects
 			-- Removes an object from the engine.
 		require
 			object_exists: object /= Void
-		local
-			rigid_body: RIGID_BODY
 		do
 			objects.prune_all (object)
 			objects_by_z.prune_all (object)
 
-			rigid_body ?= object
-			if rigid_body /= Void then
+			if attached {RIGID_BODY} object as rigid_body then
 				collision_manager.prune_rigid_body (rigid_body)
 			end
 		end

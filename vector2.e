@@ -4,22 +4,24 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+expanded class
 	VECTOR2
 
 inherit
 	ANY
 		redefine
+			default_create,
 			out
 		end
 
 	SINGLE_MATH_UTILS
 		undefine
+			default_create,
 			out
 		end
 
 create
-	make, make_zero, make_unit, make_from_other, make_random
+	default_create, make, make_zero, make_unit, make_from_other, make_random
 
 
 feature -- Access
@@ -32,6 +34,10 @@ feature -- Access
 
 
 feature -- Creation
+
+	default_create
+		do
+		end
 
 	make (a_x: like x; a_y: like y)
 			-- Creates a vector with (a_x,a_y) coordinates.

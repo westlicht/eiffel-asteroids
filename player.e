@@ -10,7 +10,8 @@ class
 inherit
 	RIGID_BODY
 		redefine
-			update
+			update,
+			hit_by_rigid_body
 		end
 
 create
@@ -19,11 +20,20 @@ create
 
 feature -- Constants
 
+	Default_health_capacity: REAL = 100.0
+			-- Default health capacity.
+
+	Default_energy_capacity: REAL = 100.0
+			-- Default energy capacity.
+
+	Energy_loading: REAL = 20.0
+			-- Energy loading speed in 1/s.
+
 	Rotation_velocity: REAL = 3.0
 			-- Angular velocity used for rotating the ship.
 
-	Thrust_acceleration: REAL = 100.0
-			-- Thrust acceleration.
+	Thrust_force: REAL = 1000.0
+			-- Thrust force.
 
 	Fire_interval: REAL = 0.1
 			-- Minimum interval for fireing.
@@ -54,6 +64,15 @@ feature -- Constants
 		once
 			create Result.make (0.0, 1.0)
 		end
+
+
+feature -- Access
+
+	health: PLAYER_VALUE
+			-- Health.
+
+	energy: PLAYER_VALUE
+			-- Energy.
 
 
 feature {NONE} -- Local attributes
@@ -93,6 +112,9 @@ feature -- Initialization
 			position.set_y (200)
 			angular_velocity := 0.0
 
+			create health.make (0.0, 100.0, 100.0)
+			create energy.make (0.0, 100.0, 100.0)
+
 			key_left := engine.input_manager.keys_by_name.item ("left")
 			key_right := engine.input_manager.keys_by_name.item ("right")
 			key_thrust := engine.input_manager.keys_by_name.item ("up")
@@ -109,10 +131,32 @@ feature -- Initialization
 			engine.particle_manager.put_emitter (emitter_engine)
 		end
 
+
+feature -- Health
+
+	damage (a_amount: REAL)
+		require
+			amount_positive: a_amount >= 0.0
+		do
+			health.decrement (a_amount)
+			if health.low then
+				kill
+			end
+		end
+
+	heal (a_amount: REAL)
+		require
+			amount_positive: a_amount >= 0.0
+		do
+			health.increment (a_amount)
+		end
+
 feature -- Updateing
 
 	update (t: REAL)
 			-- Updates the rigid body by t seconds.
+		local
+			thrust: VECTOR2
 		do
 			-- Handle steering
 			angular_velocity := 0
@@ -125,8 +169,12 @@ feature -- Updateing
 
 			-- Handle thrust
 			if key_thrust.is_pressed then
-				acceleration.make (0, -Thrust_acceleration)
-				acceleration := transform.transform_no_translation (acceleration)
+				create thrust.make (0, -Thrust_force)
+				thrust := transform.transform_no_translation (thrust)
+				add_force (thrust)
+
+				--acceleration.make (0, -Thrust_acceleration)
+				--acceleration := transform.transform_no_translation (acceleration)
 			else
 				acceleration.make_zero
 			end
@@ -141,6 +189,15 @@ feature -- Updateing
 			emitter_engine.enabled := key_thrust.is_pressed
 
 			Precursor (t)
+		end
+
+
+feature {NONE} -- Collision
+
+	hit_by_rigid_body (a_other: RIGID_BODY)
+			-- Called when this rigid body was hit by another rigid body.
+		do
+			damage (10.0)
 		end
 
 

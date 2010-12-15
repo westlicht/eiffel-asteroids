@@ -20,7 +20,7 @@ create
 
 feature -- Constants
 
-	Max_bullets: INTEGER = 10
+	Max_bullets: INTEGER = 100
 			-- Maximum number of bullets.
 
 feature -- Access

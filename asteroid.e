@@ -10,7 +10,7 @@ class
 inherit
 	RIGID_BODY
 		redefine
-			hit
+			hit_by_bullet
 		end
 
 
@@ -48,6 +48,7 @@ feature -- Creation
 	make_with_category (a_engine: ENGINE; a_category: INTEGER)
 		do
 			category := a_category
+			mass := a_category
 			make_with_size (a_engine, a_category * 20 + random.real_item * 10 - 5)
 			random.forth
 		end
@@ -55,8 +56,8 @@ feature -- Creation
 
 feature {NONE} -- Implementation
 
-	hit (bullet: BULLET)
-			-- Called when rigid body is hit by a bullet.
+	hit_by_bullet (a_bullet: BULLET)
+			-- Called when this rigid body was hit by a bullet.
 		local
 			emitter: PARTICLE_EMITTER
 		do
@@ -79,15 +80,19 @@ feature {NONE} -- Implementation
 			child: ASTEROID
 			count: INTEGER
 			direction: VECTOR2
+			offset: REAL
 		do
 			count := 3
 
+			random.forth
+			offset := random.real_item * {REAL} 6.283
+
 			from i := 1 until i > count loop
 				create child.make_with_category (engine, category - 1)
-				create direction.make_unit (({REAL} 6.283 / count.to_real) * i.to_real)
-				child.position := position + direction * radius
-				child.velocity := velocity + direction * 50.0
-				child.angular_velocity:= angular_velocity + random.real_item * 10 - 5
+				create direction.make_unit (({REAL} 6.283 / count.to_real + offset) * i.to_real)
+				child.position := position + direction * radius * 0.3
+				child.velocity := velocity + direction * 70.0
+				child.angular_velocity:= angular_velocity + random.real_item * 4 - 2
 				engine.put_object (child)
 				i := i + 1
 			end
