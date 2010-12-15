@@ -45,7 +45,7 @@ feature -- Level generation
 
 	clear
 		do
-			engine.prune_objects_by_type ("ASTEROID")
+			engine.kill_objects_by_type ("ASTEROID")
 		end
 
 	prepare_idle

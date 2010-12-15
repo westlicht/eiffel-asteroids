@@ -167,32 +167,33 @@ feature -- Objects
 			end
 		end
 
-	prune_objects_by_type (a_generator: STRING)
+	kill_objects_by_type (a_generator: STRING)
 		require
 			valid_generator: a_generator /= Void and then not a_generator.is_empty
 		local
-			objects_to_prune: LINKED_LIST [ENGINE_OBJECT]
+			cur: LINKED_LIST_ITERATION_CURSOR [ENGINE_OBJECT]
 		do
-			create objects_to_prune.make
-			from objects.start until objects.after loop
-				if objects.item.generator.is_equal (a_generator) then
-					objects_to_prune.extend (objects.item)
+			cur := objects.new_cursor
+			from cur.start until cur.after loop
+				if cur.item.generator.is_equal (a_generator) then
+					cur.item.kill
 				end
-				objects.forth
+				cur.forth
 			end
-
-			objects_to_prune.do_all (agent prune_object (?))
 		end
 
 	object_count_by_type (a_generator: STRING): INTEGER
 		require
 			valid_generator: a_generator /= Void and then not a_generator.is_empty
+		local
+			cur: LINKED_LIST_ITERATION_CURSOR [ENGINE_OBJECT]
 		do
-			from objects.start until objects.after loop
-				if objects.item.generator.is_equal (a_generator) then
+			cur := objects.new_cursor
+			from cur.start until cur.after loop
+				if cur.item.generator.is_equal (a_generator) then
 					Result := Result + 1
 				end
-				objects.forth
+				cur.forth
 			end
 		end
 

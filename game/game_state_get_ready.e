@@ -24,8 +24,9 @@ feature -- Activation
 	activate
 			-- Called to activate the scene.
 		do
-			set_message ("ENTERING LEVEL " + game.level.out + " - PRESS ENTER TO START!")
+			game.player.active := False
 			game.world.prepare_level (game.level)
+			set_message ("ENTERING LEVEL " + game.level.out + " - PRESS ENTER TO START!")
 		end
 
 	deactivate
