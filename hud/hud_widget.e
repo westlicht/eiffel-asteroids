@@ -11,16 +11,19 @@ deferred class
 feature -- Constants
 
 	Default_position: VECTOR2
+			-- Default position.
 		once
 			create Result.make_zero
 		end
 
 	Default_size: VECTOR2
+			-- Default size.
 		once
 			create Result.make (100.0, 10.0)
 		end
 
 	Default_color: COLOR
+			-- Default color.
 		once
 			Result.make_with_rgb (1.0, 1.0, 1.0)
 		end
@@ -29,7 +32,7 @@ feature -- Constants
 feature -- Access
 
 	hud: HUD_MANAGER
-			-- HUD.
+			-- HUD manager.
 
 	position: VECTOR2 assign set_position
 			-- Widget position.
@@ -44,6 +47,7 @@ feature -- Access
 feature -- Initialization
 
 	make_with_hud (a_hud: HUD_MANAGER)
+			-- Creates a widget.
 		require
 			hud_exists: a_hud /= Void
 		do
@@ -57,16 +61,21 @@ feature -- Initialization
 feature -- Access
 
 	set_position (a_position: like position)
+			-- Sets the position.
 		do
 			position.make_from_other (a_position)
 		end
 
 	set_size (a_size: like size)
+			-- Sets the size.
+		require
+			size_positive: a_size.x > 0.0 and a_size.y > 0.0
 		do
 			size.make_from_other (a_size)
 		end
 
 	set_color (a_color: like color)
+			-- Sets the color.
 		do
 			color := a_color
 		end
@@ -90,5 +99,6 @@ feature -- Drawing
 
 invariant
 	hud_exists: hud /= Void
+	valid_size: size.x > 0.0 and size.y > 0.0
 
 end

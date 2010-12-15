@@ -113,6 +113,7 @@ feature -- Drawing operations
 		end
 
 	draw_rectangle (a_position: VECTOR2; a_size: VECTOR2; filled: BOOLEAN)
+			-- Draws a rectangle.
 		do
 			if filled then
 				canvas.fill_rectangle (a_position.x.rounded, a_position.y.rounded, a_size.x.rounded, a_size.y.rounded)
@@ -128,9 +129,6 @@ feature -- Drawing operations
 			transform_exists: transform /= Void
 		local
 			points: ARRAY[EV_COORDINATE]
---			i: INTEGER
---			p1, p2: VECTOR2
---			x1, y1, x2, y2: INTEGER
 		do
 			points := polygon.transform_to_screen (transform)
 			if filled then
@@ -138,20 +136,10 @@ feature -- Drawing operations
 			else
 				canvas.draw_polyline (points, True)
 			end
---			p1 := transform.transform (polygon.points [polygon.points.count])
---			from i := 1 until i > polygon.points.count loop
---				p2 := transform.transform (polygon.points [i])
---				x1 := p1.x.rounded; y1 := p1.y.rounded
---				x2 := p2.x.rounded; y2 := p2.y.rounded
---				if (x1 /= x2) and (y1 /= y2) then
---					canvas.draw_segment (x1, y1, x2, y2)
---				end
---				p1 := p2
---				i := i + 1
---			end
 		end
 
 	draw_text (position: VECTOR2; text: STRING)
+			-- Draws text.
 		require
 			position_exists: position /= Void
 			text_valid: text /= Void and then not text.is_empty

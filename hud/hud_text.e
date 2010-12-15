@@ -26,6 +26,7 @@ feature -- Access
 feature -- Initialization
 
 	make (a_hud: HUD_MANAGER)
+			-- Creates a text widget.
 		do
 			make_with_hud (a_hud)
 			create text.make_from_string ("TEXT")
@@ -35,6 +36,7 @@ feature -- Initialization
 feature -- Access
 
 	set_text (a_text: like text)
+			-- Sets the text.
 		require
 			text_exists: a_text /= Void
 		do

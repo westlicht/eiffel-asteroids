@@ -21,7 +21,7 @@ create
 feature -- Constants
 
 	Default_bar_color: COLOR
-			-- Default color of bar.
+			-- Default color of the bar.
 		once
 			Result.make_with_rgb (1.0, 1.0, 1.0)
 		end
@@ -51,6 +51,7 @@ feature -- Access
 feature -- Initialization
 
 	make (a_hud: HUD_MANAGER)
+			-- Creates a bar widget.
 		do
 			make_with_hud (a_hud)
 			size := Default_size
@@ -65,26 +66,45 @@ feature -- Initialization
 feature -- Access
 
 	set_value (a_value: like value)
+			-- Sets the value.
+		require
+			value_in_range: min <= a_value and a_value <= max
 		do
 			value := a_value
 		end
 
 	set_min (a_min: like min)
+			-- Sets the minimum value.
+		require
+			valid_min: a_min <= max
 		do
 			min := a_min
+			if value < min then
+				value := min
+			end
 		end
 
 	set_max (a_max: like max)
+			-- Sets the maximum value.
+		require
+			valid_max: a_max >= min
 		do
 			max := a_max
+			if value > max then
+				value := max
+			end
 		end
 
 	set_border_size (a_border_size: like border_size)
+			-- Sets the border size.
+		require
+			size_positive: a_border_size >= 0.0
 		do
 			border_size := a_border_size
 		end
 
 	set_bar_color (a_bar_color: like bar_color)
+			-- Sets the bar color.
 		do
 			bar_color := a_bar_color
 		end
@@ -119,5 +139,10 @@ feature -- Drawing
 			engine.renderer.draw_rectangle (position + border, bar_size, True)
 		end
 
+
+invariant
+	border_size_positive: border_size >= 0
+	min_max_valid: min <= max
+	value_in_range: min <= value and value <= max
 
 end
