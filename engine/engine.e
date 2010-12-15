@@ -58,9 +58,9 @@ feature -- Creation
 			create renderer.make (a_drawing_area)
 			create objects.make
 			create objects_by_z.make
-			create bullet_manager.make (Current)
 			create collision_manager.make (Current)
 			create particle_manager.make (Current)
+			create bullet_manager.make (Current)
 			create hud_manager.make (Current)
 
 			-- Get current time
@@ -70,6 +70,8 @@ feature -- Creation
 			put_object (collision_manager)
 			put_object (particle_manager)
 			put_object (hud_manager)
+
+			hud_manager.set_layer_z (10)
 		end
 
 feature -- Drawing

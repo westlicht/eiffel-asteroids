@@ -52,7 +52,7 @@ feature -- Initialization
 
 	make (a_hud: HUD_MANAGER)
 		do
-			make_with_hud (hud)
+			make_with_hud (a_hud)
 			size := Default_size
 			value := 1.0
 			min := 0.0

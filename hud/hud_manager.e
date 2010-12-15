@@ -18,48 +18,7 @@ create
 	make
 
 
-feature -- Constants
-
-	Health_bar_position: VECTOR2
-			-- Position of health bar.
-		once
-			create Result.make (10.0, 10.0)
-		end
-
-	Health_bar_color: COLOR
-			-- Color of health bar.
-		once
-			Result.make_with_rgb (1.0, 0.2, 0.2)
-		end
-
-	Energy_bar_position: VECTOR2
-			-- Position of energy bar.
-		once
-			create Result.make (10.0, 30.0)
-		end
-
-	Energy_bar_color: COLOR
-			-- Color of energy bar.
-		once
-			Result.make_with_rgb (0.2, 0.2, 1.0)
-		end
-
-	Bar_size: VECTOR2
-			-- Bar size.
-		once
-			create Result.make (150.0, 12.0)
-		end
-
-	Text_color: COLOR
-			-- Color of HUD text.
-		once
-			Result.make_with_rgb (0.8, 0.8, 0.8)
-		end
-
 feature -- Access
-
-	player: PLAYER
-			-- Player to get info from.
 
 	widgets: LINKED_LIST [HUD_WIDGET]
 			-- List of widgets.
@@ -71,31 +30,7 @@ feature -- Initialization
 		do
 			make_with_engine (a_engine)
 			create widgets.make
-			set_layer_z (10)
-
-			create_hud
 		end
-
-
-	create_hud
-		local
-			bar: HUD_BAR
-		do
-			-- Create health bar
-			create bar.make (Current)
-			bar.position := Health_bar_position
-			bar.size := Bar_size
-			bar.bar_color := Health_bar_color
-			put_widget (bar)
-
-			-- Create energy
-			create bar.make (Current)
-			bar.position := Energy_bar_position
-			bar.size := Bar_size
-			bar.bar_color := Energy_bar_color
-			put_widget (bar)
-		end
-
 
 
 feature -- Widgets

@@ -65,6 +65,7 @@ feature -- Initialization
 			-- Load the world
 			load_particle_settings
 			load_world
+			load_hud
 
 			-- Add idle action to be called regularly
 			add_idle_action (agent update)
@@ -129,6 +130,66 @@ feature -- Initialization
 			create player.make (engine)
 			engine.put_object (player)
 		end
+
+
+feature -- HUD
+
+	Health_bar_position: VECTOR2
+			-- Position of health bar.
+		once
+			create Result.make (10.0, 10.0)
+		end
+
+	Health_bar_color: COLOR
+			-- Color of health bar.
+		once
+			Result.make_with_rgb (1.0, 0.2, 0.2)
+		end
+
+	Energy_bar_position: VECTOR2
+			-- Position of energy bar.
+		once
+			create Result.make (10.0, 30.0)
+		end
+
+	Energy_bar_color: COLOR
+			-- Color of energy bar.
+		once
+			Result.make_with_rgb (0.2, 0.2, 1.0)
+		end
+
+	Bar_size: VECTOR2
+			-- Bar size.
+		once
+			create Result.make (150.0, 12.0)
+		end
+
+	Text_color: COLOR
+			-- Color of HUD text.
+		once
+			Result.make_with_rgb (0.8, 0.8, 0.8)
+		end
+
+
+	load_hud
+		local
+			bar: HUD_BAR
+		do
+			-- Create health bar
+			create bar.make (engine.hud_manager)
+			bar.position := Health_bar_position
+			bar.size := Bar_size
+			bar.bar_color := Health_bar_color
+			engine.hud_manager.put_widget (bar)
+
+			-- Create energy
+			create bar.make (engine.hud_manager)
+			bar.position := Energy_bar_position
+			bar.size := Bar_size
+			bar.bar_color := Energy_bar_color
+			engine.hud_manager.put_widget (bar)
+		end
+
 
 	update
 			-- Called repeatatly to update the game.
