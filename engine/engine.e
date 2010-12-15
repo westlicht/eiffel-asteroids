@@ -27,6 +27,9 @@ feature -- Access
 	particle_manager: PARTICLE_MANAGER
 			-- Particle manager.
 
+	hud_manager: HUD_MANAGER
+			-- HUD manager.
+
 	time: REAL
 			-- Relative time in seconds.
 
@@ -58,6 +61,7 @@ feature -- Creation
 			create bullet_manager.make (Current)
 			create collision_manager.make (Current)
 			create particle_manager.make (Current)
+			create hud_manager.make (Current)
 
 			-- Get current time
 			create last_time.make_now
@@ -65,6 +69,7 @@ feature -- Creation
 			put_object (bullet_manager)
 			put_object (collision_manager)
 			put_object (particle_manager)
+			put_object (hud_manager)
 		end
 
 feature -- Drawing
@@ -179,6 +184,7 @@ invariant
 	bullet_manager_exists: bullet_manager /= Void
 	collision_manager_exists: collision_manager /= Void
 	particle_manager_exists: particle_manager /= Void
+	hud_manager_exists: hud_manager /= Void
 	objects_exists: objects /= Void
 	objects_by_z_exists: objects_by_z /= Void
 	object_count: objects.count = objects_by_z.count

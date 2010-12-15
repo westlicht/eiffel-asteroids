@@ -26,10 +26,10 @@ create
 
 feature -- Access
 
-	x: REAL
+	x: REAL assign set_x
 			-- X coordinate.
 
-	y: REAL
+	y: REAL assign set_y
 			-- Y coordinate.
 
 

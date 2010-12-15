@@ -115,7 +115,7 @@ feature -- Initialization
 			asteroid: ASTEROID
 			i: INTEGER
 			player: PLAYER
-			hud: HUD
+			hud: HUD_MANAGER
 		do
 			create background.make (engine)
 			engine.put_object (background)
@@ -128,9 +128,6 @@ feature -- Initialization
 
 			create player.make (engine)
 			engine.put_object (player)
-
-			create hud.make (engine, player)
-			engine.put_object (hud)
 		end
 
 	update
