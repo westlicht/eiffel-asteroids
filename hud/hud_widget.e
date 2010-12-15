@@ -1,14 +1,11 @@
 note
-	description: "Summary description for {HUD_WIDGET}."
-	author: ""
+	description: "Base class for hud widgets."
+	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+deferred class
 	HUD_WIDGET
-
-create
-	make_with_hud
 
 
 feature -- Constants

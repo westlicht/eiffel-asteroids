@@ -1,14 +1,11 @@
-note
+ note
 	description: "Base class for all objects handled by the engine."
 	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+deferred class
 	ENGINE_OBJECT
-
-create
-	make_with_engine
 
 
 feature -- Access
