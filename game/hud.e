@@ -13,52 +13,16 @@ create
 
 feature -- Constants
 
-	Health_bar_position: VECTOR2
-			-- Position of health bar.
-		once
-			create Result.make (10.0, 10.0)
-		end
-
 	Health_bar_color: COLOR
 			-- Color of health bar.
 		once
 			Result.make_with_rgb (1.0, 0.2, 0.2)
 		end
 
-	Energy_bar_position: VECTOR2
-			-- Position of energy bar.
-		once
-			create Result.make (10.0, 30.0)
-		end
-
 	Energy_bar_color: COLOR
 			-- Color of energy bar.
 		once
 			Result.make_with_rgb (0.2, 0.2, 1.0)
-		end
-
-	Bar_size: VECTOR2
-			-- Bar size.
-		once
-			create Result.make (150.0, 12.0)
-		end
-
-	Score_text_position: VECTOR2
-			-- Position of score text.
-		once
-			create Result.make (10.0, 20.0)
-		end
-
-	Title_text_position: VECTOR2
-			-- Position of title text.
-		once
-			create Result.make (0.0, 200.0)
-		end
-
-	Message_text_position: VECTOR2
-			-- Position of message text.
-		once
-			create Result.make (0.0, 250.0)
 		end
 
 
@@ -93,8 +57,8 @@ feature -- Initialization
 
 			-- Create health bar
 			create health_bar.make (hud_manager)
-			health_bar.position := Health_bar_position
-			health_bar.size := Bar_size
+			health_bar.position.set (10.0, 10.0)
+			health_bar.size.set (150, 15.0)
 			health_bar.bar_color := Health_bar_color
 			hud_manager.put_widget (health_bar)
 
@@ -106,8 +70,8 @@ feature -- Initialization
 
 			-- Create energy
 			create energy_bar.make (hud_manager)
-			energy_bar.position := Energy_bar_position
-			energy_bar.size := Bar_size
+			energy_bar.position.set (10.0, 30.0)
+			energy_bar.size.set (150, 15.0)
 			energy_bar.bar_color := Energy_bar_color
 			hud_manager.put_widget (energy_bar)
 
@@ -119,13 +83,14 @@ feature -- Initialization
 
 			-- Create score text
 			create score_text.make (hud_manager)
-			score_text.position := Score_text_position
-			score_text.position.y := game.engine.renderer.screen_height - score_text.position.y
+			score_text.position.set (10.0, 10.0)
+			score_text.size.set (game.engine.renderer.screen_width.to_real - 20.0, 10.0)
+			score_text.horizontal_align := score_text.Horizontal_align_right
 			hud_manager.put_widget (score_text)
 
 			-- Create title text (in center of screen)
 			create title_text.make (hud_manager)
-			title_text.position := Title_text_position
+			title_text.position.set (0.0, 200.0)
 			title_text.size.x := game.engine.renderer.screen_width
 			title_text.font_id := game.engine.renderer.Font_id_large
 			title_text.horizontal_align := title_text.Horizontal_align_center
@@ -133,7 +98,7 @@ feature -- Initialization
 
 			-- Create message text
 			create message_text.make (hud_manager)
-			message_text.position := Message_text_position
+			message_text.position.set (0.0, 250.0)
 			message_text.size.x := game.engine.renderer.screen_width
 			message_text.font_id := game.engine.renderer.Font_id_small
 			message_text.horizontal_align := message_text.Horizontal_align_center

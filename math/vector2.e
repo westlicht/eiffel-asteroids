@@ -86,6 +86,16 @@ feature -- Creation
 
 feature -- Coordinate access
 
+	set (a_x: like x; a_y: like y)
+			-- Sets the X and Y coordinates.
+		do
+			x := a_x
+			y := a_y
+		ensure
+			x_set: x = a_x
+			y_set: y = a_y
+		end
+
 	set_x (a_x: like x)
 			-- Sets the X coordinate.
 		do
