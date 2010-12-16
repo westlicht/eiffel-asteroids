@@ -80,8 +80,8 @@ feature -- Updateing
 		do
 			active_state.update (t)
 			if next_state /= Void then
-				active_state.deactivate
-				next_state.activate
+				active_state.leave
+				next_state.enter
 				active_state := next_state
 				next_state := Void
 			end

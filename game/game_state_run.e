@@ -10,8 +10,7 @@ class
 inherit
 	GAME_STATE
 		redefine
-			activate,
-			deactivate,
+			enter,
 			update
 		end
 
@@ -19,23 +18,21 @@ create
 	make
 
 
-feature -- Activation
+feature -- State
 
-	activate
-			-- Called to activate the scene.
+	enter
+			-- Called to enter the state.
 		do
 			set_message ("")
 			game.player.reset
 			game.player.active := True
 		end
 
-	deactivate
-			-- Called to deactivate the scene.
-		do
-		end
+
+feature -- Updateing
 
 	update (t: REAL)
-			-- Called to update the scene.
+			-- Called to update the state.
 		do
 			if game.player.health.value = 0.0 then
 				game.state_manager.switch_state (game.state_game_over)

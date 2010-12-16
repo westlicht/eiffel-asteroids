@@ -10,8 +10,7 @@ class
 inherit
 	GAME_STATE
 		redefine
-			activate,
-			deactivate,
+			enter,
 			handle_key
 		end
 
@@ -19,18 +18,13 @@ create
 	make
 
 
-feature -- Activation
+feature -- State
 
-	activate
-			-- Called to activate the scene.
+	enter
+			-- Called to enter the state.
 		do
 			set_message ("GAME OVER! PRESS ENTER TO RESTART")
 			game.player.active := False
-		end
-
-	deactivate
-			-- Called to deactivate the scene.
-		do
 		end
 
 

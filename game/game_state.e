@@ -27,20 +27,23 @@ feature -- Initialization
 		end
 
 
-feature -- Activation
+feature -- State
 
-	activate
-			-- Called to activate the scene.
+	enter
+			-- Called to enter the state.
 		do
 		end
 
-	deactivate
-			-- Called to deactivate the scene.
+	leave
+			-- Called to leave the state.
 		do
 		end
+
+
+feature -- Updateing
 
 	update (t: REAL)
-			-- Called to update the scene.
+			-- Called to update the state.
 		do
 		end
 

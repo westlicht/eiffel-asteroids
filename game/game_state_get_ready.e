@@ -10,8 +10,7 @@ class
 inherit
 	GAME_STATE
 		redefine
-			activate,
-			deactivate,
+			enter,
 			handle_key
 		end
 
@@ -19,19 +18,14 @@ create
 	make
 
 
-feature -- Activation
+feature -- State
 
-	activate
-			-- Called to activate the scene.
+	enter
+			-- Called to enter the state.
 		do
 			game.player.active := False
 			game.world.prepare_level (game.level)
 			set_message ("ENTERING LEVEL " + game.level.out + " - PRESS ENTER TO START!")
-		end
-
-	deactivate
-			-- Called to deactivate the scene.
-		do
 		end
 
 
