@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	GAME_STATE_START
+	GAME_STATE_SELECT_LEVEL
 
 inherit
 	GAME_STATE
@@ -57,7 +57,7 @@ feature -- Implementation
 	update_screen
 		do
 			set_title ("START LEVEL: " + game.level.out)
-			set_message ("Use UP/DOWN keys to select start level, use ENTER to continue")
+			set_message ("Press UP/DOWN to select start level, press ENTER to continue")
 		end
 
 end

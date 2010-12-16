@@ -40,7 +40,8 @@ feature -- Access
 
 feature -- Game states
 
-	state_start: GAME_STATE_START
+	state_intro: GAME_STATE_INTRO
+	state_select_level: GAME_STATE_SELECT_LEVEL
 	state_get_ready: GAME_STATE_GET_READY
 	state_run: GAME_STATE_RUN
 	state_game_over: GAME_STATE_GAME_OVER
@@ -68,16 +69,23 @@ feature -- Initialization
 			-- Create game state manager and game states
 			create state_manager.make (Current)
 			engine.put_object (state_manager)
-			create state_start.make (Current)
-			state_manager.put_state (state_start)
+
+			create state_intro.make (Current)
+			state_manager.put_state (state_intro)
+
+			create state_select_level.make (Current)
+			state_manager.put_state (state_select_level)
+
 			create state_get_ready.make (Current)
 			state_manager.put_state (state_get_ready)
+
 			create state_run.make (Current)
 			state_manager.put_state (state_run)
+
 			create state_game_over.make (Current)
 			state_manager.put_state (state_game_over)
 
-			state_manager.switch_state (state_start)
+			state_manager.switch_state (state_intro)
 		end
 
 

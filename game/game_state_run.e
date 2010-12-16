@@ -23,7 +23,6 @@ feature -- State
 	enter
 			-- Called to enter the state.
 		do
-			set_message ("")
 			game.player.reset
 			game.player.active := True
 		end

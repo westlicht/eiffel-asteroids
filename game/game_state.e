@@ -37,6 +37,9 @@ feature -- State
 	leave
 			-- Called to leave the state.
 		do
+			-- Clear texts as default action
+			set_title ("")
+			set_message ("")
 		end
 
 

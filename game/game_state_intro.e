@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {SCENE_GAME_OVER}."
+	description: "Summary description for {GAME_STATE_INTRO}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	GAME_STATE_GAME_OVER
+	GAME_STATE_INTRO
 
 inherit
 	GAME_STATE
@@ -23,9 +23,10 @@ feature -- State
 	enter
 			-- Called to enter the state.
 		do
-			set_title ("GAME OVER")
-			set_message ("Press ENTER to restart the game")
 			game.player.active := False
+			game.world.prepare_level (game.level)
+			set_title ("WELCOME TO ASTEROIDS")
+			set_message ("Press SHFIT for help, press ENTER to continue")
 		end
 
 

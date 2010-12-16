@@ -25,7 +25,8 @@ feature -- State
 		do
 			game.player.active := False
 			game.world.prepare_level (game.level)
-			set_message ("ENTERING LEVEL " + game.level.out + " - PRESS ENTER TO START!")
+			set_title ("ENTERING LEVEL " + game.level.out)
+			set_message ("Press ENTER to start the level")
 		end
 
 
