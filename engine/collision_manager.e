@@ -99,7 +99,7 @@ feature -- Updating
 		do
 			from rigid_bodies.start until rigid_bodies.after loop
 				rigid_body := rigid_bodies.item
-				if rigid_body.position.distance_squared (bullet.position) < rigid_body.radius_squared then
+				if not bullet.is_killed and rigid_body.position.distance_squared (bullet.position) < rigid_body.radius_squared then
 					rigid_body.hit_by_bullet (bullet)
 					bullet.kill
 				end

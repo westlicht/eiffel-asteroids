@@ -76,27 +76,43 @@ feature -- Drawing
 	draw (engine: ENGINE)
 			-- Draw the widget.
 		local
-			origin: VECTOR2
+			lines: LIST [STRING]
 		do
 			if not text.is_empty then
 				engine.renderer.set_foreground_color (color)
 				engine.renderer.set_font (font_id)
-				inspect horizontal_align
-				when  Horizontal_align_left then
-					origin := position
-				when  Horizontal_align_center then
-					create origin.make_from_other (position)
-					origin.x := origin.x + (size.x - engine.renderer.text_size (text).x) / 2.0
-				when  Horizontal_align_right then
-					create origin.make_from_other (position)
-					origin.x := origin.x + size.x - engine.renderer.text_size (text).x
-				else
-					origin := position
+				-- Draw multiple lines
+				lines := text.split ('%N')
+				from lines.start until lines.after loop
+					draw_line (lines.item, lines.index)
+					lines.forth
 				end
-				engine.renderer.draw_text (origin, text)
 			end
 		end
 
+
+feature {NONE} -- Implementation
+
+	draw_line (a_line: STRING; a_index: INTEGER)
+		local
+			origin: VECTOR2
+			text_size: VECTOR2
+		do
+			if not a_line.is_empty then
+				text_size := hud.engine.renderer.text_size (a_line)
+				create origin.make_from_other (position)
+				origin.y := origin.y + (a_index - 1) * text_size.y
+				inspect horizontal_align
+				when  Horizontal_align_center then
+					origin.x := origin.x + (size.x - text_size.x) / 2.0
+				when  Horizontal_align_right then
+					origin.x := origin.x + size.x - text_size.x
+				else
+					-- Do nothing
+				end
+				hud.engine.renderer.draw_text (origin, a_line)
+			end
+		end
 
 invariant
 	text_exists: text /= Void

@@ -150,7 +150,7 @@ feature -- Initialization
 			health_bar.min := a_sender.min
 			health_bar.max := a_sender.max
 			health_bar.value := a_sender.value
-			health_text.text := "Health: " + a_sender.value.out + "/" + a_sender.max.out
+			health_text.text := "Health: " + a_sender.value.rounded.out + "/" + a_sender.max.rounded.out
 		end
 
 	energy_changed (a_sender: NUMERIC_VALUE)
@@ -158,7 +158,7 @@ feature -- Initialization
 			energy_bar.min := a_sender.min
 			energy_bar.max := a_sender.max
 			energy_bar.value := a_sender.value
-			energy_text.text := "Energy: " + a_sender.value.out + "/" + a_sender.max.out
+			energy_text.text := "Energy: " + a_sender.value.rounded.out + "/" + a_sender.max.rounded.out
 		end
 
 	score_changed (a_sender: NUMERIC_VALUE)

@@ -26,7 +26,7 @@ feature -- State
 			game.player.active := False
 			game.world.prepare_level (game.level)
 			set_title ("WELCOME TO ASTEROIDS")
-			set_message ("Press SHFIT for help, press ENTER to continue")
+			set_message ("Press SHFIT for help, press ENTER to continue%N%NAnother line of text%NYet another line of text")
 		end
 
 
