@@ -49,10 +49,16 @@ feature -- Constants
 			create Result.make (10.0, 20.0)
 		end
 
+	Title_text_position: VECTOR2
+			-- Position of title text.
+		once
+			create Result.make (0.0, 200.0)
+		end
+
 	Message_text_position: VECTOR2
 			-- Position of message text.
 		once
-			create Result.make (10.0, 100.0)
+			create Result.make (0.0, 250.0)
 		end
 
 
@@ -72,6 +78,7 @@ feature -- Widgets
 	energy_bar: HUD_BAR
 	energy_text: HUD_TEXT
 	score_text: HUD_TEXT
+	title_text: HUD_TEXT
 	message_text: HUD_TEXT
 
 
@@ -116,10 +123,20 @@ feature -- Initialization
 			score_text.position.y := game.engine.renderer.screen_height - score_text.position.y
 			hud_manager.put_widget (score_text)
 
+			-- Create title text (in center of screen)
+			create title_text.make (hud_manager)
+			title_text.position := Title_text_position
+			title_text.size.x := game.engine.renderer.screen_width
+			title_text.font_id := game.engine.renderer.Font_id_large
+			title_text.horizontal_align := title_text.Horizontal_align_center
+			hud_manager.put_widget (title_text)
+
 			-- Create message text
 			create message_text.make (hud_manager)
 			message_text.position := Message_text_position
-			message_text.font_id := game.engine.renderer.Font_id_large
+			message_text.size.x := game.engine.renderer.screen_width
+			message_text.font_id := game.engine.renderer.Font_id_small
+			message_text.horizontal_align := message_text.Horizontal_align_center
 			hud_manager.put_widget (message_text)
 
 			-- Add observers for health and energy

@@ -58,9 +58,14 @@ feature -- Key handling
 
 feature -- Utilities
 
+	set_title (a_text: STRING)
+		do
+			game.hud.title_text.text := a_text
+		end
+
 	set_message (a_text: STRING)
 		do
-			game.hud.message_text.text.make_from_string (a_text)
+			game.hud.message_text.text := a_text
 		end
 
 end

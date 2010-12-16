@@ -42,6 +42,9 @@ feature {NONE} -- Local attributes
 	foreground_color: EV_COLOR
 			-- Foreground color.
 
+	active_font: EV_FONT
+			-- Currently active font.
+
 	font_small: EV_FONT
 			-- Small font.
 
@@ -69,8 +72,8 @@ feature -- Initialization
 			create font_small.make_with_values (font_constants.family_screen, font_constants.weight_regular, font_constants.shape_regular, 10)
 			create font_large.make_with_values (font_constants.family_screen, font_constants.weight_regular, font_constants.shape_regular, 30)
 
-
-			canvas.set_font (font_small)
+			active_font := font_small
+			canvas.set_font (active_font)
 		end
 
 
@@ -88,89 +91,109 @@ feature -- Drawing operations
 			drawing_area.draw_pixmap (0, 0, canvas)
 		end
 
-	set_foreground_color (color: COLOR)
+	set_foreground_color (a_color: COLOR)
 			-- Sets the foreground color.
 		do
-			foreground_color.set_rgb (color.r, color.g, color.b)
+			foreground_color.set_rgb (a_color.r, a_color.g, a_color.b)
 			canvas.set_foreground_color (foreground_color)
 		end
 
-	set_background_color (color: COLOR)
+	set_background_color (a_color: COLOR)
 			-- Sets the background color.
 		do
-			background_color.set_rgb (color.r, color.g, color.b)
+			background_color.set_rgb (a_color.r, a_color.g, a_color.b)
 			canvas.set_background_color (background_color)
 		end
 
-	draw_point (position: VECTOR2)
+	draw_point (a_position: VECTOR2)
 			-- Draws a single point.
 		require
-			position_exists: position /= Void
+			position_exists: a_position /= Void
 		do
-			canvas.draw_point (position.x.rounded, position.y.rounded)
+			canvas.draw_point (a_position.x.rounded, a_position.y.rounded)
 		end
 
-	draw_circle (center: VECTOR2; radius: REAL; filled: BOOLEAN)
+	draw_circle (a_center: VECTOR2; a_radius: REAL; a_filled: BOOLEAN)
 			-- Draws a circle.
 		require
-			center_exists: center /= Void
-			radius_positive: radius >= 0.0
+			center_exists: a_center /= Void
+			radius_positive: a_radius >= 0.0
 		local
 			r: INTEGER
 		do
-			r := radius.rounded
-			if filled then
-				canvas.fill_ellipse (center.x.rounded - r, center.y.rounded - r, r * 2, r * 2)
+			r := a_radius.rounded
+			if a_filled then
+				canvas.fill_ellipse (a_center.x.rounded - r, a_center.y.rounded - r, r * 2, r * 2)
 			else
-				canvas.draw_ellipse (center.x.rounded - r, center.y.rounded - r, r * 2, r * 2)
+				canvas.draw_ellipse (a_center.x.rounded - r, a_center.y.rounded - r, r * 2, r * 2)
 			end
 		end
 
-	draw_rectangle (a_position: VECTOR2; a_size: VECTOR2; filled: BOOLEAN)
+	draw_rectangle (a_position: VECTOR2; a_size: VECTOR2; a_filled: BOOLEAN)
 			-- Draws a rectangle.
+		require
+			position_exists: a_position /= Void
+			size_exists: a_size /= Void
+			size_valid: a_size.x >= 0.0 and a_size.y >= 0.0
 		do
-			if filled then
+			if a_filled then
 				canvas.fill_rectangle (a_position.x.rounded, a_position.y.rounded, a_size.x.rounded, a_size.y.rounded)
 			else
 				canvas.draw_rectangle (a_position.x.rounded, a_position.y.rounded, a_size.x.rounded, a_size.y.rounded)
 			end
 		end
 
-	draw_transformed_polygon (polygon: POLYGON; transform: MATRIX3; filled: BOOLEAN)
+	draw_transformed_polygon (a_polygon: POLYGON; a_transform: MATRIX3; a_filled: BOOLEAN)
 			-- Draws a polygon first transformed by a matrix.
 		require
-			polygon_exists: polygon /= Void
-			transform_exists: transform /= Void
+			polygon_exists: a_polygon /= Void
+			transform_exists: a_transform /= Void
 		local
 			points: ARRAY[EV_COORDINATE]
 		do
-			points := polygon.transform_to_screen (transform)
-			if filled then
+			points := a_polygon.transform_to_screen (a_transform)
+			if a_filled then
 				canvas.fill_polygon (points)
 			else
 				canvas.draw_polyline (points, True)
 			end
 		end
 
-	draw_text (position: VECTOR2; text: STRING)
+	draw_text (a_position: VECTOR2; a_text: STRING)
 			-- Draws text.
 		require
-			position_exists: position /= Void
-			text_valid: text /= Void and then not text.is_empty
+			position_exists: a_position /= Void
+			text_valid: a_text /= Void and then not a_text.is_empty
 		do
-			canvas.draw_text_top_left (position.x.rounded, position.y.rounded, text)
+			canvas.draw_text_top_left (a_position.x.rounded, a_position.y.rounded, a_text)
 		end
 
 	set_font (a_font_id: INTEGER)
+		local
+			new_font: EV_FONT
 		do
 			inspect a_font_id
 			when Font_id_small  then
-				canvas.set_font (font_small)
+				new_font := font_small
 			when Font_id_large then
-				canvas.set_font (font_large)
+				new_font := font_large
 			else
-				canvas.set_font (font_small)
+				new_font := font_small
 			end
+			if new_font /= active_font then
+				active_font := new_font
+				canvas.set_font (active_font)
+			end
+		end
+
+	text_size (a_text: STRING): VECTOR2
+		require
+			text_valid: a_text /= Void and then not a_text.is_empty
+		local
+			size: TUPLE [width: INTEGER; height: INTEGER]
+		do
+			size := active_font.string_size (a_text)
+			create Result.make (size.width, size.height)
 		end
 
 
