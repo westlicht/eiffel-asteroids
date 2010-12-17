@@ -41,6 +41,7 @@ feature -- Local attributes
 feature -- Initialization
 
 	make_with_settings (a_manager: PARTICLE_MANAGER; a_settings: PARTICLE_SETTINGS)
+			-- Initializes the particle emitter.
 		require
 			manager_exists: a_manager /= Void
 			settings_exists: a_settings /= Void
@@ -56,21 +57,25 @@ feature -- Initialization
 feature -- Access
 
 	set_position (a_position: like position)
+			-- Sets the position.
 		do
 			position := a_position
 		end
 
 	set_velocity (a_velocity: like velocity)
+			-- Sets the velocity.
 		do
 			velocity := a_velocity
 		end
 
 	set_direction (a_direction: like direction)
+			-- Sets the direction.
 		do
 			direction := a_direction
 		end
 
 	set_enabled (a_enabled: like enabled)
+			-- Enables/disables the particle emitter.
 		do
 			enabled := a_enabled
 		end
@@ -101,6 +106,7 @@ feature -- Updateing
 feature -- Emitting
 
 	burst (count: INTEGER; t: REAL)
+			-- Bursts a number of particles over a short period of time.
 		local
 			i: INTEGER
 		do
@@ -111,6 +117,7 @@ feature -- Emitting
 		end
 
 	emit_particle (t: REAL)
+			-- Emits a single particle.
 		local
 			rotation: MATRIX3
 			particle_velocity: VECTOR2

@@ -82,7 +82,6 @@ feature {NONE} -- Particle settings
 	load_particle_settings
 		local
 			settings: PARTICLE_SETTINGS
-			color: COLOR
 		do
 			create settings.make
 			settings.spread := 0.2

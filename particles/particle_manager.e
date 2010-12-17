@@ -50,14 +50,24 @@ feature {NONE} -- Local attributes
 feature -- Initialization
 
 	make (a_engine: ENGINE)
+			-- Initializes the particle manager.
+		local
+			objects: LINKED_LIST [PARTICLE]
+			i: INTEGER
 		do
 			make_with_engine (a_engine)
+
+			-- Create particle pool
+			create objects.make
+			from i := 1 until i > Max_particles loop
+				objects.extend (create {PARTICLE}.make)
+				i := i + 1
+			end
+			create pool.make (objects)
+			particles := pool.used_objects
+
 			create settings_by_name.make (16)
 			create emitters.make
-
-			-- TODO create pool as last because of invariant
-			create pool.make (Max_particles, agent particle_allocator)
-			particles := pool.used_objects
 		end
 
 
@@ -178,8 +188,7 @@ feature -- Implementation
 		end
 
 invariant
-	-- TODO particles may be Void as the allocator is called before the particles list alias can be set
-	particles_valid: particles /= Void implies particles = pool.used_objects
+	particles_valid: particles = pool.used_objects
 	emitters_exists: emitters /= Void
 
 end

@@ -28,23 +28,18 @@ feature {NONE} -- Local attributes
 
 feature -- Initialization
 
-	make (a_capacity: INTEGER; a_allocator: FUNCTION [ANY, TUPLE, G])
-			-- Creates the object pool with the given capacity of objects.
+	make (a_objects: SEQUENCE [G])
+			-- Initializes an object pool with the given set of objects.
 		require
-			capacity_positive: a_capacity > 0
-		local
-			i: INTEGER
+			objects_exists: a_objects /= Void
+			objects_not_empty: not a_objects.is_empty
 		do
-			capacity := a_capacity
+			capacity := a_objects.count
 
 			create free_objects.make
 			create used_objects.make
 
-			-- Allocate objects
-			from i := 1 until i > a_capacity loop
-				free_objects.extend (a_allocator.item ([]))
-				i := i + 1
-			end
+			free_objects.append (a_objects)
 		end
 
 	use: G

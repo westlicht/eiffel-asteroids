@@ -38,11 +38,19 @@ feature {NONE} -- Local attributes
 feature -- Initialization
 
 	make (a_engine: ENGINE)
+		local
+			objects: LINKED_LIST [BULLET]
+			i: INTEGER
 		do
 			make_with_engine (a_engine)
 
-			-- TODO create pool as last because of invariant
-			create pool.make (Max_bullets, agent bullet_allocator)
+			-- Create bullet pool
+			create objects.make
+			from i := 1 until i > Max_bullets loop
+				objects.extend (create {BULLET}.make)
+				i := i + 1
+			end
+			create pool.make (objects)
 			bullets := pool.used_objects
 		end
 
@@ -105,7 +113,6 @@ feature -- Implementation
 		end
 
 invariant
-	-- TODO bullets may be Void as the allocated is called before the bullets list alias can be set
-	bullets_valid: bullets /= Void implies bullets = pool.used_objects
+	bullets_valid: bullets = pool.used_objects
 
 end

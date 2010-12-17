@@ -31,12 +31,14 @@ feature -- Access
 feature -- Initialization
 
 	make
+			-- Initializes a particle.
 		do
 			create position.make_zero
 			create velocity.make_zero
 		end
 
 	emit (a_settings: PARTICLE_SETTINGS; a_position: VECTOR2; a_velocity: VECTOR2)
+			-- Sets up the particle when emitting.
 		do
 			settings := a_settings
 			age := 0.0
