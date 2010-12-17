@@ -139,8 +139,7 @@ feature -- Initialization
 			-- Creates the player.
 		do
 			make_with_shape (a_engine, create_ship_shape)
-			position.set_x (200)
-			position.set_y (200)
+			position.set (engine.renderer.screen_width.to_real / 2, engine.renderer.screen_height.to_real / 2)
 			angular_velocity := 0.0
 
 			create health.make (0.0, 100.0, 100.0)

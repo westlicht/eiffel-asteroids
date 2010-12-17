@@ -184,16 +184,16 @@ feature -- Updateing
 
 			-- Wrap position
 			if position.x < -radius then
-				position.set_x (position.x + engine.renderer.screen_width + 2 * radius)
+				position.x := (position.x + engine.renderer.screen_width + 2 * radius)
 			end
 			if position.x > engine.renderer.screen_width + radius then
-				position.set_x (position.x - engine.renderer.screen_width - 2 * radius)
+				position.x := (position.x - engine.renderer.screen_width - 2 * radius)
 			end
 			if position.y < -radius then
-				position.set_y (position.y + engine.renderer.screen_height + 2 * radius)
+				position.y := (position.y + engine.renderer.screen_height + 2 * radius)
 			end
 			if position.y > engine.renderer.screen_height + radius then
-				position.set_y (position.y - engine.renderer.screen_height - 2 * radius)
+				position.y := (position.y - engine.renderer.screen_height - 2 * radius)
 			end
 
 			-- Update transformation matrix

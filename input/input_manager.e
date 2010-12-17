@@ -11,7 +11,7 @@ create
 	make
 
 
-feature -- Keys
+feature -- Access
 
 	keys_by_name: HASH_TABLE[INPUT_KEY, STRING]
 			-- Hash table of keys indexed by key name.
@@ -26,6 +26,7 @@ feature -- Keys
 feature -- Initialization
 
 	make (a_window: EV_WINDOW)
+			-- Initializes the input manager.
 		do
 			create keys_by_name.make (16)
 			create keys_by_code.make (16)
@@ -41,6 +42,7 @@ feature -- Initialization
 feature -- Key management
 
 	register_default_keys
+			-- Registers a set of default keys.
 		local
 			key_constants: EV_KEY_CONSTANTS
 		do
@@ -56,8 +58,8 @@ feature -- Key management
 			register_key ("escape", key_constants.key_escape)
 		end
 
-
 	register_key (a_name: STRING; a_key_code: INTEGER)
+			-- Registers a key.
 		local
 			key: INPUT_KEY
 		do
@@ -67,6 +69,7 @@ feature -- Key management
 		end
 
 	put_key_handler (a_handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY; pressed: BOOLEAN]])
+			-- Adds a key handler to the input manager.
 		do
 			key_handlers.extend (a_handler)
 		end
@@ -75,6 +78,7 @@ feature -- Key management
 feature {NONE} -- Implementation
 
 	key_press (a_key: EV_KEY)
+			-- Called when a key is pressed.
 		do
 			if keys_by_code.has (a_key.code) then
 				keys_by_code.at (a_key.code).set_is_pressed (True)
@@ -83,6 +87,7 @@ feature {NONE} -- Implementation
 		end
 
 	key_release (a_key: EV_KEY)
+			-- Called when a key is depressed.
 		do
 			if keys_by_code.has (a_key.code) then
 				keys_by_code.at (a_key.code).set_is_pressed (False)
@@ -91,6 +96,7 @@ feature {NONE} -- Implementation
 		end
 
 	notify_key_handler (a_handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY; pressed: BOOLEAN]]; a_key: INPUT_KEY; a_pressed: BOOLEAN)
+			-- Notifies a single key handled.
 		do
 			a_handler.call ([a_key, a_pressed])
 		end

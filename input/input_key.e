@@ -66,6 +66,7 @@ feature {INPUT_MANAGER} -- Input manager functions
 feature {NONE} -- Implementation
 
 	call_handler (handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY]]; key: like Current)
+			-- Calles a single key handled.
 		do
 			handler.call ([key])
 		end

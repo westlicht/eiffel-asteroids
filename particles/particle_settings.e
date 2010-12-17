@@ -31,9 +31,6 @@ feature -- Access
 	drag: REAL assign set_drag
 			-- Particle drag factor (slow down based on current velocity).
 
-	color_gradient: COLOR_GRADIENT
-			-- Particle color gradient.
-
 
 feature -- Initialization
 
@@ -45,7 +42,6 @@ feature -- Initialization
 			rate := 100.0
 			life_time := 1.0
 			drag := 0.0
-			create color_gradient.make
 		end
 
 
@@ -81,8 +77,5 @@ feature -- Settings
 			drag := a_drag
 		end
 
-
-invariant
---	color_gradient_exists: color_gradient /= Void
 
 end

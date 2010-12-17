@@ -91,10 +91,6 @@ feature {NONE} -- Particle settings
 			settings.rate := 50.0
 			settings.life_time := 1.0
 			settings.drag := 0.5
-			color.make_with_rgb (1.0, 1.0, 1.0)
-			settings.color_gradient.put_marker (color, 0.0)
-			color.make_with_rgb (0.0, 0.0, 0.0)
-			settings.color_gradient.put_marker (color, 1.0)
 			engine.particle_manager.put_settings (settings, "engine")
 
 			create settings.make
@@ -104,10 +100,6 @@ feature {NONE} -- Particle settings
 			settings.rate := 100.0
 			settings.life_time := 1.5
 			settings.drag := 0.6
-			color.make_with_rgb (1.0, 1.0, 1.0)
-			settings.color_gradient.put_marker (color, 0.0)
-			color.make_with_rgb (0.0, 0.0, 0.0)
-			settings.color_gradient.put_marker (color, 1.0)
 			engine.particle_manager.put_settings (settings, "explosion")
 		end
 
