@@ -31,6 +31,7 @@ feature -- Initialization
 		do
 			make_with_engine (a_engine)
 			create widgets.make
+			layer_z := 1
 		end
 
 

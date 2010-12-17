@@ -60,7 +60,7 @@ feature -- Initialization
 			create world.make (Current)
 
 			-- Create player
-			create player.make (engine)
+			create player.make (Current)
 			engine.put_object (player)
 
 			-- Create HUD

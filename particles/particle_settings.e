@@ -35,6 +35,7 @@ feature -- Access
 feature -- Initialization
 
 	make
+			-- Initializes the particle settings with defaults.
 		do
 			spread := 1.0
 			velocity := 100.0

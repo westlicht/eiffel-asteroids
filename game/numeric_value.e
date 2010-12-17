@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	NUMERIC_VALUE
+	NUMERIC_VALUE [G -> {NUMERIC, COMPARABLE}]
 
 create
 	make
@@ -13,13 +13,13 @@ create
 
 feature -- Access
 
-	value: REAL assign set_value
+	value: G assign set_value
 			-- Current value.
 
-	min: like value assign set_min
+	min: G assign set_min
 			-- Minimum value.
 
-	max: like value assign set_max
+	max: G assign set_max
 			-- Maximum value.
 
 	range: like value
@@ -93,7 +93,7 @@ feature -- Manipulation
 	increment (a_increment: like value)
 			-- Increments the value.
 		require
-			increment_positive: a_increment >= 0.0
+			increment_positive: a_increment >= value.zero
 		do
 			if value + a_increment > max then
 				set_value (max)
@@ -105,7 +105,7 @@ feature -- Manipulation
 	decrement (a_decrement: like value)
 			-- Decrements the value.
 		require
-			decrement_positive: a_decrement >= 0.0
+			decrement_positive: a_decrement >= value.zero
 		do
 			if value - a_decrement < min then
 				set_value (min)

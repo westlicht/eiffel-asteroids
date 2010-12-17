@@ -32,7 +32,7 @@ feature -- Access
 feature -- Initialization
 
 	make (a_rigid_body: RIGID_BODY; a_position, a_direction: VECTOR2)
-			-- Creats an anchor with local space position and direction on rigid body.
+			-- Initializes an anchor with local space position and direction on rigid body.
 		require
 			rigid_body_exists: a_rigid_body /= Void
 			position_exists: a_position /= Void

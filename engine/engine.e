@@ -49,7 +49,7 @@ feature {NONE} -- Implementation
 feature -- Creation
 
 	make (a_window: EV_WINDOW; a_drawing_area: EV_PIXMAP)
-			-- Create the engine.
+			-- Initializes the engine.
 		require
 			window_exists: a_window /= Void
 			drawing_area_valid: a_drawing_area /= Void and then a_drawing_area.width > 0 and a_drawing_area.height > 0
@@ -70,8 +70,6 @@ feature -- Creation
 			put_object (collision_manager)
 			put_object (particle_manager)
 			put_object (hud_manager)
-
-			hud_manager.set_layer_z (10)
 		end
 
 feature -- Drawing

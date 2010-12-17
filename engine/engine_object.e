@@ -1,5 +1,5 @@
  note
-	description: "Base class for all objects handled by the engine."
+	description: "Base class for all objects handled by the engine. Engine objects can be updated an drawn."
 	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -13,7 +13,7 @@ feature -- Access
 	engine: ENGINE
 			-- Associated engine.
 
-	layer_z: INTEGER
+	layer_z: INTEGER assign set_layer_z
 			-- Z-depth of the layer, lower Z are drawn before higher Z.
 
 	is_killed: BOOLEAN
@@ -23,6 +23,7 @@ feature -- Access
 feature -- Initialization
 
 	make_with_engine (a_engine: ENGINE)
+			-- Initializes the engine object.
 		require
 			engine_exists: a_engine /= Void
 		do
@@ -38,11 +39,10 @@ feature -- Drawing
 			-- Provide zero implementation.
 		end
 
-	set_layer_z (a_z: INTEGER)
+	set_layer_z (a_layer_z: like layer_z)
 			-- Sets the Z-depth of the layer.
 		do
-			layer_z := a_z
-			engine.sort_layers
+			layer_z := a_layer_z
 		end
 
 

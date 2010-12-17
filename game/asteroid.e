@@ -42,14 +42,32 @@ feature -- Constants
 
 feature -- Access
 
+	game: GAME
+		-- Game.
+
 	category: INTEGER
 		-- Asteroid category (higher is larger).
 
 feature -- Creation
 
-	make_with_size (a_engine: ENGINE; a_size: REAL)
+	make_with_category (a_game: GAME; a_category: INTEGER)
+			-- Initializes asteroid with the given ceategory.
+		require
+			game_exists: a_game /= Void
 		do
-			make_with_shape (a_engine, random_shape (a_size))
+			category := a_category
+			mass := a_category * a_category
+			make_with_size (a_game, a_category * 20 + random.real_item * 10 - 5)
+			random.forth
+		end
+
+	make_with_size (a_game: GAME; a_size: REAL)
+			-- Initializes asteroid with given size.
+		require
+			game_exists: a_game /= Void
+		do
+			make_with_shape (a_game.engine, random_shape (a_size))
+			game := a_game
 
 			-- Random position, velocity and angular velocity
 			position.make_random (0, engine.renderer.screen_width, 0, engine.renderer.screen_height)
@@ -58,21 +76,11 @@ feature -- Creation
 			random.forth
 		end
 
-	make_with_category (a_engine: ENGINE; a_category: INTEGER)
-		do
-			category := a_category
-			mass := a_category * a_category
-			make_with_size (a_engine, a_category * 20 + random.real_item * 10 - 5)
-			random.forth
-		end
-
 
 feature -- Drawing
 
 	draw
 			-- Draws the asteroid.
-		local
-			color: COLOR
 		do
 			engine.renderer.set_foreground_color (Fill_color)
 			engine.renderer.draw_transformed_polygon (shape, transform, True)
@@ -93,6 +101,9 @@ feature {NONE} -- Implementation
 			emitter.position := position
 			emitter.velocity := velocity
 			emitter.burst (50, 0.1)
+
+			-- Score points
+			game.player.score.increment (category * 10)
 
 			if category > 1 then
 				explode
@@ -116,7 +127,7 @@ feature {NONE} -- Implementation
 			offset := random.real_item * {REAL} 6.283
 
 			from i := 1 until i > count loop
-				create child.make_with_category (engine, category - 1)
+				create child.make_with_category (game, category - 1)
 				create direction.make_unit (({REAL} 6.283 / count.to_real + offset) * i.to_real)
 				child.position := position + direction * radius * 0.3
 				child.velocity := velocity + direction * 70.0
@@ -155,5 +166,7 @@ feature {NONE} -- Implementation
 		end
 
 
+invariant
+	game_exists: game /= Void
 
 end

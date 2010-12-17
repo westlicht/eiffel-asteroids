@@ -26,6 +26,7 @@ feature -- State
 			game.world.prepare_idle
 			game.level := game.Level_min
 			game.player.active := False
+			game.player.score.value := game.player.score.min
 			update_screen
 		end
 

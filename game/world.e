@@ -54,9 +54,9 @@ feature -- Level generation
 			i: INTEGER
 		do
 			clear
-			from i := 1 until i > 20 loop
+			from i := 1 until i > 30 loop
 				random.forth
-				create asteroid.make_with_category (engine, random.item \\ 3 + 1)
+				create asteroid.make_with_category (game, random.item \\ 3 + 1)
 				engine.put_object (asteroid)
 				i := i + 1
 			end
@@ -70,7 +70,7 @@ feature -- Level generation
 		do
 			clear
 			from i := 1 until i > 3 loop
-				create asteroid.make_with_category (engine, a_level)
+				create asteroid.make_with_category (game, a_level)
 				engine.put_object (asteroid)
 				i := i + 1
 			end

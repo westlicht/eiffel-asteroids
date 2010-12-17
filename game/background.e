@@ -45,7 +45,7 @@ feature -- Initialization
 				i := i + 1
 			end
 
-			set_layer_z (-1)
+			layer_z := -1
 		end
 
 

@@ -87,13 +87,16 @@ feature -- Constants
 
 feature -- Access
 
-	health: NUMERIC_VALUE
+	game: GAME
+			-- Game.
+
+	health: NUMERIC_VALUE [REAL]
 			-- Health.
 
-	energy: NUMERIC_VALUE
+	energy: NUMERIC_VALUE [REAL]
 			-- Energy.
 
-	score: NUMERIC_VALUE
+	score: NUMERIC_VALUE [INTEGER]
 			-- Player's score.
 
 	active: BOOLEAN assign set_active
@@ -135,16 +138,20 @@ feature {NONE} -- Local attributes
 
 feature -- Initialization
 
-	make (a_engine: ENGINE)
+	make (a_game: GAME)
 			-- Creates the player.
+		require
+			game_exists: a_game /= Void
 		do
-			make_with_shape (a_engine, create_ship_shape)
+			make_with_shape (a_game.engine, create_ship_shape)
+			game := a_game
+
 			position.set (engine.renderer.screen_width.to_real / 2, engine.renderer.screen_height.to_real / 2)
 			angular_velocity := 0.0
 
 			create health.make (0.0, 100.0, 100.0)
 			create energy.make (0.0, 100.0, 100.0)
-			create score.make (0.0, 100000.0, 0.0)
+			create score.make (0, 100000, 0)
 			active := True
 
 			key_left := engine.input_manager.keys_by_name.item ("left")
@@ -261,24 +268,34 @@ feature {NONE} -- Collision
 	hit_by_rigid_body (a_other: RIGID_BODY)
 			-- Called when this rigid body was hit by another rigid body.
 		local
-			damage: REAL
+			relative_velocity: REAL
 		do
-			damage := 20.0
+			if attached {ASTEROID} a_other as asteroid then
+				-- Compute relative velocity
+				relative_velocity := (asteroid.velocity - velocity).length
+				damage (relative_velocity * asteroid.mass * 0.004)
+			end
+		end
+
+	damage (a_amount: REAL)
+			-- Damage the player.
+		do
 			if shield_active then
-				if energy.value < damage then
-					health.decrement (damage - energy.value)
+				if energy.value < a_amount then
+					health.decrement (a_amount - energy.value)
 					energy.decrement (energy.value)
 				else
-					energy.decrement (damage)
+					energy.decrement (a_amount)
 				end
 			else
-				health.decrement (damage)
+				health.decrement (a_amount)
 			end
 
 			if health.value <= 0.0 then
 				explode
 			end
 		end
+
 
 	explode
 		local
@@ -308,6 +325,7 @@ feature {NONE} -- Implementation
 
 
 invariant
+	game_exists: game /= Void
 	key_left_exists: key_left /= Void
 	key_right_exists: key_right /= Void
 	key_thrust_exists: key_thrust /= Void

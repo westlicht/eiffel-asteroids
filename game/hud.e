@@ -110,7 +110,7 @@ feature -- Initialization
 			game.player.score.register_observer (agent score_changed)
 		end
 
-	health_changed (a_sender: NUMERIC_VALUE)
+	health_changed (a_sender: NUMERIC_VALUE [REAL])
 		do
 			health_bar.min := a_sender.min
 			health_bar.max := a_sender.max
@@ -118,7 +118,7 @@ feature -- Initialization
 			health_text.text := "Health: " + a_sender.value.rounded.out + "/" + a_sender.max.rounded.out
 		end
 
-	energy_changed (a_sender: NUMERIC_VALUE)
+	energy_changed (a_sender: NUMERIC_VALUE [REAL])
 		do
 			energy_bar.min := a_sender.min
 			energy_bar.max := a_sender.max
@@ -126,7 +126,7 @@ feature -- Initialization
 			energy_text.text := "Energy: " + a_sender.value.rounded.out + "/" + a_sender.max.rounded.out
 		end
 
-	score_changed (a_sender: NUMERIC_VALUE)
+	score_changed (a_sender: NUMERIC_VALUE [INTEGER])
 		do
 			score_text.text := "Score: " + a_sender.value.out
 		end
