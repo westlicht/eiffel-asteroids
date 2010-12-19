@@ -56,6 +56,7 @@ feature -- Key management
 			register_key ("shift", key_constants.key_shift)
 			register_key ("enter", key_constants.key_enter)
 			register_key ("escape", key_constants.key_escape)
+			register_key ("alt", key_constants.key_alt)
 		end
 
 	register_key (a_name: STRING; a_key_code: INTEGER)

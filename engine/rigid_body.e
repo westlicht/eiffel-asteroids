@@ -95,15 +95,11 @@ feature -- Initialization
 feature -- Access
 
 	set_position (a_position: like position)
-		require
-			position_exists: a_position /= Void
 		do
 			position.make_from_other (a_position)
 		end
 
 	set_velocity (a_velocity: like velocity)
-		require
-			velocity_exists: a_velocity /= Void
 		do
 			velocity.make_from_other (a_velocity)
 		end
@@ -144,8 +140,6 @@ feature {NONE} -- Anchors implementation
 feature -- Forces
 
 	add_force (a_force: VECTOR2)
-		require
-			force_exists: a_force /= Void
 		do
 			force := force + a_force
 		end

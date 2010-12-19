@@ -21,8 +21,8 @@ feature -- Access
 	bullet_manager: BULLET_MANAGER
 			-- Bullet manager.
 
-	collision_manager: COLLISION_MANAGER
-			-- Collision manager.
+	physics_manager: PHYSICS_MANAGER
+			-- Physics manager.
 
 	particle_manager: PARTICLE_MANAGER
 			-- Particle manager.
@@ -58,7 +58,7 @@ feature -- Creation
 			create renderer.make (a_drawing_area)
 			create objects.make
 			create objects_by_z.make
-			create collision_manager.make (Current)
+			create physics_manager.make (Current)
 			create particle_manager.make (Current)
 			create bullet_manager.make (Current)
 			create hud_manager.make (Current)
@@ -67,7 +67,7 @@ feature -- Creation
 			create last_time.make_now
 
 			put_object (bullet_manager)
-			put_object (collision_manager)
+			put_object (physics_manager)
 			put_object (particle_manager)
 			put_object (hud_manager)
 		end
@@ -148,7 +148,7 @@ feature -- Objects
 			sort_layers
 
 			if attached {RIGID_BODY} object as rigid_body then
-				collision_manager.put_rigid_body (rigid_body)
+				physics_manager.put_rigid_body (rigid_body)
 			end
 		end
 
@@ -161,7 +161,7 @@ feature -- Objects
 			objects_by_z.prune_all (object)
 
 			if attached {RIGID_BODY} object as rigid_body then
-				collision_manager.prune_rigid_body (rigid_body)
+				physics_manager.prune_rigid_body (rigid_body)
 			end
 		end
 
@@ -212,7 +212,7 @@ invariant
 	input_manager_exists: input_manager /= Void
 	renderer_exists: renderer /= Void
 	bullet_manager_exists: bullet_manager /= Void
-	collision_manager_exists: collision_manager /= Void
+	physics_manager_exists: physics_manager /= Void
 	particle_manager_exists: particle_manager /= Void
 	hud_manager_exists: hud_manager /= Void
 	objects_exists: objects /= Void

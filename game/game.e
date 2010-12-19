@@ -41,6 +41,7 @@ feature -- Access
 feature -- Game states
 
 	state_intro: GAME_STATE_INTRO
+	state_help: GAME_STATE_HELP
 	state_select_level: GAME_STATE_SELECT_LEVEL
 	state_get_ready: GAME_STATE_GET_READY
 	state_run: GAME_STATE_RUN
@@ -72,6 +73,9 @@ feature -- Initialization
 
 			create state_intro.make (Current)
 			state_manager.put_state (state_intro)
+
+			create state_help.make (Current)
+			state_manager.put_state (state_help)
 
 			create state_select_level.make (Current)
 			state_manager.put_state (state_select_level)

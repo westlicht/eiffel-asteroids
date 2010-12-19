@@ -52,12 +52,7 @@ feature -- Drawing
 
 	draw (engine: ENGINE)
 			-- Draws the particle.
-		local
-			color: COLOR
 		do
-			--color := settings.color_gradient.get_sample (age / settings.life_time)
-			--color.make_gray (1.0)
-			--engine.renderer.set_foreground_color (color)
 			engine.renderer.draw_point (position)
 		end
 

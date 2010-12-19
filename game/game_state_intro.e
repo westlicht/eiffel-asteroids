@@ -26,7 +26,7 @@ feature -- State
 			game.player.active := False
 			game.world.prepare_level (game.level)
 			set_title ("WELCOME TO ASTEROIDS")
-			set_message ("Press SHFIT for help, press ENTER to continue%N%NAnother line of text%NYet another line of text")
+			set_message ("Press SHFIT for help, press ENTER to continue")
 		end
 
 
@@ -37,6 +37,8 @@ feature -- Key handling
 			if pressed then
 				if key.name.is_equal ("enter") then
 					game.state_manager.switch_state(game.state_select_level)
+				elseif key.name.is_equal ("shift") then
+					game.state_manager.switch_state (game.state_help)
 				end
 			end
 		end

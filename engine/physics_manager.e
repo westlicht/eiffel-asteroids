@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	COLLISION_MANAGER
+	PHYSICS_MANAGER
 
 inherit
 	ENGINE_OBJECT
