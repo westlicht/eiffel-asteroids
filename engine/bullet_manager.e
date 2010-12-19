@@ -67,6 +67,14 @@ feature -- Fireing
 			end
 		end
 
+	kill_all_bullets
+		do
+			from bullets.start until bullets.after loop
+				bullets.item.kill
+				bullets.forth
+			end
+		end
+
 
 feature -- Drawing
 

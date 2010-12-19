@@ -38,7 +38,7 @@ feature -- Updateing
 			end
 			if game.engine.object_count_by_type ("ASTEROID") = 0 then
 				game.level := game.level + 1
-				game.state_manager.switch_state (game.state_get_ready)
+				game.state_manager.switch_state (game.state_victory)
 			end
 		end
 

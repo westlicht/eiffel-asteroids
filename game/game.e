@@ -45,6 +45,7 @@ feature -- Game states
 	state_select_level: GAME_STATE_SELECT_LEVEL
 	state_get_ready: GAME_STATE_GET_READY
 	state_run: GAME_STATE_RUN
+	state_victory: GAME_STATE_VICTORY
 	state_game_over: GAME_STATE_GAME_OVER
 
 
@@ -85,6 +86,9 @@ feature -- Initialization
 
 			create state_run.make (Current)
 			state_manager.put_state (state_run)
+
+			create state_victory.make (Current)
+			state_manager.put_state (state_victory)
 
 			create state_game_over.make (Current)
 			state_manager.put_state (state_game_over)
