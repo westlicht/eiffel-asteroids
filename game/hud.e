@@ -45,6 +45,7 @@ feature -- Widgets
 	energy_bar: HUD_BAR
 	energy_text: HUD_TEXT
 	score_text: HUD_TEXT
+	highscore_text: HUD_TEXT
 	title_text: HUD_TEXT
 	message_text: HUD_TEXT
 
@@ -92,6 +93,11 @@ feature -- Initialization
 			score_text.horizontal_align := score_text.Horizontal_align_right
 			hud_manager.put_widget (score_text)
 
+			-- Create highscore text
+			create highscore_text.make (hud_manager)
+			highscore_text.position.set (10.0, game.engine.renderer.screen_height.to_real - 20.0)
+			hud_manager.put_widget (highscore_text)
+
 			-- Create title text (in center of screen)
 			create title_text.make (hud_manager)
 			title_text.position.set (0.0, 200.0)
@@ -108,10 +114,12 @@ feature -- Initialization
 			message_text.horizontal_align := message_text.Horizontal_align_center
 			hud_manager.put_widget (message_text)
 
-			-- Add observers for health and energy
+			-- Add observers for health, energy, score and highscore
 			game.player.health.register_observer (agent health_changed)
 			game.player.energy.register_observer (agent energy_changed)
 			game.player.score.register_observer (agent score_changed)
+			game.highscore.max_score.register_observer (agent highscore_changed)
+
 		end
 
 	health_changed (a_sender: NUMERIC_VALUE [REAL])
@@ -133,6 +141,11 @@ feature -- Initialization
 	score_changed (a_sender: NUMERIC_VALUE [INTEGER])
 		do
 			score_text.text := "Score: " + a_sender.value.out
+		end
+
+	highscore_changed (a_sender: NUMERIC_VALUE [INTEGER])
+		do
+			highscore_text.text := "Highscore: " + a_sender.value.out
 		end
 
 feature -- Access

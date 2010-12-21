@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {GAME_STATE_HELP}."
+	description: "Summary description for {GAME_STATE_HIGHSCORE}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	GAME_STATE_HELP
+	GAME_STATE_HIGHSCORE
 
 inherit
 	GAME_STATE
@@ -21,7 +21,7 @@ create
 feature -- Access
 
 	text: STRING
-			-- Text.
+			-- Help text.
 
 feature -- State
 
@@ -30,17 +30,6 @@ feature -- State
 			Precursor (a_game)
 
 			create text.make_empty
-
-			text.append ("Mission:%N%N")
-			text.append ("Destroy all the asteroids before they destroy you!%N%N")
-			text.append ("Controls:%N%N")
-			text.append ("LEFT - Rotate ship left%N")
-			text.append ("RIGHT - Rotate ship right%N")
-			text.append ("UP - Thrust%N")
-			text.append ("SPACE - Shoot%N")
-			text.append ("SHIFT - Shield%N")
-			text.append ("ESC - Back/Pause/Exit%N")
-			text.append ("%N%NPress ENTER to exit help screen.")
 		end
 
 	enter
@@ -48,7 +37,8 @@ feature -- State
 		do
 			Precursor
 			game.player.active := False
-			set_title ("HELP")
+			set_title ("HIGHSCORE")
+			update_text
 			set_message (text)
 		end
 
@@ -62,6 +52,23 @@ feature -- Key handling
 					game.state_manager.switch_state(game.state_intro)
 				end
 			end
+		end
+
+
+feature {NONE} -- Implementation
+
+	update_text
+		do
+			create text.make_empty
+
+			game.highscore.do_all (agent (highscore: HIGHSCORE)
+				do
+					text.append_string (highscore.name)
+					text.append_string ("%N")
+					text.append_integer (highscore.score)
+					text.append_string ("%N%N")
+				end
+			)
 		end
 
 end

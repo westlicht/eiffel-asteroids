@@ -20,6 +20,28 @@ feature -- Constants
 
 	Level_max: INTEGER = 10
 
+	Absolute_path: STRING
+			-- Absolute path of executable. TODO is there really no usable pathname abstraction in Eiffel?
+		local
+			ee: EXECUTION_ENVIRONMENT
+			index, t: INTEGER
+		once
+			create ee
+			create Result.make_from_string (ee.command_line.command_name)
+			index := Result.last_index_of ('/', Result.count)
+			t := Result.last_index_of ('\', Result.count)
+			if t > index then
+				index := t
+			end
+			Result.remove_tail (Result.count - index)
+		end
+
+	Highscore_filename: STRING
+			-- Filename for highscore file.
+		once
+			create Result.make_from_string (Absolute_path + "highscore.dat")
+		end
+
 feature -- Access
 
 	world: WORLD
@@ -37,6 +59,9 @@ feature -- Access
 	level: INTEGER assign set_level
 			-- Current level.
 
+	highscore: HIGHSCORE_LIST
+			-- List of high scores.
+
 
 feature -- Game states
 
@@ -47,6 +72,7 @@ feature -- Game states
 	state_run: GAME_STATE_RUN
 	state_victory: GAME_STATE_VICTORY
 	state_game_over: GAME_STATE_GAME_OVER
+	state_highscore: GAME_STATE_HIGHSCORE
 	state_pause: GAME_STATE_PAUSE
 	state_exit: GAME_STATE_EXIT
 
@@ -59,6 +85,16 @@ feature -- Initialization
 			make_with_engine (a_engine)
 
 			level := Level_min
+
+			-- Create highscores
+			create highscore.make
+			highscore.extend (create {HIGHSCORE}.make ("test1", 1234, create {DATE_TIME}.make_now_utc))
+			highscore.extend (create {HIGHSCORE}.make ("test2", 12345, create {DATE_TIME}.make_now_utc))
+			highscore.extend (create {HIGHSCORE}.make ("test3", 123456, create {DATE_TIME}.make_now_utc))
+			highscore.extend (create {HIGHSCORE}.make ("test4", 123457, create {DATE_TIME}.make_now_utc))
+			highscore.save_to_file (Highscore_filename)
+			highscore.load_from_file (Highscore_filename)
+			io.put_string (Highscore_filename)
 
 			-- Create the world
 			create world.make (Current)
@@ -81,6 +117,7 @@ feature -- Initialization
 			create state_run.make (Current)
 			create state_victory.make (Current)
 			create state_game_over.make (Current)
+			create state_highscore.make (Current)
 			create state_pause.make (Current)
 			create state_exit.make (Current)
 

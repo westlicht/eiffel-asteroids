@@ -154,7 +154,7 @@ feature -- Initialization
 
 			create health.make (0.0, 100.0, 100.0)
 			create energy.make (0.0, 100.0, 100.0)
-			create score.make (0, 100000, 0)
+			create score.make (0, 1000000, 0)
 			active := True
 
 			key_left := engine.input_manager.key_left
