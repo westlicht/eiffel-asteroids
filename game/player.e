@@ -84,6 +84,9 @@ feature -- Constants
 			Result.set_rgb (0.2, 0.2, 1.0)
 		end
 
+	Default_name: STRING = "player"
+			-- Default player name.
+
 
 feature -- Access
 
@@ -101,6 +104,9 @@ feature -- Access
 
 	active: BOOLEAN assign set_active
 			-- Player is active.
+
+	name: STRING assign set_name
+			-- Player's name.
 
 
 feature {NONE} -- Local attributes
@@ -156,6 +162,7 @@ feature -- Initialization
 			create energy.make (0.0, 100.0, 100.0)
 			create score.make (0, 1000000, 0)
 			active := True
+			create name.make_from_string (Default_name)
 
 			key_left := engine.input_manager.key_left
 			key_right := engine.input_manager.key_right
@@ -197,6 +204,14 @@ feature -- Access
 			-- If active, player reacts to user input etc.
 		do
 			active := a_active
+		end
+
+	set_name (a_name: like name)
+			-- Sets the player's name.
+		require
+			name_valid: a_name /= Void and then not a_name.is_empty
+		do
+			name.make_from_string (a_name)
 		end
 
 feature -- Updateing
@@ -350,6 +365,7 @@ feature {NONE} -- Implementation
 
 invariant
 	game_exists: game /= Void
+	name_valid: name /= Void and then not name.is_empty
 	key_left_exists: key_left /= Void
 	key_right_exists: key_right /= Void
 	key_thrust_exists: key_thrust /= Void

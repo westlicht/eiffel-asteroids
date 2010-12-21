@@ -22,6 +22,21 @@ feature -- Access
 	key_handlers: LINKED_LIST [PROCEDURE [ANY, TUPLE [key: INPUT_KEY; pressed: BOOLEAN]]]
 			-- List of key handlers.
 
+	prompt_handler: PROCEDURE [ANY, TUPLE [prompt: STRING]] assign set_prompt_handler
+			-- Prompt handler.
+
+	prompt: STRING assign set_prompt
+			-- Editable text prompt.
+
+
+feature {NONE} -- Local attributes
+
+	key_constants: EV_KEY_CONSTANTS
+			-- Key constants.
+		once
+			create Result
+		end
+
 
 feature -- Keys
 
@@ -46,6 +61,7 @@ feature -- Initialization
 			create keys_by_code.make (16)
 			create key_handlers.make
 			register_default_keys
+			create prompt.make_empty
 
 			-- Register key press/release handlers
 			a_window.key_press_actions.extend (agent key_press)
@@ -57,11 +73,7 @@ feature -- Key management
 
 	register_default_keys
 			-- Registers a set of default keys.
-		local
-			key_constants: EV_KEY_CONSTANTS
 		do
-			create key_constants
-
 			create key_left.make ("left", key_constants.key_left)
 			register_key (key_left)
 			create key_right.make ("right", key_constants.key_right)
@@ -98,23 +110,68 @@ feature -- Key management
 		end
 
 
+feature -- Prompt
+
+	set_prompt_handler (a_prompt_handler: like prompt_handler)
+			-- Sets the prompt handler.
+		do
+			prompt_handler := a_prompt_handler
+		end
+
+
+	set_prompt (a_prompt: like prompt)
+			-- Sets the prompt text.
+		require
+			prompt_exists: a_prompt /= Void
+		do
+			prompt.make_from_string (a_prompt)
+		end
+
+
+
 feature {NONE} -- Implementation
 
 	key_press (a_key: EV_KEY)
 			-- Called when a key is pressed.
 		do
+			-- Handle registered keys
 			if keys_by_code.has (a_key.code) then
 				keys_by_code.at (a_key.code).set_is_pressed (True)
 				key_handlers.do_all (agent notify_key_handler (?, keys_by_code.at (a_key.code), True))
 			end
+
+			-- Handle text prompt
+			handle_prompt (a_key)
 		end
 
 	key_release (a_key: EV_KEY)
 			-- Called when a key is depressed.
 		do
+			-- Handle registered keys
 			if keys_by_code.has (a_key.code) then
 				keys_by_code.at (a_key.code).set_is_pressed (False)
 				key_handlers.do_all (agent notify_key_handler (?, keys_by_code.at (a_key.code), False))
+			end
+		end
+
+	handle_prompt (a_key: EV_KEY)
+			-- Update text prompt by checking keys.
+		local
+			changed: BOOLEAN
+		do
+			-- Handle text prompt
+			if a_key.is_alpha then
+				prompt.append (a_key.out)
+				changed := True
+			end
+			if not prompt.is_empty and then a_key.code = key_constants.key_back_space then
+				prompt.remove_tail (1)
+				changed := True
+			end
+
+			-- Call prompt handler
+			if changed and prompt_handler /= Void then
+				prompt_handler.call ([prompt])
 			end
 		end
 
@@ -130,5 +187,6 @@ invariant
 	keys_by_code_exists: keys_by_code /= Void
 	keys_by_name_by_code_corresponds: keys_by_name.count = keys_by_code.count
 	key_handlers_exists: key_handlers /= Void
+	prompt_exists: prompt /= Void
 
 end

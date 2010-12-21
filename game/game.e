@@ -72,6 +72,7 @@ feature -- Game states
 	state_run: GAME_STATE_RUN
 	state_victory: GAME_STATE_VICTORY
 	state_game_over: GAME_STATE_GAME_OVER
+	state_new_highscore: GAME_STATE_NEW_HIGHSCORE
 	state_highscore: GAME_STATE_HIGHSCORE
 	state_pause: GAME_STATE_PAUSE
 	state_exit: GAME_STATE_EXIT
@@ -88,10 +89,6 @@ feature -- Initialization
 
 			-- Create highscores
 			create highscore.make
-			highscore.extend (create {HIGHSCORE}.make ("test1", 1234, create {DATE_TIME}.make_now_utc))
-			highscore.extend (create {HIGHSCORE}.make ("test2", 12345, create {DATE_TIME}.make_now_utc))
-			highscore.extend (create {HIGHSCORE}.make ("test3", 123456, create {DATE_TIME}.make_now_utc))
-			highscore.extend (create {HIGHSCORE}.make ("test4", 123457, create {DATE_TIME}.make_now_utc))
 			highscore.load_from_file (Highscore_filename)
 
 			-- Create the world
@@ -115,6 +112,7 @@ feature -- Initialization
 			create state_run.make (Current)
 			create state_victory.make (Current)
 			create state_game_over.make (Current)
+			create state_new_highscore.make (Current)
 			create state_highscore.make (Current)
 			create state_pause.make (Current)
 			create state_exit.make (Current)

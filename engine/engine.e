@@ -127,7 +127,7 @@ feature -- Updateing
 			last_time := current_time
 			t := duration.fine_second.truncated_to_real
 
-			if not paused then
+			if not paused and t > 0 then
 				time := time + t
 				objects.do_all (agent update_object (?, t) )
 

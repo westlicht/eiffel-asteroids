@@ -9,14 +9,21 @@ class
 
 inherit
 	SORTED_TWO_WAY_LIST [HIGHSCORE]
+		rename
+			extend as list_extend
 		redefine
 			make,
-			extend,
 			wipe_out
 		end
 
 create
 	make
+
+
+feature -- Constants
+
+	Max_count: INTEGER = 8
+			-- Maximum number of highscore entries.
 
 
 feature -- Access
@@ -28,25 +35,43 @@ feature -- Access
 feature -- Initialization
 
 	make
+			-- Initializes the highscore list.
 		do
 			Precursor
 			create max_score.make (0, 1000000, 0)
 		end
 
 
-feature -- List overrides
+feature -- Highscore management
 
-	extend (a_highscore: HIGHSCORE)
+	insert (a_highscore: HIGHSCORE)
+			-- Inserts a new highscore into the highscore list.
 		do
-			Precursor (a_highscore)
+			list_extend (a_highscore)
 			max_score.set_value (first.score)
+			if count > Max_count then
+				start
+				prune (last)
+			end
 		end
 
 	wipe_out
+			-- Wipes out the highscore list.
 		do
 			Precursor
 			max_score.set_value (0)
 		end
+
+	is_highscore (score: INTEGER): BOOLEAN
+			-- Checks if a given score is a valid new highscore.
+		do
+			if count < Max_count then
+				Result := True
+			else
+				Result := score < last.score
+			end
+		end
+
 
 
 feature -- Serialization
@@ -82,7 +107,7 @@ feature -- Serialization
 								create date.make_from_epoch (file.last_integer)
 
 								-- Create record
-								extend (create {HIGHSCORE}.make(name, score, date))
+								insert (create {HIGHSCORE}.make(name, score, date))
 							end
 						end
 					end
@@ -121,5 +146,6 @@ feature -- Serialization
 invariant
 	max_score_exists: max_score /= Void
 	max_score_correct: not is_empty implies max_score.value = first.score
+	check_max_count: count <= Max_count
 
 end

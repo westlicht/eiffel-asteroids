@@ -25,7 +25,7 @@ feature -- State
 		do
 			Precursor
 			set_title ("VICTORY")
-			set_message ("Your current score is " + game.player.score.value.out + ". Press ENTER to continue with the next level.")
+			set_message ("Your current score is " + game.player.score.value.out + ".%N%NPress ENTER to continue with the next level or ESC to end the game.")
 			game.player.active := False
 		end
 
@@ -39,7 +39,7 @@ feature -- Key handling
 					game.engine.bullet_manager.kill_all_bullets
 					game.state_manager.switch_state(game.state_get_ready)
 				elseif key = game.engine.input_manager.key_escape then
-					game.state_manager.switch_state (game.state_pause)
+					game.state_manager.switch_state (game.state_game_over)
 				end
 			end
 		end
