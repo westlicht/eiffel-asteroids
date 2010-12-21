@@ -61,7 +61,7 @@ feature -- Implementation
 	update_screen
 		do
 			set_title ("START LEVEL: " + game.level.out)
-			set_message ("Press UP/DOWN to select start level, press ENTER to continue")
+			set_message ("Press UP/DOWN to select start level, press ENTER to continue.")
 		end
 
 end

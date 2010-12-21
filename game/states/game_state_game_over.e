@@ -25,7 +25,7 @@ feature -- State
 		do
 			Precursor
 			set_title ("GAME OVER")
-			set_message ("Press ENTER to restart the game")
+			set_message ("Press ENTER to restart the game.")
 			game.player.active := False
 		end
 

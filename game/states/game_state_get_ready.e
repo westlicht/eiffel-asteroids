@@ -30,7 +30,7 @@ feature -- State
 			game.world.prepare_level (game.level)
 			game.hud.stats_visible := True
 			set_title ("ENTERING LEVEL " + game.level.out)
-			set_message ("Press ENTER to start the level")
+			set_message ("Press ENTER to start the level.")
 		end
 
 	leave
