@@ -70,7 +70,9 @@ feature {NONE} -- Implementation
 	draw_widget (a_widget: HUD_WIDGET)
 			-- Draws a single widget.
 		do
-			a_widget.draw (engine)
+			if a_widget.visible then
+				a_widget.draw (engine)
+			end
 		end
 
 	update_widget (a_widget: HUD_WIDGET; t: REAL)

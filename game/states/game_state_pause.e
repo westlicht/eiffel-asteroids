@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {GAME_STATE_EXIT}."
+	description: "Summary description for {GAME_STATE_PAUSE}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	GAME_STATE_EXIT
+	GAME_STATE_PAUSE
 
 inherit
 	GAME_STATE
@@ -25,7 +25,7 @@ feature -- State
 			-- Called to enter the state.
 		do
 			Precursor
-			set_title ("EXIT?")
+			set_title ("PAUSED")
 			set_message ("Press ENTER to exit the game, ESC to go back.")
 			game.player.active := False
 			game.engine.paused := True
@@ -38,13 +38,14 @@ feature -- State
 			game.engine.paused := False
 		end
 
+
 feature -- Key handling
 
 	handle_key (key: INPUT_KEY; pressed: BOOLEAN)
 		do
 			if pressed then
 				if key = game.engine.input_manager.key_enter then
-					game.engine.exit
+					game.state_manager.switch_state (game.state_exit)
 				elseif key = game.engine.input_manager.key_escape then
 					game.state_manager.switch_last_state
 				end

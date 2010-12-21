@@ -23,6 +23,7 @@ feature -- State
 	enter
 			-- Called to enter the state.
 		do
+			Precursor
 			set_title ("VICTORY")
 			set_message ("Your current score is " + game.player.score.value.out + ". Press ENTER to continue with the next level.")
 			game.player.active := False
@@ -37,6 +38,8 @@ feature -- Key handling
 				if key = game.engine.input_manager.key_enter then
 					game.engine.bullet_manager.kill_all_bullets
 					game.state_manager.switch_state(game.state_get_ready)
+				elseif key = game.engine.input_manager.key_escape then
+					game.state_manager.switch_state (game.state_pause)
 				end
 			end
 		end

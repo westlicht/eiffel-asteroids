@@ -23,6 +23,7 @@ feature -- State
 	enter
 			-- Called to enter the state.
 		do
+			Precursor
 			game.world.prepare_idle
 			game.level := game.Level_min
 			game.player.active := False
@@ -48,6 +49,8 @@ feature -- Key handling
 						game.level := game.level - 1
 						update_screen
 					end
+				elseif key = game.engine.input_manager.key_escape then
+					game.state_manager.switch_state (game.state_intro)
 				end
 			end
 		end

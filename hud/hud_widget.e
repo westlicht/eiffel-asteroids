@@ -43,6 +43,9 @@ feature -- Access
 	color: COLOR assign set_color
 			-- Widget color.
 
+	visible: BOOLEAN assign set_visible
+			-- Visibility.
+
 
 feature -- Initialization
 
@@ -55,6 +58,7 @@ feature -- Initialization
 			position := default_position
 			size := Default_size
 			color := Default_color
+			visible := True
 		end
 
 
@@ -96,6 +100,10 @@ feature -- Drawing
 		do
 		end
 
+	set_visible (a_visible: like visible)
+		do
+			visible := a_visible
+		end
 
 invariant
 	hud_exists: hud /= Void

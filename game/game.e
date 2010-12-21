@@ -47,6 +47,7 @@ feature -- Game states
 	state_run: GAME_STATE_RUN
 	state_victory: GAME_STATE_VICTORY
 	state_game_over: GAME_STATE_GAME_OVER
+	state_pause: GAME_STATE_PAUSE
 	state_exit: GAME_STATE_EXIT
 
 
@@ -74,28 +75,14 @@ feature -- Initialization
 			engine.put_object (state_manager)
 
 			create state_intro.make (Current)
-			state_manager.put_state (state_intro)
-
 			create state_help.make (Current)
-			state_manager.put_state (state_help)
-
 			create state_select_level.make (Current)
-			state_manager.put_state (state_select_level)
-
 			create state_get_ready.make (Current)
-			state_manager.put_state (state_get_ready)
-
 			create state_run.make (Current)
-			state_manager.put_state (state_run)
-
 			create state_victory.make (Current)
-			state_manager.put_state (state_victory)
-
 			create state_game_over.make (Current)
-			state_manager.put_state (state_game_over)
-
+			create state_pause.make (Current)
 			create state_exit.make (Current)
-			state_manager.put_state (state_exit)
 
 			state_manager.switch_state (state_intro)
 		end

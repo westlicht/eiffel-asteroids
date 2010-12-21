@@ -33,6 +33,9 @@ feature -- Access
 	time: REAL
 			-- Relative time in seconds.
 
+	paused: BOOLEAN assign set_paused
+			-- Pause the simulation updateing.
+
 
 feature {NONE} -- Implementation
 
@@ -124,21 +127,27 @@ feature -- Updateing
 			last_time := current_time
 			t := duration.fine_second.truncated_to_real
 
-			time := time + t
-			objects.do_all (agent update_object (?, t) )
+			if not paused then
+				time := time + t
+				objects.do_all (agent update_object (?, t) )
 
-			cur := objects.new_cursor
-			from cur.start until cur.after loop
-				if cur.item.is_killed then
-					prev := cur.item
-					cur.forth
-					prune_object (prev)
-				else
-					cur.forth
+				cur := objects.new_cursor
+				from cur.start until cur.after loop
+					if cur.item.is_killed then
+						prev := cur.item
+						cur.forth
+						prune_object (prev)
+					else
+						cur.forth
+					end
 				end
 			end
 		end
 
+	set_paused (a_paused: like paused)
+		do
+			paused := a_paused
+		end
 
 	exit
 			-- Exit the application.

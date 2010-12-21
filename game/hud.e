@@ -29,10 +29,13 @@ feature -- Constants
 feature -- Access
 
 	game: GAME
-		-- Game.
+			-- Game.
 
 	hud_manager: HUD_MANAGER
-		-- Alias to the HUD manager.
+			-- Alias to the HUD manager.
+
+	stats_visible: BOOLEAN assign set_stats_visible
+			-- Sets visibility of player stats widgets.
 
 
 feature -- Widgets
@@ -54,6 +57,7 @@ feature -- Initialization
 		do
 			game := a_game
 			hud_manager := a_game.engine.hud_manager
+			stats_visible := True
 
 			-- Create health bar
 			create health_bar.make (hud_manager)
@@ -129,6 +133,18 @@ feature -- Initialization
 	score_changed (a_sender: NUMERIC_VALUE [INTEGER])
 		do
 			score_text.text := "Score: " + a_sender.value.out
+		end
+
+feature -- Access
+
+	set_stats_visible (a_stats_visible: like stats_visible)
+		do
+			stats_visible := a_stats_visible
+			health_bar.visible := stats_visible
+			health_text.visible := stats_visible
+			energy_bar.visible := stats_visible
+			energy_text.visible := stats_visible
+			score_text.visible := stats_visible
 		end
 
 

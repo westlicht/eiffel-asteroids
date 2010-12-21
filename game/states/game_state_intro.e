@@ -23,10 +23,12 @@ feature -- State
 	enter
 			-- Called to enter the state.
 		do
+			Precursor
 			game.player.active := False
-			game.world.prepare_level (game.level)
+			game.world.prepare_idle
+			game.hud.stats_visible := False
 			set_title ("WELCOME TO ASTEROIDS")
-			set_message ("Press SHIFT for help, ENTER to continue or ESC to exit")
+			set_message ("Press SHIFT for help or ENTER to continue.")
 		end
 
 

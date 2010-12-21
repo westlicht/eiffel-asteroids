@@ -22,14 +22,14 @@ feature -- Access
 	game: GAME
 			-- Game.
 
-	states: LINKED_LIST [GAME_STATE]
-			-- List of game states.
-
 	idle_state: GAME_STATE
 			-- Placeholder for empty state.
 
 	active_state: GAME_STATE
 			-- Currently active game state.
+
+	state_stack: LINKED_STACK [GAME_STATE]
+			-- Stack of game states.
 
 
 feature {NONE} -- Local attributes
@@ -44,33 +44,41 @@ feature -- Initialization
 		do
 			make_with_engine (a_game.engine)
 			game := a_game
-			create states.make
 			create idle_state.make (game)
 			engine.input_manager.put_key_handler (agent key_handler)
 
 			active_state := idle_state
+			create state_stack.make
 		end
 
 
 feature -- States
 
-	put_state (a_state: GAME_STATE)
-			-- Adds a game state to the manager.
-		require
-			state_exists: a_state /= Void
-			state_not_put: not states.has (a_state)
-		do
-			states.extend (a_state)
-		end
-
 	switch_state (a_state: GAME_STATE)
 			-- Switch the game state.
 		require
 			state_exists: a_state /= Void
-			state_put: states.has (a_state)
 		do
 			next_state := a_state
+			-- Switch mode even if engine is paused
+			if engine.paused then
+				update (0.0)
+			end
 		end
+
+	switch_last_state
+			-- Switches to the last game state.
+		require
+			has_last_state: not state_stack.is_empty
+		local
+			last_state: GAME_STATE
+		do
+			state_stack.remove
+			last_state := state_stack.item
+			state_stack.remove
+			switch_state (last_state)
+		end
+
 
 
 feature -- Updateing
@@ -83,6 +91,7 @@ feature -- Updateing
 				active_state.leave
 				next_state.enter
 				active_state := next_state
+				state_stack.put (active_state)
 				next_state := Void
 			end
 		end
@@ -100,8 +109,8 @@ feature {NONE} -- Implementation
 
 invariant
 	game_exists: game /= Void
-	states_exists: states /= Void
 	idle_state_exists: idle_state /= Void
 	active_state_assigned: active_state /= Void
+	state_stack_exists: state_stack /= Void
 
 end
