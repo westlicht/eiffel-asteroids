@@ -101,7 +101,7 @@ feature -- Access
 
 	set_velocity (a_velocity: like velocity)
 		do
-			velocity := velocity
+			velocity := a_velocity
 		end
 
 	set_angle (a_angle: like angle)
@@ -153,8 +153,9 @@ feature -- Drawing
 			color: COLOR
 		do
 			-- Draw bounding sphere
-			--engine.renderer.set_foreground_color (create {EV_COLOR}.make_with_rgb (0.0, 0.0, 1.0))
-			--engine.renderer.draw_circle (position, radius)
+--			color.set_rgb (0.0, 0.0, 1.0)
+--			engine.renderer.set_foreground_color (color)
+--			engine.renderer.draw_circle (position, radius, False)
 
 			-- Draw shape
 			color.set_rgb (1.0, 1.0, 1.0)
