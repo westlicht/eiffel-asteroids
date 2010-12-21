@@ -161,11 +161,6 @@ feature -- Random numbers
 
 feature -- Implementation
 
-	particle_allocator: PARTICLE
-		do
-			create Result.make
-		end
-
 	draw_particle (particle: PARTICLE)
 			-- Draws a single particle.
 		do

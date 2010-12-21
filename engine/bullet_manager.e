@@ -100,11 +100,6 @@ feature -- Updateing
 
 feature -- Implementation
 
-	bullet_allocator: BULLET
-		do
-			create Result.make
-		end
-
 	draw_bullet (bullet: BULLET)
 			-- Draws a single bullet.
 		do
