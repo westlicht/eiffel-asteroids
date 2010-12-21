@@ -35,9 +35,9 @@ feature -- Key handling
 	handle_key (key: INPUT_KEY; pressed: BOOLEAN)
 		do
 			if pressed then
-				if key.name.is_equal ("enter") then
+				if key = game.engine.input_manager.key_enter then
 					game.state_manager.switch_state(game.state_select_level)
-				elseif key.name.is_equal ("shift") then
+				elseif key = game.engine.input_manager.key_shift then
 					game.state_manager.switch_state (game.state_help)
 				end
 			end

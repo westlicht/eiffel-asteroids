@@ -36,14 +36,14 @@ feature -- Key handling
 	handle_key (key: INPUT_KEY; pressed: BOOLEAN)
 		do
 			if pressed then
-				if key.name.is_equal ("enter") then
+				if key = game.engine.input_manager.key_enter then
 					game.state_manager.switch_state(game.state_get_ready)
-				elseif key.name.is_equal ("up") then
+				elseif key = game.engine.input_manager.key_up then
 					if game.level < game.Level_max then
 						game.level := game.level + 1
 						update_screen
 					end
-				elseif key.name.is_equal ("down") then
+				elseif key = game.engine.input_manager.key_down then
 					if game.level > game.Level_min then
 						game.level := game.level - 1
 						update_screen

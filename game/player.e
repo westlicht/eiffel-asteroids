@@ -120,6 +120,9 @@ feature {NONE} -- Local attributes
 	key_shield: INPUT_KEY
 			-- Shield key.
 
+	key_anti_gravity: INPUT_KEY
+			-- Anti-gravity key.
+
 	last_fire_time: REAL
 			-- Last time of fireing.
 
@@ -154,11 +157,12 @@ feature -- Initialization
 			create score.make (0, 100000, 0)
 			active := True
 
-			key_left := engine.input_manager.keys_by_name.item ("left")
-			key_right := engine.input_manager.keys_by_name.item ("right")
-			key_thrust := engine.input_manager.keys_by_name.item ("up")
-			key_fire := engine.input_manager.keys_by_name.item ("space")
-			key_shield := engine.input_manager.keys_by_name.item ("shift")
+			key_left := engine.input_manager.key_left
+			key_right := engine.input_manager.key_right
+			key_thrust := engine.input_manager.key_up
+			key_fire := engine.input_manager.key_space
+			key_shield := engine.input_manager.key_shift
+			key_anti_gravity := engine.input_manager.key_alt
 
 			-- Create anchor points
 			create anchor_gun.make (Current, Gun_position, Gun_direction)
@@ -244,11 +248,26 @@ feature -- Updateing
 				shield_active := False
 			end
 
+			-- Handle anti-gravity
+			if key_shield.is_pressed then
+				engine.physics_manager.rigid_bodies.do_all (agent handle_anti_gravity)
+			end
+
 			-- Handle energy
 			energy.increment (Energy_charge_rate * t)
 
 			-- Handle particle emitters
 			emitter_engine.enabled := key_thrust.is_pressed
+		end
+
+	handle_anti_gravity (a_rigid_body: RIGID_BODY)
+		local
+			r: REAL
+		do
+			r := 250.0
+			if a_rigid_body.position.distance (position) < r then
+				a_rigid_body.add_force (-a_rigid_body.velocity * 5.0)
+			end
 		end
 
 
@@ -331,5 +350,6 @@ invariant
 	key_thrust_exists: key_thrust /= Void
 	key_fire_exists: key_fire /= Void
 	key_shield_exists: key_shield /= Void
+	key_anti_gravity_exists: key_anti_gravity /= Void
 
 end

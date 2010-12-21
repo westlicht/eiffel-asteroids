@@ -23,6 +23,20 @@ feature -- Access
 			-- List of key handlers.
 
 
+feature -- Keys
+
+	key_left: INPUT_KEY
+	key_right: INPUT_KEY
+	key_up: INPUT_KEY
+	key_down: INPUT_KEY
+	key_space: INPUT_KEY
+	key_ctrl: INPUT_KEY
+	key_shift: INPUT_KEY
+	key_enter: INPUT_KEY
+	key_escape: INPUT_KEY
+	key_alt: INPUT_KEY
+
+
 feature -- Initialization
 
 	make (a_window: EV_WINDOW)
@@ -47,26 +61,34 @@ feature -- Key management
 			key_constants: EV_KEY_CONSTANTS
 		do
 			create key_constants
-			register_key ("left", key_constants.key_left)
-			register_key ("right", key_constants.key_right)
-			register_key ("up", key_constants.key_up)
-			register_key ("down", key_constants.key_down)
-			register_key ("space", key_constants.key_space)
-			register_key ("ctrl", key_constants.key_ctrl)
-			register_key ("shift", key_constants.key_shift)
-			register_key ("enter", key_constants.key_enter)
-			register_key ("escape", key_constants.key_escape)
-			register_key ("alt", key_constants.key_alt)
+
+			create key_left.make ("left", key_constants.key_left)
+			register_key (key_left)
+			create key_right.make ("right", key_constants.key_right)
+			register_key (key_right)
+			create key_up.make ("up", key_constants.key_up)
+			register_key (key_up)
+			create key_down.make ("down", key_constants.key_down)
+			register_key (key_down)
+			create key_space.make ("space", key_constants.key_space)
+			register_key (key_space)
+			create key_ctrl.make ("ctrl", key_constants.key_ctrl)
+			register_key (key_ctrl)
+			create key_shift.make ("shift", key_constants.key_shift)
+			register_key (key_shift)
+			create key_enter.make ("enter", key_constants.key_enter)
+			register_key (key_enter)
+			create key_escape.make ("escape", key_constants.key_escape)
+			register_key (key_escape)
+			create key_alt.make ("alt", key_constants.key_alt)
+			register_key (key_alt)
 		end
 
-	register_key (a_name: STRING; a_key_code: INTEGER)
+	register_key (a_key: INPUT_KEY)
 			-- Registers a key.
-		local
-			key: INPUT_KEY
 		do
-			create key.make (a_name, a_key_code)
-			keys_by_name.put (key, a_name)
-			keys_by_code.put (key, a_key_code)
+			keys_by_name.put (a_key, a_key.name)
+			keys_by_code.put (a_key, a_key.key_code)
 		end
 
 	put_key_handler (a_handler: PROCEDURE[ANY, TUPLE[key: INPUT_KEY; pressed: BOOLEAN]])
