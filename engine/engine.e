@@ -36,6 +36,9 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
+	window: EV_WINDOW
+			-- Main window.
+
 	objects: LINKED_LIST [ENGINE_OBJECT]
 			-- List of engine objects.
 
@@ -54,6 +57,7 @@ feature -- Creation
 			window_exists: a_window /= Void
 			drawing_area_valid: a_drawing_area /= Void and then a_drawing_area.width > 0 and a_drawing_area.height > 0
 		do
+			window := a_window
 			create input_manager.make (a_window)
 			create renderer.make (a_drawing_area)
 			create objects.make
@@ -136,6 +140,13 @@ feature -- Updateing
 		end
 
 
+	exit
+			-- Exit the application.
+		do
+			window.destroy_and_exit_if_last
+		end
+
+
 feature -- Objects
 
 	put_object (object: ENGINE_OBJECT)
@@ -213,6 +224,7 @@ feature {NONE} -- Implementation
 		end
 
 invariant
+	window_exists: window /= Void
 	input_manager_exists: input_manager /= Void
 	renderer_exists: renderer /= Void
 	bullet_manager_exists: bullet_manager /= Void

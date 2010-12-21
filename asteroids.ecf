@@ -19,7 +19,9 @@
 			<cluster name="engine" location=".\engine\"/>
 			<cluster name="particles" location=".\particles\"/>
 			<cluster name="hud" location=".\hud\"/>
-			<cluster name="game" location=".\game\"/>
+			<cluster name="game" location=".\game\">
+				<cluster name="states" location=".\game\states\"/>
+			</cluster>
 			<cluster name="input" location=".\input\"/>
 			<cluster name="math" location=".\math\"/>
 		</cluster>

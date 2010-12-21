@@ -26,7 +26,7 @@ feature -- State
 			game.player.active := False
 			game.world.prepare_level (game.level)
 			set_title ("WELCOME TO ASTEROIDS")
-			set_message ("Press SHIFT for help, press ENTER to continue")
+			set_message ("Press SHIFT for help, ENTER to continue or ESC to exit")
 		end
 
 
@@ -39,6 +39,8 @@ feature -- Key handling
 					game.state_manager.switch_state(game.state_select_level)
 				elseif key = game.engine.input_manager.key_shift then
 					game.state_manager.switch_state (game.state_help)
+				elseif key = game.engine.input_manager.key_escape then
+					game.state_manager.switch_state (game.state_exit)
 				end
 			end
 		end

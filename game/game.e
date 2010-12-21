@@ -23,7 +23,7 @@ feature -- Constants
 feature -- Access
 
 	world: WORLD
-			-- World.	
+			-- World.
 
 	player: PLAYER
 			-- Player.
@@ -47,6 +47,7 @@ feature -- Game states
 	state_run: GAME_STATE_RUN
 	state_victory: GAME_STATE_VICTORY
 	state_game_over: GAME_STATE_GAME_OVER
+	state_exit: GAME_STATE_EXIT
 
 
 feature -- Initialization
@@ -92,6 +93,9 @@ feature -- Initialization
 
 			create state_game_over.make (Current)
 			state_manager.put_state (state_game_over)
+
+			create state_exit.make (Current)
+			state_manager.put_state (state_exit)
 
 			state_manager.switch_state (state_intro)
 		end

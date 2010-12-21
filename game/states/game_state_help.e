@@ -39,6 +39,7 @@ feature -- State
 			help_text.append ("UP - Thrust%N")
 			help_text.append ("SPACE - Shoot%N")
 			help_text.append ("SHIFT - Shield%N")
+			help_text.append ("ESC - Pause/Exit%N")
 			help_text.append ("%N%NPress ENTER to exit help screen.")
 		end
 
