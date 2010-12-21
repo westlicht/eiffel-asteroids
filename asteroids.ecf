@@ -16,12 +16,12 @@
 				<exclude>/CVS$</exclude>
 				<exclude>/.svn$</exclude>
 			</file_rule>
-			<cluster name="engine" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\engine\"/>
-			<cluster name="particles" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\particles\"/>
-			<cluster name="hud" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\hud\"/>
-			<cluster name="game" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\game\"/>
-			<cluster name="input" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\input\"/>
-			<cluster name="math" location="\Users\freak\Eiffel 6.6 User Files\projects\asteriods\math\"/>
+			<cluster name="engine" location=".\engine\"/>
+			<cluster name="particles" location=".\particles\"/>
+			<cluster name="hud" location=".\hud\"/>
+			<cluster name="game" location=".\game\"/>
+			<cluster name="input" location=".\input\"/>
+			<cluster name="math" location=".\math\"/>
 		</cluster>
 	</target>
 	<target name="asteroids_dotnet" extends="asteroids">
