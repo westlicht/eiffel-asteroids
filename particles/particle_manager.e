@@ -135,7 +135,7 @@ feature -- Drawing
 		local
 			color: COLOR
 		do
-			color.make_gray (0.5)
+			color.set_gray (0.5)
 			engine.renderer.set_foreground_color (color)
 			particles.do_all (agent draw_particle)
 		end

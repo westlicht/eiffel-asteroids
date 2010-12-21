@@ -33,8 +33,8 @@ feature -- Initialization
 	make
 			-- Initializes a particle.
 		do
-			create position.make_zero
-			create velocity.make_zero
+			position.set_zero
+			velocity.set_zero
 		end
 
 	emit (a_settings: PARTICLE_SETTINGS; a_position: VECTOR2; a_velocity: VECTOR2)
@@ -42,8 +42,8 @@ feature -- Initialization
 		do
 			settings := a_settings
 			age := 0.0
-			position.make_from_other (a_position)
-			velocity.make_from_other (a_velocity)
+			position := a_position
+			velocity := a_velocity
 			is_killed := False
 		end
 

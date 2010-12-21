@@ -23,7 +23,7 @@ feature -- Constants
 	Default_bar_color: COLOR
 			-- Default color of the bar.
 		once
-			Result.make_with_rgb (1.0, 1.0, 1.0)
+			Result.set_rgb (1.0, 1.0, 1.0)
 		end
 
 	Default_border_size: REAL = 3.0
@@ -132,8 +132,8 @@ feature -- Drawing
 			engine.renderer.draw_rectangle (position, size, False)
 
 			-- Draw bar
-			create border.make (border_size, border_size)
-			create bar_size.make_from_other (size - border * 2)
+			border.set (border_size, border_size)
+			bar_size := size - border * 2
 			bar_size.x := bar_size.x * ((value - min) / (max - min))
 			engine.renderer.set_foreground_color (bar_color)
 			engine.renderer.draw_rectangle (position + border, bar_size, True)

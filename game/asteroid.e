@@ -30,13 +30,13 @@ feature -- Constants
 	Fill_color: COLOR
 			-- Asteroid fill color.
 		once
-			Result.make_with_rgb (0.2, 0.2, 0.2)
+			Result.set_rgb (0.2, 0.2, 0.2)
 		end
 
 	Border_color: COLOR
 			-- Asteroid border color.
 		once
-			Result.make_with_rgb (0.8, 0.8, 0.8)
+			Result.set_rgb (0.8, 0.8, 0.8)
 		end
 
 
@@ -70,8 +70,8 @@ feature -- Creation
 			game := a_game
 
 			-- Random position, velocity and angular velocity
-			position.make_random (0, engine.renderer.screen_width, 0, engine.renderer.screen_height)
-			velocity.make_random (-Max_velocity, Max_velocity, -Max_velocity, Max_velocity)
+			position.set_random (0, engine.renderer.screen_width, 0, engine.renderer.screen_height)
+			velocity.set_random (-Max_velocity, Max_velocity, -Max_velocity, Max_velocity)
 			angular_velocity := (random.real_item - 0.5) * 2
 			random.forth
 		end
@@ -128,7 +128,7 @@ feature {NONE} -- Implementation
 
 			from i := 1 until i > count loop
 				create child.make_with_category (game, category - 1)
-				create direction.make_unit (({REAL} 6.283 / count.to_real + offset) * i.to_real)
+				direction.set_unit (({REAL} 6.283 / count.to_real + offset) * i.to_real)
 				child.position := position + direction * radius * 0.3
 				child.velocity := velocity + direction * 70.0
 				child.angular_velocity:= angular_velocity + random.real_item * 4 - 2
@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 		do
 			create points.make (1, Num_points)
 			from i := 1 until i > Num_points loop
-				create v.make_unit (i / Num_points.to_real * 2 * 3.1415)
+				v.set_unit (i / Num_points.to_real * 2 * 3.1415)
 				v := v * ((1 - random.real_item * 0.5) * size)
 				points[i] := v
 				i := i + 1

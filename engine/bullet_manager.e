@@ -83,7 +83,7 @@ feature -- Drawing
 		local
 			color: COLOR
 		do
-			color.make_with_rgb (0.0, 1.0, 0.0)
+			color.set_rgb (0.0, 1.0, 0.0)
 			engine.renderer.set_foreground_color (color)
 			bullets.do_all (agent draw_bullet)
 		end

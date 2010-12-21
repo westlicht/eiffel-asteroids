@@ -26,14 +26,14 @@ feature -- Initialization
 
 	make
 		do
-			create position.make_zero
-			create velocity.make_zero
+			position.set_zero
+			velocity.set_zero
 		end
 
 	fire (a_position: VECTOR2; a_velocity: VECTOR2)
 		do
-			position.make_from_other (a_position)
-			velocity.make_from_other (a_velocity)
+			position := a_position
+			velocity := a_velocity
 			is_killed := False
 		end
 

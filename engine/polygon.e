@@ -38,13 +38,18 @@ feature -- Creation
 			size_positive: size > 0.0
 		local
 			half: REAL
+			v: VECTOR2
 		do
 			half := size / 2.0
 			create points.make (1, 4)
-			points[1] := create {VECTOR2}.make(-half, -half)
-			points[2] := create {VECTOR2}.make(half, -half)
-			points[3] := create {VECTOR2}.make(half, half)
-			points[4] := create {VECTOR2}.make(-half, half)
+			v.set (-half, -half)
+			points [1] := v
+			v.set (half, -half)
+			points [2] := v
+			v.set (half, half)
+			points [3] := v
+			v.set (-half, half)
+			points [4] := v
 		ensure
 			points_count: points.count = 4
 		end

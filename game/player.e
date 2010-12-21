@@ -54,25 +54,25 @@ feature -- Constants
 	Gun_position: VECTOR2
 			-- Local position of the gun.
 		once
-			create Result.make (0.0, -11.0)
+			Result.set (0.0, -11.0)
 		end
 
 	Gun_direction: VECTOR2
 			-- Local direction of the gun.
 		once
-			create Result.make (0.0, -1.0)
+			Result.set (0.0, -1.0)
 		end
 
 	Engine_position: VECTOR2
 			-- Local position of engine.
 		once
-			create Result.make (0.0, 5.0)
+			Result.set (0.0, 5.0)
 		end
 
 	Engine_direction: VECTOR2
 			-- Local direction of engine.
 		once
-			create Result.make (0.0, 1.0)
+			Result.set (0.0, 1.0)
 		end
 
 	Shield_radius: REAL = 20.0
@@ -81,7 +81,7 @@ feature -- Constants
 	Shield_color: COLOR
 			-- Color of the shield.
 		once
-			Result.make_with_rgb (0.2, 0.2, 1.0)
+			Result.set_rgb (0.2, 0.2, 1.0)
 		end
 
 
@@ -182,7 +182,7 @@ feature -- Resetting
 		do
 			position.x := engine.renderer.screen_width.to_real / 2.0
 			position.y := engine.renderer.screen_height.to_real / 2.0
-			velocity.make_zero
+			velocity.set_zero
 			angular_velocity := 0.0
 			angle := 0.0
 			health.value := health.max
@@ -226,11 +226,11 @@ feature -- Updateing
 
 			-- Handle thrust
 			if key_thrust.is_pressed then
-				create thrust.make (0, -Thrust_force)
+				thrust.set (0, -Thrust_force)
 				thrust := transform.transform_no_translation (thrust)
 				add_force (thrust)
 			else
-				acceleration.make_zero
+				acceleration.set_zero
 			end
 
 			-- Handle fireing
@@ -333,12 +333,17 @@ feature {NONE} -- Implementation
 			-- Creates a simple ship shaped polygon.
 		local
 			points: ARRAY[VECTOR2]
+			v: VECTOR2
 		do
 			create points.make (1, 4)
-			points[1] := create {VECTOR2}.make (0.0, -10.0)
-			points[2] := create {VECTOR2}.make (10.0, 10.0)
-			points[3] := create {VECTOR2}.make (0.0, 7.0)
-			points[4] := create {VECTOR2}.make (-10.0, 10.0)
+			v.set (0.0, -10.0)
+			points [1] := v
+			v.set (10.0, 10.0)
+			points [2] := v
+			v.set (0.0, 7.0)
+			points [3] := v
+			v.set (-10.0, 10.0)
+			points [4] := v
 			create Result.make_from_points (points)
 		end
 

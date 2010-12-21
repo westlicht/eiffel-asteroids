@@ -54,8 +54,6 @@ feature {NONE} -- Initialization
 
 	make_translation (a_position: VECTOR2)
 			-- Creates a translation matrix.
-		require
-			position_exists: a_position /= Void
 		do
 			make_identity
 			set_element(1, 3, a_position.x)
@@ -85,7 +83,7 @@ feature {NONE} -- Initialization
 
 feature -- Operations
 
-	infix "*" (other: like Current): like Current
+	product alias "*" (other: like Current): like Current
 			-- Matrix multiplication.
 		require
 			other_exists: other /= Void
@@ -111,10 +109,8 @@ feature -- Operations
 
 	transform (v: VECTOR2): VECTOR2
 			-- Vector multiplication.
-		require
-			v_exists: v /= Void
 		do
-			create Result.make (
+			Result.set (
 				Current.element (1, 1) * v.x + Current.element (1, 2) * v.y + Current.element (1, 3),
 				Current.element (2, 1) * v.x + Current.element (2, 2) * v.y + Current.element (2, 3)
 			)
@@ -122,10 +118,8 @@ feature -- Operations
 
 	transform_no_translation (v: VECTOR2): VECTOR2
 			-- Vector multiplication without taking translation into account.
-		require
-			v_exists: v /= Void
 		do
-			create Result.make (
+			Result.set (
 				Current.element (1, 1) * v.x + Current.element (1, 2) * v.y,
 				Current.element (2, 1) * v.x + Current.element (2, 2) * v.y
 			)

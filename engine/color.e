@@ -19,8 +19,15 @@ create
 
 feature -- Access
 
-	r, g, b: REAL
-			-- Color components (red, green, blue).
+	r: REAL assign set_r
+			-- Red component [0..1].
+
+	g: REAL assign set_g
+			-- Green component [0..1].
+
+	b: REAL assign set_b
+			-- Blue component [0..1].
+
 
 feature -- Initialization
 
@@ -32,8 +39,35 @@ feature -- Initialization
 			b := 0.0
 		end
 
-	make_with_rgb (a_r: like r; a_g: like g; a_b: like b)
-			-- Create color with rgb values [0..1].
+
+feature -- Access
+
+	set_r (a_r: like r)
+			-- Sets the red component [0..1].
+		require
+			valid_r: is_valid_component (a_r)
+		do
+			r := a_r
+		end
+
+	set_g (a_g: like g)
+			-- Sets the green component [0..1].
+		require
+			valid_g: is_valid_component (a_g)
+		do
+			g := a_g
+		end
+
+	set_b (a_b: like b)
+			-- Sets the blue component [0..1].
+		require
+			valid_b: is_valid_component (a_b)
+		do
+			b := a_b
+		end
+
+	set_rgb (a_r: like r; a_g: like g; a_b: like b)
+			-- Sets RGB components [0..1].
 		require
 			valid_r: is_valid_component (a_r)
 			valid_g: is_valid_component (a_g)
@@ -44,18 +78,12 @@ feature -- Initialization
 			b := a_b
 		end
 
-	make_gray (a_gray: REAL)
-			-- Create gray color.
+	set_gray (a_gray: REAL)
+			-- Sets all RGB components to the same intensity to make gray colors.
 		require
 			valid_gray: is_valid_component (a_gray)
 		do
-			make_with_rgb (a_gray, a_gray, a_gray)
-		end
-
-	make_from_other (a_other: like Current)
-			-- Create a color by copying another.
-		do
-			make_with_rgb (a_other.r, a_other.g, a_other.b)
+			set_rgb (a_gray, a_gray, a_gray)
 		end
 
 
@@ -67,7 +95,7 @@ feature -- Calculations
 			one_minus_blend: like a_blend
 		do
 			one_minus_blend := 1 - a_blend
-			Result.make_with_rgb (
+			Result.set_rgb (
 				r * one_minus_blend + a_other.r * a_blend,
 				g * one_minus_blend + a_other.g * a_blend,
 				b * one_minus_blend + a_other.b * a_blend

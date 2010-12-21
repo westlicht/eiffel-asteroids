@@ -48,9 +48,9 @@ feature -- Initialization
 		do
 			manager := a_manager
 			settings := a_settings
-			create position.make_zero
-			create velocity.make_zero
-			create direction.make_unit (0)
+			position.set_zero
+			velocity.set_zero
+			direction.set_unit (0)
 		end
 
 

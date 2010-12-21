@@ -21,7 +21,7 @@ inherit
 		end
 
 create
-	default_create, make, make_zero, make_unit, make_from_other, make_random
+	default_create
 
 
 feature -- Access
@@ -33,14 +33,17 @@ feature -- Access
 			-- Y coordinate.
 
 
-feature -- Creation
+feature -- Initialization
 
 	default_create
 		do
 		end
 
-	make (a_x: like x; a_y: like y)
-			-- Creates a vector with (a_x,a_y) coordinates.
+
+feature -- Access
+
+	set (a_x: like x; a_y: like y)
+			-- Sets the vector's coordinates.
 		do
 			x := a_x
 			y := a_y
@@ -49,33 +52,20 @@ feature -- Creation
 			y_set: y = a_y
 		end
 
-	make_zero
-			-- Creates a vector with (0,0) coordinates.
+	set_zero
+			-- Sets the vector's coordinates to zero.
 		do
-			make (0.0, 0.0)
-		ensure
-			x_zero: x = 0.0
-			y_zero: y = 0.0
+			set (0.0, 0.0)
 		end
 
-	make_unit(a_angle: REAL)
-			-- Creates a unit length vector with given angle.
+	set_unit (a_angle: REAL)
+			-- Sets the vector to a unit length vector with given angle.
 		do
-			make (-cos(a_angle), sin(a_angle))
+			set (-cos(a_angle), sin(a_angle))
 		end
 
-	make_from_other(other: like Current)
-			-- Creates a vector with same coordinates as another vector.
-		require
-			other_exists: other /= Void
-		do
-			make (other.x, other.y)
-		ensure
-			equal_to_other: is_equal(other)
-		end
-
-	make_random(a_min_x, a_max_x: like x; a_min_y, a_max_y: like y)
-			-- Creates a vector with random coordinates (a_min_x..a_max_x,a_min_y..a_max_x).
+	set_random(a_min_x, a_max_x: like x; a_min_y, a_max_y: like y)
+			-- Sets the vector's coordinates to random values (a_min_x..a_max_x,a_min_y..a_max_x).
 		do
 			random.forth
 			x := a_min_x + random.real_item * (a_max_x - a_min_x)
@@ -85,16 +75,6 @@ feature -- Creation
 
 
 feature -- Coordinate access
-
-	set (a_x: like x; a_y: like y)
-			-- Sets the X and Y coordinates.
-		do
-			x := a_x
-			y := a_y
-		ensure
-			x_set: x = a_x
-			y_set: y = a_y
-		end
 
 	set_x (a_x: like x)
 			-- Sets the X coordinate.
@@ -134,63 +114,56 @@ feature -- Calculations
 	normalized: VECTOR2
 			-- Returns a normalized version of the vector.
 		do
-			create Result.make_from_other (Current)
-			Result := Result / Result.length
+			Result := Current / length
 		end
 
 
 feature -- Vector operations
 
-	infix "+" (other: like Current): like Current
+	plus alias "+" (other: like Current): like Current
 			-- Adds two vectors.
-		require
-			other_exists: other /= Void
 		do
-			create Result.make (x + other.x, y + other.y)
+			Result.set (x + other.x, y + other.y)
 		end
 
-	infix "-" (other: like Current): like Current
+	minus alias "-" (other: like Current): like Current
 			-- Subtracts two vectors.
-		require
-			other_exists: other /= Void
 		do
-			create Result.make (x - other.x, y - other.y)
+			Result.set (x - other.x, y - other.y)
 		end
 
-	infix "*" (a_factor: REAL): like Current
+	product alias "*" (a_factor: REAL): like Current
 			-- Scalar multiplication.
 		do
-			create Result.make (x * a_factor, y * a_factor)
+			Result.set (x * a_factor, y * a_factor)
 		end
 
-	infix "/" (a_divisor: REAL): like Current
+	quotient alias "/" (a_divisor: REAL): like Current
 			-- Scalar division.
 		require
 			divisor_not_zero: a_divisor /= 0.0
 		do
-			create Result.make (x / a_divisor, y / a_divisor)
+			Result.set (x / a_divisor, y / a_divisor)
 		end
 
-	prefix "+": like Current
+	identity alias "+": like Current
 			-- Unary plus.
 		do
-			create Result.make (x, y)
+			Result.set (x, y)
 		ensure
 			result_is_same: is_equal(Result)
 		end
 
-	prefix "-": like Current is
+	opposite alias "-": like Current
 			-- Unary minus.
 		do
-			create Result.make (-x, -y)
+			Result.set (-x, -y)
 		ensure
 			result_is_negation: Result.x = -x and Result.y = -y
 		end
 
 	dot_product (other: like Current): REAL
 			-- Dot product.
-		require
-			other_exists: other /= Void
 		do
 			Result := x * other.x + y * other.y
 		ensure
@@ -199,16 +172,12 @@ feature -- Vector operations
 
 	distance (other: like Current): REAL
 			-- Distance to another vector.
-		require
-			other_exists: other /= Void
 		do
 			Result := (other - Current).length
 		end
 
 	distance_squared (other: like Current): REAL
 			-- Squared distance to another vector.
-		require
-			other_exists: other /= Void
 		do
 			Result := (other - Current).length_squared
 		end
@@ -216,7 +185,7 @@ feature -- Vector operations
 
 feature -- Output
 
-	out: STRING is
+	out: STRING
 			-- String representation of the vector.
 		do
 			Result := "(x = " + x.out + ", y = " + y.out + ")"

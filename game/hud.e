@@ -16,13 +16,13 @@ feature -- Constants
 	Health_bar_color: COLOR
 			-- Color of health bar.
 		once
-			Result.make_with_rgb (1.0, 0.2, 0.2)
+			Result.set_rgb (1.0, 0.2, 0.2)
 		end
 
 	Energy_bar_color: COLOR
 			-- Color of energy bar.
 		once
-			Result.make_with_rgb (0.2, 0.2, 1.0)
+			Result.set_rgb (0.2, 0.2, 1.0)
 		end
 
 

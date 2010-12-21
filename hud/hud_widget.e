@@ -13,19 +13,19 @@ feature -- Constants
 	Default_position: VECTOR2
 			-- Default position.
 		once
-			create Result.make_zero
+			Result.set (0.0, 0.0)
 		end
 
 	Default_size: VECTOR2
 			-- Default size.
 		once
-			create Result.make (100.0, 10.0)
+			Result.set (100.0, 10.0)
 		end
 
 	Default_color: COLOR
 			-- Default color.
 		once
-			Result.make_with_rgb (1.0, 1.0, 1.0)
+			Result.set_rgb (1.0, 1.0, 1.0)
 		end
 
 
@@ -52,8 +52,8 @@ feature -- Initialization
 			hud_exists: a_hud /= Void
 		do
 			hud := a_hud
-			create position.make_from_other (Default_position)
-			create size.make_from_other (Default_size)
+			position := default_position
+			size := Default_size
 			color := Default_color
 		end
 
@@ -63,7 +63,7 @@ feature -- Access
 	set_position (a_position: like position)
 			-- Sets the position.
 		do
-			position.make_from_other (a_position)
+			position := a_position
 		end
 
 	set_size (a_size: like size)
@@ -71,7 +71,7 @@ feature -- Access
 		require
 			size_positive: a_size.x > 0.0 and a_size.y > 0.0
 		do
-			size.make_from_other (a_size)
+			size := a_size
 		end
 
 	set_color (a_color: like color)

@@ -165,15 +165,19 @@ feature -- Objects
 			end
 		end
 
-	kill_objects_by_type (a_generator: STRING)
+	kill_objects_by_type (a_type: STRING)
 		require
-			valid_generator: a_generator /= Void and then not a_generator.is_empty
+			valid_type: a_type /= Void and then not a_type.is_empty
 		local
 			cur: LINKED_LIST_ITERATION_CURSOR [ENGINE_OBJECT]
+			internal: INTERNAL
+			type_id: INTEGER
 		do
+			create internal
+			type_id := internal.dynamic_type_from_string (a_type)
 			cur := objects.new_cursor
 			from cur.start until cur.after loop
-				if cur.item.generator.is_equal (a_generator) then
+				if internal.is_instance_of (cur.item, type_id) then
 					cur.item.kill
 				end
 				cur.forth

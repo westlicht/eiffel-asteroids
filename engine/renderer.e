@@ -107,8 +107,6 @@ feature -- Drawing operations
 
 	draw_point (a_position: VECTOR2)
 			-- Draws a single point.
-		require
-			position_exists: a_position /= Void
 		do
 			canvas.draw_point (a_position.x.rounded, a_position.y.rounded)
 		end
@@ -116,7 +114,6 @@ feature -- Drawing operations
 	draw_circle (a_center: VECTOR2; a_radius: REAL; a_filled: BOOLEAN)
 			-- Draws a circle.
 		require
-			center_exists: a_center /= Void
 			radius_positive: a_radius >= 0.0
 		local
 			r: INTEGER
@@ -132,8 +129,6 @@ feature -- Drawing operations
 	draw_rectangle (a_position: VECTOR2; a_size: VECTOR2; a_filled: BOOLEAN)
 			-- Draws a rectangle.
 		require
-			position_exists: a_position /= Void
-			size_exists: a_size /= Void
 			size_valid: a_size.x >= 0.0 and a_size.y >= 0.0
 		do
 			if a_filled then
@@ -146,7 +141,6 @@ feature -- Drawing operations
 	draw_transformed_polygon (a_polygon: POLYGON; a_transform: MATRIX3; a_filled: BOOLEAN)
 			-- Draws a polygon first transformed by a matrix.
 		require
-			polygon_exists: a_polygon /= Void
 			transform_exists: a_transform /= Void
 		local
 			points: ARRAY[EV_COORDINATE]
@@ -162,7 +156,6 @@ feature -- Drawing operations
 	draw_text (a_position: VECTOR2; a_text: STRING)
 			-- Draws text.
 		require
-			position_exists: a_position /= Void
 			text_valid: a_text /= Void and then not a_text.is_empty
 		do
 			canvas.draw_text_top_left (a_position.x.rounded, a_position.y.rounded, a_text)
@@ -193,7 +186,7 @@ feature -- Drawing operations
 			size: TUPLE [width: INTEGER; height: INTEGER]
 		do
 			size := active_font.string_size (a_text)
-			create Result.make (size.width, size.height)
+			Result.set (size.width, size.height)
 		end
 
 

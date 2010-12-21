@@ -100,7 +100,7 @@ feature {NONE} -- Implementation
 		do
 			if not a_line.is_empty then
 				text_size := hud.engine.renderer.text_size (a_line)
-				create origin.make_from_other (position)
+				origin := position
 				origin.y := origin.y + (a_index - 1) * text_size.y
 				inspect horizontal_align
 				when  Horizontal_align_center then

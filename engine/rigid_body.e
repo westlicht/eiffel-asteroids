@@ -78,10 +78,10 @@ feature -- Initialization
 		do
 			make_with_engine (a_engine)
 			shape := a_shape -- TODO maybe copy
-			create position.make_zero
-			create velocity.make_zero
-			create acceleration.make_zero
-			create force.make_zero
+			position.set_zero
+			velocity.set_zero
+			acceleration.set_zero
+			force.set_zero
 			angle := 0.0
 			angular_velocity := 2.0
 			mass := 10.0
@@ -96,12 +96,12 @@ feature -- Access
 
 	set_position (a_position: like position)
 		do
-			position.make_from_other (a_position)
+			position := a_position
 		end
 
 	set_velocity (a_velocity: like velocity)
 		do
-			velocity.make_from_other (a_velocity)
+			velocity := velocity
 		end
 
 	set_angle (a_angle: like angle)
@@ -157,7 +157,7 @@ feature -- Drawing
 			--engine.renderer.draw_circle (position, radius)
 
 			-- Draw shape
-			color.make_with_rgb (1.0, 1.0, 1.0)
+			color.set_rgb (1.0, 1.0, 1.0)
 			engine.renderer.set_foreground_color (color)
 			engine.renderer.draw_transformed_polygon (shape, transform, True)
 		end
@@ -197,7 +197,7 @@ feature -- Updateing
 			anchors.do_all (agent update_anchor)
 
 			-- Reset force
-			force.make_zero
+			force.set_zero
 		end
 
 
@@ -230,7 +230,7 @@ feature -- Collision handling
 			-- Compute minimum distance to push objects apart after collision
 			if d < 1.0 then
 				d := 1.0
-				create mtd.make (1.0, 0.0)
+				mtd.set (1.0, 0.0)
 			else
 				mtd := delta * ((radius + other.radius - d) / d)
 			end

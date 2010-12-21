@@ -40,9 +40,9 @@ feature -- Updateing
 	update (engine: ENGINE; t: REAL)
 			-- Updates the emitter by t seconds.
 		do
-			position.make_from_other (anchor.global_position)
-			velocity.make_from_other (anchor.rigid_body.velocity)
-			direction.make_from_other (anchor.global_direction)
+			position := anchor.global_position
+			velocity := anchor.rigid_body.velocity
+			direction := anchor.global_direction
 
 			Precursor (engine, t)
 		end

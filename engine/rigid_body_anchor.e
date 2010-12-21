@@ -35,14 +35,12 @@ feature -- Initialization
 			-- Initializes an anchor with local space position and direction on rigid body.
 		require
 			rigid_body_exists: a_rigid_body /= Void
-			position_exists: a_position /= Void
-			direction_exists: a_direction /= Void
 		do
 			rigid_body := a_rigid_body
-			create local_position.make_from_other (a_position)
-			create local_direction.make_from_other (a_direction.normalized)
-			create global_position.make_from_other (local_position)
-			create global_direction.make_from_other (local_direction)
+			local_position := a_position
+			local_direction := a_direction.normalized
+			global_position := local_position
+			global_direction := local_direction
 		end
 
 
@@ -58,9 +56,5 @@ feature -- Transformation
 
 invariant
 	rigid_body_exists: rigid_body /= Void
-	local_position_exists: local_position /= Void
-	local_direction_exists: local_direction /= Void
-	global_position_exists: global_position /= Void
-	global_direction_exists: global_direction /= Void
 
 end

@@ -22,7 +22,7 @@ feature -- Constants
 	Background: COLOR
 			-- Background color.
 		once
-			Result.make_with_rgb(0.0, 0.0, 0.0)
+			Result.set_rgb (0.0, 0.0, 0.0)
 		end
 
 	Num_stars: INTEGER = 100
@@ -40,7 +40,7 @@ feature -- Initialization
 
 			create stars.make
 			from i := 1 until i > 100 loop
-				create v.make_random(0.0, engine.renderer.screen_width, 0.0, engine.renderer.screen_height)
+				v.set_random (0.0, engine.renderer.screen_width, 0.0, engine.renderer.screen_height)
 				stars.extend (v)
 				i := i + 1
 			end
@@ -83,7 +83,7 @@ feature -- Drawing
 			from stars.start until stars.after loop
 				-- Create pseudo random oscillating color
 				gray := oscillate (engine.time, stars.item.x * stars.item.y * t, stars.item.x * stars.item.y * t)
-				color.make_gray (gray)
+				color.set_gray (gray)
 				engine.renderer.set_foreground_color (color)
 
 				-- Draw star
