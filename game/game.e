@@ -92,9 +92,7 @@ feature -- Initialization
 			highscore.extend (create {HIGHSCORE}.make ("test2", 12345, create {DATE_TIME}.make_now_utc))
 			highscore.extend (create {HIGHSCORE}.make ("test3", 123456, create {DATE_TIME}.make_now_utc))
 			highscore.extend (create {HIGHSCORE}.make ("test4", 123457, create {DATE_TIME}.make_now_utc))
-			highscore.save_to_file (Highscore_filename)
 			highscore.load_from_file (Highscore_filename)
-			io.put_string (Highscore_filename)
 
 			-- Create the world
 			create world.make (Current)

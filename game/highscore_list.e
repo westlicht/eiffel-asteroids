@@ -62,8 +62,9 @@ feature -- Serialization
 			date: DATE_TIME
 		do
 			wipe_out
-			create file.make_open_read (a_filename)
-			if file.is_open_read then
+			create file.make (a_filename)
+			if file.exists and then file.is_readable then
+				file.open_read
 				from
 					file.start
 				until
