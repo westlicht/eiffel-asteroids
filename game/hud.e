@@ -48,6 +48,7 @@ feature -- Widgets
 	highscore_text: HUD_TEXT
 	title_text: HUD_TEXT
 	message_text: HUD_TEXT
+	name_entry_text: HUD_TEXT
 
 
 feature -- Initialization
@@ -113,6 +114,15 @@ feature -- Initialization
 			message_text.font_id := game.engine.renderer.Font_id_small
 			message_text.horizontal_align := message_text.Horizontal_align_center
 			hud_manager.put_widget (message_text)
+
+			-- Create name entry text
+			create name_entry_text.make (hud_manager)
+			name_entry_text.color.set_rgb (0.3, 0.3, 1.0)
+			name_entry_text.position.set (0.0, 350.0)
+			name_entry_text.size.x := game.engine.renderer.screen_width
+			name_entry_text.font_id := game.engine.renderer.Font_id_large
+			name_entry_text.horizontal_align := name_entry_text.Horizontal_align_center
+			hud_manager.put_widget (name_entry_text)
 
 			-- Add observers for health, energy, score and highscore
 			game.player.health.register_observer (agent health_changed)

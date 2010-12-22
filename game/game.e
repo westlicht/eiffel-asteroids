@@ -42,6 +42,7 @@ feature -- Constants
 			create Result.make_from_string (Absolute_path + "highscore.dat")
 		end
 
+
 feature -- Access
 
 	world: WORLD

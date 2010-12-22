@@ -59,7 +59,9 @@ feature -- Key handling
 		do
 			if pressed then
 				if key = game.engine.input_manager.key_enter then
-					game.state_manager.switch_state(game.state_intro)
+					game.state_manager.switch_last_state
+				elseif key = game.engine.input_manager.key_escape then
+					game.state_manager.switch_last_state
 				end
 			end
 		end

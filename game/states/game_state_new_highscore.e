@@ -26,11 +26,12 @@ feature -- State
 		do
 			Precursor
 			set_title ("NEW HIGHSCORE")
-			update_message (game.player.name)
+			set_message ("Your score is " + game.player.score.value.out + ".%N%NEnter your name and press ENTER to accept or ESC to abort:")
 			game.player.active := False
 
 			game.engine.input_manager.prompt := game.player.name
 			game.engine.input_manager.prompt_handler := agent handle_prompt
+			game.hud.name_entry_text.text := game.player.name
 		end
 
 	leave
@@ -38,6 +39,7 @@ feature -- State
 		do
 			Precursor
 			game.engine.input_manager.prompt_handler := Void
+			game.hud.name_entry_text.text.make_empty
 		end
 
 
@@ -59,15 +61,8 @@ feature -- Key handling
 
 	handle_prompt (a_prompt: STRING)
 		do
-			update_message (a_prompt)
+			game.hud.name_entry_text.text := a_prompt
 		end
 
-
-feature {NONE} -- Implementation
-
-	update_message (a_name: STRING)
-		do
-			set_message ("Your score is " + game.player.score.value.out + ".%N%NEnter your name and press ENTER to accept or ESC to abort:%N%N" + a_name)
-		end
 
 end

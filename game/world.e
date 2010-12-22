@@ -22,6 +22,7 @@ feature -- Access
 	background: BACKGROUND
 			-- Background.
 
+
 feature -- Initialization
 
 	make (a_game: GAME)

@@ -158,12 +158,23 @@ feature {NONE} -- Implementation
 			-- Update text prompt by checking keys.
 		local
 			changed: BOOLEAN
+			s: STRING
 		do
-			-- Handle text prompt
-			if a_key.is_alpha then
-				prompt.append (a_key.out)
+			-- Handle alphanumeric keys
+			if a_key.is_alpha or a_key.is_number then
+				create s.make_from_string (a_key.out)
+				if key_shift.is_pressed then
+					s.to_upper
+				end
+				prompt.append (s)
 				changed := True
 			end
+			-- Handle space
+			if a_key.code = key_constants.key_space then
+				prompt.append (" ")
+				changed := True
+			end
+			-- Handle backspace
 			if not prompt.is_empty and then a_key.code = key_constants.key_back_space then
 				prompt.remove_tail (1)
 				changed := True
