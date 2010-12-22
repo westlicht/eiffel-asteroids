@@ -117,6 +117,7 @@ feature -- Initialization
 
 			-- Create name entry text
 			create name_entry_text.make (hud_manager)
+			name_entry_text.text.make_empty
 			name_entry_text.color.set_rgb (0.3, 0.3, 1.0)
 			name_entry_text.position.set (0.0, 350.0)
 			name_entry_text.size.x := game.engine.renderer.screen_width
