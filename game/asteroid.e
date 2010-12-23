@@ -97,7 +97,7 @@ feature {NONE} -- Implementation
 		local
 			emitter: PARTICLE_EMITTER
 		do
-			create emitter.make_with_settings (engine.particle_manager, engine.particle_manager.get_settings ("explosion"))
+			create emitter.make (engine.particle_manager.get_system ("explosion"))
 			emitter.position := position
 			emitter.velocity := velocity
 			emitter.burst (50, 0.1)

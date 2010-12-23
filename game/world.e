@@ -83,6 +83,7 @@ feature {NONE} -- Particle settings
 	load_particle_settings
 		local
 			settings: PARTICLE_SETTINGS
+			system: PARTICLE_SYSTEM
 		do
 			create settings.make
 			settings.spread := 0.2
@@ -91,7 +92,9 @@ feature {NONE} -- Particle settings
 			settings.rate := 50.0
 			settings.life_time := 1.0
 			settings.drag := 0.5
-			engine.particle_manager.put_settings (settings, "engine")
+			settings.color.set_rgb (0.2, 0.2, 1.0)
+			create system.make (engine.particle_manager, settings)
+			engine.particle_manager.put_system (system, "engine")
 
 			create settings.make
 			settings.spread := 6.283
@@ -100,7 +103,9 @@ feature {NONE} -- Particle settings
 			settings.rate := 100.0
 			settings.life_time := 1.5
 			settings.drag := 0.6
-			engine.particle_manager.put_settings (settings, "explosion")
+			settings.color.set_gray (0.5)
+			create system.make (engine.particle_manager, settings)
+			engine.particle_manager.put_system (system, "explosion")
 		end
 
 
@@ -116,5 +121,6 @@ feature {NONE} -- Random
 invariant
 	game_exists: game /= Void
 	engine_assigned: engine /= Void
+	background_exists: background /= Void
 
 end

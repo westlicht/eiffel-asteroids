@@ -31,6 +31,9 @@ feature -- Access
 	drag: REAL assign set_drag
 			-- Particle drag factor (slow down based on current velocity).
 
+	color: COLOR assign set_color
+			-- Particle color.
+
 
 feature -- Initialization
 
@@ -43,6 +46,7 @@ feature -- Initialization
 			rate := 100.0
 			life_time := 1.0
 			drag := 0.0
+			color.set_rgb (1.0, 1.0, 1.0)
 		end
 
 
@@ -76,6 +80,11 @@ feature -- Settings
 	set_drag (a_drag: like drag)
 		do
 			drag := a_drag
+		end
+
+	set_color (a_color: like color)
+		do
+			color := a_color
 		end
 
 

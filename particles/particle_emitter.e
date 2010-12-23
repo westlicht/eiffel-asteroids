@@ -8,16 +8,13 @@ class
 	PARTICLE_EMITTER
 
 create
-	make_with_settings
+	make
 
 
 feature -- Access
 
-	manager: PARTICLE_MANAGER
-			-- Particle manager.
-
-	settings: PARTICLE_SETTINGS
-			-- Particle settings.
+	system: PARTICLE_SYSTEM
+			-- Particle system.
 
 	position: VECTOR2 assign set_position
 			-- Emitter position.
@@ -40,14 +37,13 @@ feature -- Local attributes
 
 feature -- Initialization
 
-	make_with_settings (a_manager: PARTICLE_MANAGER; a_settings: PARTICLE_SETTINGS)
+
+	make (a_system: PARTICLE_SYSTEM)
 			-- Initializes the particle emitter.
 		require
-			manager_exists: a_manager /= Void
-			settings_exists: a_settings /= Void
+			system_exists: a_system /= Void
 		do
-			manager := a_manager
-			settings := a_settings
+			system := a_system
 			position.set_zero
 			velocity.set_zero
 			direction.set_unit (0)
@@ -89,7 +85,7 @@ feature -- Updateing
 			inv_rate: REAL
 		do
 			if enabled then
-				inv_rate := {REAL} 1.0 / settings.rate
+				inv_rate := {REAL} 1.0 / system.settings.rate
 				from
 					time_left := time_left + t
 				until
@@ -122,17 +118,16 @@ feature -- Emitting
 			rotation: MATRIX3
 			particle_velocity: VECTOR2
 		do
-			manager.random.forth
-			create rotation.make_rotation (manager.random_range (-settings.spread, settings.spread))
-			manager.random.forth
-			particle_velocity := rotation.transform_no_translation (direction) * (settings.velocity * manager.random_range ({REAL} 1.0 - settings.velocity_random, {REAL} 1.0 + settings.velocity_random)) + velocity
-			manager.emit_particle (settings, position, particle_velocity, t)
+			system.manager.random.forth
+			create rotation.make_rotation (system.manager.random_range (-system.settings.spread, system.settings.spread))
+			system.manager.random.forth
+			particle_velocity := rotation.transform_no_translation (direction) * (system.settings.velocity * system.manager.random_range ({REAL} 1.0 - system.settings.velocity_random, {REAL} 1.0 + system.settings.velocity_random)) + velocity
+			system.emit_particle (system.settings, position, particle_velocity, t)
 		end
 
 
 invariant
-	manager_exists: manager /= Void
-	settings_exists: settings /= Void
+	system_exists: system /= Void
 	time_left_positive: time_left >= 0.0
 
 end

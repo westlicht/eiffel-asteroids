@@ -25,14 +25,11 @@ feature -- Constants
 
 feature -- Access
 
-	particles: like pool.used_objects
-			-- List of active particles.
+	systems: LINKED_LIST [PARTICLE_SYSTEM]
+			-- List of particle systems.
 
-	settings_by_name: HASH_TABLE [PARTICLE_SETTINGS, STRING]
-			-- Hash table of particle settings.
-
-	emitters: LINKED_LIST [PARTICLE_EMITTER]
-			-- List of emitters.
+	systems_by_name: HASH_TABLE [PARTICLE_SYSTEM, STRING]
+			-- Hash table of particle systems indexed by a descriptive name.
 
 	random: RANDOM
 			-- Global random generator
@@ -41,11 +38,11 @@ feature -- Access
 			Result.start
 		end
 
+	particle_pool: OBJECT_POOL [PARTICLE]
+			-- Pool of particles.
 
 feature {NONE} -- Local attributes
 
-	pool: OBJECT_POOL [PARTICLE]
-			-- Pool of particles.
 
 feature -- Initialization
 
@@ -63,69 +60,32 @@ feature -- Initialization
 				objects.extend (create {PARTICLE}.make)
 				i := i + 1
 			end
-			create pool.make (objects)
-			particles := pool.used_objects
+			create particle_pool.make (objects)
 
-			create settings_by_name.make (16)
-			create emitters.make
+			create systems.make
+			create systems_by_name.make (16)
 		end
 
 
-feature -- Particle settings
+feature -- Particle systems
 
-	put_settings (a_settings: PARTICLE_SETTINGS; a_name: STRING)
-			-- Adds settings to the particle manager.
+	put_system (a_system: PARTICLE_SYSTEM; a_name: STRING)
+			-- Adds particle system to the particle manager.
 		require
-			settings_exists: a_settings /= Void
-			name_valid: a_name /= Void and then not a_name.is_empty
+			system_exists: a_system /= Void
+			name_valid: a_name /= Void and then not a_name.is_empty and then not systems_by_name.has_key (a_name)
 		do
-			settings_by_name.extend (a_settings, a_name)
+			systems.extend (a_system)
+			systems_by_name.extend (a_system, a_name)
 		end
 
-	get_settings (a_name: STRING): PARTICLE_SETTINGS
+	get_system (a_name: STRING): PARTICLE_SYSTEM
 			-- Gets settings from the particle manager.
 		require
 			name_exists: a_name /= Void
-			settings_exists: settings_by_name.has (a_name)
+			system_exists: systems_by_name.has_key (a_name)
 		do
-			Result := settings_by_name [a_name]
-		end
-
-
-feature -- Particle emitters
-
-	put_emitter (a_emitter: PARTICLE_EMITTER)
-			-- Adds an emitter to the particle manager.
-		require
-			emitter_exists: a_emitter /= Void
-			emitter_not_put: not emitters.has (a_emitter)
-		do
-			emitters.extend (a_emitter)
-		end
-
-	prune_emitter (a_emitter: PARTICLE_EMITTER)
-			-- Removes an emitter from the particle manager.
-		require
-			emitter_exists: a_emitter /= Void
-			emitter_registered: emitters.has (a_emitter)
-		do
-			emitters.prune (a_emitter)
-		end
-
-
-feature -- Fireing
-
-	emit_particle (a_settings: PARTICLE_SETTINGS; a_position, a_velocity: VECTOR2; t: REAL)
-			-- Emits a new particle.
-		local
-			particle: PARTICLE
-		do
-			particle := pool.use
-			if particle /= Void then
-				particle.emit (a_settings, a_position, a_velocity)
-				random.forth
-				particle.update (engine, random.real_item * t)
-			end
+			Result := systems_by_name [a_name]
 		end
 
 
@@ -136,9 +96,7 @@ feature -- Drawing
 		local
 			color: COLOR
 		do
-			color.set_gray (0.5)
-			engine.renderer.set_foreground_color (color)
-			particles.do_all (agent draw_particle)
+			systems.do_all (agent draw_system)
 		end
 
 
@@ -147,49 +105,39 @@ feature -- Updateing
 	update (t: REAL)
 			-- Updates the particles by t seconds.
 		do
-			emitters.do_all (agent update_emitter (?, t))
-			particles.do_all (agent update_particle (?, t))
+			systems.do_all (agent update_system (?, t))
 		end
 
 
 feature -- Random numbers
 
-	random_range (min, max: REAL): REAL
+	random_range (a_min, a_max: REAL): REAL
 			-- Returns the current random value scaled to be in a given range.
 		do
-			Result := min + random.real_item * (max - min)
+			Result := a_min + random.real_item * (a_max - a_min)
 		end
 
 
 feature -- Implementation
 
-	draw_particle (particle: PARTICLE)
-			-- Draws a single particle.
+	draw_system (a_system: PARTICLE_SYSTEM)
+			-- Draws a single particle system.
 		do
-			particle.draw (engine)
+			a_system.draw
 		end
 
-	update_emitter (emitter: PARTICLE_EMITTER; t: REAL)
-			-- Updates a single emitter.
+	update_system (a_system: PARTICLE_SYSTEM; t: REAL)
+			-- Updates a single particle system.
 		do
-			emitter.update (engine, t)
-		end
-
-	update_particle (particle: PARTICLE; t: REAL)
-			-- Updates a single particle.
-		do
-			particle.update (engine, t)
-			if particle.is_killed then
-				pool.unuse (particle)
-			end
+			a_system.update (t)
 		end
 
 
 invariant
-	particles_valid: particles = pool.used_objects
-	settings_by_name_exists: settings_by_name /= Void
-	emitters_exists: emitters /= Void
+	systems_exists: systems /= Void
+	systems_by_name_exists: systems_by_name /= Void
+	systems_count_correct: systems.count = systems_by_name.count
 	random_exists: random /= Void
-	pool_exists: pool /= Void
+	pool_exists: particle_pool /= Void
 
 end

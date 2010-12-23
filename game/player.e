@@ -178,8 +178,8 @@ feature -- Initialization
 			put_anchor (anchor_engine)
 
 			-- Create particle emitters
-			create emitter_engine.make (engine.particle_manager, engine.particle_manager.get_settings ("engine"), anchor_engine)
-			engine.particle_manager.put_emitter (emitter_engine)
+			create emitter_engine.make (engine.particle_manager.get_system ("engine"), anchor_engine)
+			engine.particle_manager.get_system ("engine").put_emitter (emitter_engine)
 		end
 
 
@@ -335,7 +335,7 @@ feature {NONE} -- Collision
 		local
 			emitter: PARTICLE_EMITTER
 		do
-			create emitter.make_with_settings (engine.particle_manager, engine.particle_manager.get_settings ("explosion"))
+			create emitter.make (engine.particle_manager.get_system ("explosion"))
 			emitter.position := position
 			emitter.velocity := velocity
 			emitter.burst (100, 0.1)

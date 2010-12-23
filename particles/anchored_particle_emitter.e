@@ -9,6 +9,8 @@ class
 
 inherit
 	PARTICLE_EMITTER
+		rename
+			make as make_emitter
 		redefine
 			update
 		end
@@ -25,12 +27,12 @@ feature -- Access
 
 feature -- Initialization
 
-	make (a_manager: PARTICLE_MANAGER; a_settings: PARTICLE_SETTINGS; a_anchor: RIGID_BODY_ANCHOR)
+	make (a_system: PARTICLE_SYSTEM; a_anchor: RIGID_BODY_ANCHOR)
 			-- Creates a new anchored particle emitter.
 		require
 			anchor_exists: a_anchor /= Void
 		do
-			make_with_settings (a_manager, a_settings)
+			make_emitter (a_system)
 			anchor := a_anchor
 		end
 

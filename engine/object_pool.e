@@ -64,6 +64,7 @@ feature -- Initialization
 		require
 			object_used: used_objects.has (object)
 		do
+			used_objects.start
 			used_objects.search (object)
 			used_objects.remove
 			free_objects.extend (object)
