@@ -61,8 +61,9 @@ feature -- Fireing
 		local
 			bullet: BULLET
 		do
-			bullet := pool.use
-			if bullet /= Void then
+			if pool.has_next then
+				bullet := pool.next
+				pool.use_next
 				bullet.fire (position, velocity + direction * speed)
 			end
 		end

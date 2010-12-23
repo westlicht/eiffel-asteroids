@@ -69,8 +69,9 @@ feature -- Emitting
 		local
 			particle: PARTICLE
 		do
-			particle := manager.particle_pool.use
-			if particle /= Void then
+			if manager.particle_pool.has_next then
+				particle := manager.particle_pool.next
+				manager.particle_pool.use_next
 				particles.extend (particle)
 				particle.emit (a_settings, a_position, a_velocity)
 				manager.random.forth

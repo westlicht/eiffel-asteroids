@@ -19,12 +19,8 @@ feature -- Access
 	used_objects: LINKED_LIST [G]
 			-- List of used objects.
 
-
-feature {NONE} -- Local attributes
-
 	free_objects: LINKED_LIST [G]
 			-- List of free objects.
-
 
 
 feature -- Initialization
@@ -43,20 +39,35 @@ feature -- Initialization
 			free_objects.append (a_objects)
 		end
 
-	use: G
-			-- Request an unused object from the object pool.
-			-- Returns Void if no free object is available.
+feature -- Objects
+
+	has_next: BOOLEAN
+			-- Returns true if there is a free object.
+		do
+			Result := not free_objects.is_empty
+		end
+
+	next: G
+			-- Next free object.
+		do
+			Result := free_objects.first
+		end
+
+	use_next
+			-- Mark the next free object as used.
+		require
+			next_available: has_next
 		do
 			if not free_objects.is_empty then
+				-- Add object to used list
+				used_objects.extend (free_objects.first)
 				-- Remove first object from free list
-				Result := free_objects.first
 				free_objects.start
 				free_objects.remove
-				-- Add object to used list
-				used_objects.extend (Result)
 			end
 		ensure
-			object_used: Result /= Void implies used_objects.has (Result)
+			one_free_less: free_objects.count = old free_objects.count - 1
+			one_used_more: used_objects.count = old used_objects.count + 1
 		end
 
 	unuse (object: G)
@@ -68,6 +79,9 @@ feature -- Initialization
 			used_objects.search (object)
 			used_objects.remove
 			free_objects.extend (object)
+		ensure
+			one_free_more: free_objects.count = old free_objects.count + 1
+			one_used_less: used_objects.count = old used_objects.count - 1
 		end
 
 
