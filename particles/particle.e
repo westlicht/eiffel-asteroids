@@ -54,6 +54,7 @@ feature -- Drawing
 	draw (engine: ENGINE)
 			-- Draws the particle.
 		do
+			engine.renderer.set_foreground_color (settings.color_start.blend (settings.color_end, age / settings.life_time))
 			engine.renderer.draw_point (position)
 		end
 

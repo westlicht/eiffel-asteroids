@@ -84,7 +84,7 @@ feature -- Drawing
 	draw
 			-- Draws the particles.
 		do
-			manager.engine.renderer.set_foreground_color (settings.color)
+			manager.engine.renderer.set_foreground_color (settings.color_start)
 			particles.do_all (agent draw_particle)
 		end
 

@@ -92,7 +92,8 @@ feature {NONE} -- Particle settings
 			settings.rate := 50.0
 			settings.life_time := 1.0
 			settings.drag := 0.5
-			settings.color.set_rgb (0.2, 0.2, 1.0)
+			settings.color_start.set_rgb (0.8, 0.6, 0.1)
+			settings.color_end.set_gray (0.0)
 			create system.make (engine.particle_manager, settings)
 			engine.particle_manager.put_system (system, "engine")
 
@@ -103,7 +104,8 @@ feature {NONE} -- Particle settings
 			settings.rate := 100.0
 			settings.life_time := 1.5
 			settings.drag := 0.6
-			settings.color.set_gray (0.5)
+			settings.color_start.set_gray (1.0)
+			settings.color_end.set_gray (0.0)
 			create system.make (engine.particle_manager, settings)
 			engine.particle_manager.put_system (system, "explosion")
 		end
