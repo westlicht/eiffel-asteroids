@@ -59,15 +59,23 @@ feature -- Access
 	set_horizontal_align (a_horizontal_align: like horizontal_align)
 			-- Sets the horizontal alignment.
 		require
-			horizontal_align_valid: Horizontal_align_left <= a_horizontal_align and a_horizontal_align <= Horizontal_align_right
+		horizontal_align_valid: is_valid_horizontal_align (a_horizontal_align)
 		do
 			horizontal_align := a_horizontal_align
 		end
 
 	set_font_id (a_font_id: like font_id)
 			-- Sets the font id.
+		require
+			font_id_valid: hud.engine.renderer.is_valid_font_id (a_font_id)
 		do
 			font_id := a_font_id
+		end
+
+	is_valid_horizontal_align (a_horizontal_align: like horizontal_align): BOOLEAN
+			-- Checks if the horizontal align is valid.
+		do
+			Result := Horizontal_align_left <= a_horizontal_align and a_horizontal_align <= Horizontal_align_right
 		end
 
 
@@ -94,6 +102,7 @@ feature -- Drawing
 feature {NONE} -- Implementation
 
 	draw_line (a_line: STRING; a_index: INTEGER)
+			-- Draw a single line of multi-line text.
 		local
 			origin: VECTOR2
 			text_size: VECTOR2
@@ -114,7 +123,10 @@ feature {NONE} -- Implementation
 			end
 		end
 
+
 invariant
 	text_exists: text /= Void
+	horizontal_align_valid: is_valid_horizontal_align (horizontal_align)
+	font_id_valid: hud.engine.renderer.is_valid_font_id (font_id)
 
 end

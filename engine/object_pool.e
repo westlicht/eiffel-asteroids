@@ -19,6 +19,7 @@ feature -- Access
 	used_objects: LINKED_LIST [G]
 			-- List of used objects.
 
+
 feature {NONE} -- Local attributes
 
 	free_objects: LINKED_LIST [G]

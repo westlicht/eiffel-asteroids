@@ -162,6 +162,8 @@ feature -- Drawing operations
 		end
 
 	set_font (a_font_id: INTEGER)
+		require
+			font_id_valid: is_valid_font_id (a_font_id)
 		local
 			new_font: EV_FONT
 		do
@@ -177,6 +179,12 @@ feature -- Drawing operations
 				active_font := new_font
 				canvas.set_font (active_font)
 			end
+		end
+
+	is_valid_font_id (a_font_id: INTEGER): BOOLEAN
+			-- Checks if a font id is valid.
+		do
+			Result := Font_id_small <= a_font_id and a_font_id <= Font_id_large
 		end
 
 	text_size (a_text: STRING): VECTOR2

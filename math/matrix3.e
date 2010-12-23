@@ -154,6 +154,7 @@ feature -- Output
 			-- TODO implement
 		end
 
+
 invariant
 	elements_exists: elements /= Void
 	elements_size: elements.width = Size and elements.height = Size

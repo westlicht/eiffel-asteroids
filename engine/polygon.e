@@ -19,6 +19,7 @@ feature -- Access
 	points: ARRAY[VECTOR2]
 			-- List of polygon points
 
+
 feature -- Creation
 
 	make_from_points (a_points: ARRAY[VECTOR2])

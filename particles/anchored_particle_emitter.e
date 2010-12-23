@@ -48,4 +48,7 @@ feature -- Updateing
 		end
 
 
+invariant
+	anchor_exists: anchor /= Void
+
 end

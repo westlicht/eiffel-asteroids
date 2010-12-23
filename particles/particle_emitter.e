@@ -129,4 +129,10 @@ feature -- Emitting
 			manager.emit_particle (settings, position, particle_velocity, t)
 		end
 
+
+invariant
+	manager_exists: manager /= Void
+	settings_exists: settings /= Void
+	time_left_positive: time_left >= 0.0
+
 end

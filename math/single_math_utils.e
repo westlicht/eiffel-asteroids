@@ -10,6 +10,7 @@ class
 inherit
 	SINGLE_MATH
 
+
 feature -- Constants
 
 	Pi_32: REAL_32
@@ -17,6 +18,7 @@ feature -- Constants
 		once
 			Result := Pi.truncated_to_real
 		end
+
 
 feature -- Operations
 

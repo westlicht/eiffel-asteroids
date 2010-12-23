@@ -112,6 +112,7 @@ feature -- Particle emitters
 			emitters.prune (a_emitter)
 		end
 
+
 feature -- Fireing
 
 	emit_particle (a_settings: PARTICLE_SETTINGS; a_position, a_velocity: VECTOR2; t: REAL)
@@ -154,6 +155,7 @@ feature -- Updateing
 feature -- Random numbers
 
 	random_range (min, max: REAL): REAL
+			-- Returns the current random value scaled to be in a given range.
 		do
 			Result := min + random.real_item * (max - min)
 		end
@@ -182,8 +184,12 @@ feature -- Implementation
 			end
 		end
 
+
 invariant
 	particles_valid: particles = pool.used_objects
+	settings_by_name_exists: settings_by_name /= Void
 	emitters_exists: emitters /= Void
+	random_exists: random /= Void
+	pool_exists: pool /= Void
 
 end

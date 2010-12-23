@@ -113,11 +113,10 @@ feature -- Key management
 feature -- Prompt
 
 	set_prompt_handler (a_prompt_handler: like prompt_handler)
-			-- Sets the prompt handler.
+			-- Sets the prompt handler. Use Void to unset the prompt handler.
 		do
 			prompt_handler := a_prompt_handler
 		end
-
 
 	set_prompt (a_prompt: like prompt)
 			-- Sets the prompt text.

@@ -35,6 +35,7 @@ feature -- Initialization
 		do
 			position.set_zero
 			velocity.set_zero
+			is_killed := True
 		end
 
 	emit (a_settings: PARTICLE_SETTINGS; a_position: VECTOR2; a_velocity: VECTOR2)
@@ -86,5 +87,10 @@ feature -- Killing
 		do
 			is_killed := True
 		end
+
+
+invariant
+	settings_exists: not is_killed implies settings /= Void
+	age_positive: age >= 0.0
 
 end

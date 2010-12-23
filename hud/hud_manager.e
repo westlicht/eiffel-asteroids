@@ -81,4 +81,8 @@ feature {NONE} -- Implementation
 			a_widget.update (engine, t)
 		end
 
+
+invariant
+	widgets_exists: widgets /= Void
+
 end

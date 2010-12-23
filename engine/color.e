@@ -1,6 +1,6 @@
 note
-	description: "Summary description for {COLOR}."
-	author: ""
+	description: "Represents an RGB color."
+	author: "Simon Kallweit"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -91,6 +91,8 @@ feature -- Calculations
 
 	blend (a_other: like Current; a_blend: REAL): like Current
 			-- Blends a color with another color.
+		require
+			valid_blend: 0.0 <= a_blend and a_blend <= 1.0
 		local
 			one_minus_blend: like a_blend
 		do
